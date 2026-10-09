@@ -1,0 +1,18 @@
+﻿---
+description: PharmaPro core engineering rules (specification repo)
+alwaysApply: true
+---
+
+# PharmaPro — Core Rules (context)
+
+This repo is the single source of truth for PharmaPro product and engineering specs.
+
+Implementation:
+- API — https://github.com/aquib20034/pharmpro-backend
+- Web — https://github.com/aquib20034/pharmpro-frontend
+
+## Never
+- Invent business rules, tax rates, account codes, or provider behaviour without a `15-decision-log.md` entry.
+- Drift tickets (`09`) away from domain rules (`03`) or the permissions matrix (`06`).
+
+Keep reading order in `README.md`. Wireframes live in `screens/`.

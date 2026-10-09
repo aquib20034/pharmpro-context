@@ -1,6 +1,13 @@
 # PharmaPro Specification — Index
 
-This folder is the single source of truth for PharmaPro. The specification was consolidated from the original idea document (`context/idea.txt`), then gap-filled. Every gap that required a decision is recorded in `15-decision-log.md` so it can be reviewed and overturned before code depends on it.
+Repo: [pharmpro-context](https://github.com/aquib20034/pharmpro-context)
+
+This folder is the single source of truth for PharmaPro. Implementation:
+
+- API — [pharmpro-backend](https://github.com/aquib20034/pharmpro-backend)
+- Web — [pharmpro-frontend](https://github.com/aquib20034/pharmpro-frontend)
+
+The specification was consolidated from `idea.txt`, then gap-filled. Decisions live in `15-decision-log.md`.
 
 ## Reading order
 
@@ -22,7 +29,7 @@ This folder is the single source of truth for PharmaPro. The specification was c
 16. `15-decision-log.md` — architecture/business decisions made to fill gaps
 17. `16-engineering-standards.md` — layering, naming, PII, logging, error notification to developers
 
-The original "Cursor agent rules" document became real rule files in `.cursor/rules/` (`pharmapro-core.mdc` always on; `laravel-api.mdc` and `nextjs-web.mdc` scoped by path).
+Cursor rules for this repo live in `.cursor/rules/`. Backend/frontend each carry their own copies of the implementation rules.
 
 ## Tagging conventions used across documents
 
