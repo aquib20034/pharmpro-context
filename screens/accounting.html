@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Accounting</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="accounting" data-crumbs="Accounting">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Accounting</h1><div class="sub">Seeded CoA from <span class="mono">07 §2</span>. System accounts cannot be deleted or re-typed. Documents always post to <span class="mono">system_key</span>s — you may remap which account a key points at.</div></div>
+    <div class="actions">
+      <button class="btn" data-open="expv">+ Expense voucher</button>
+      <button class="btn" data-open="jnew">+ Manual journal</button>
+      <button class="btn primary" data-open="newacc">+ New account <kbd>Alt N</kbd></button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tabs" data-tabs="ac">
+      <button class="on" data-tab="coa">Chart of accounts</button>
+      <button data-tab="jrn">Journals</button>
+      <button data-tab="map">Posting keys</button>
+    </div>
+
+    <div class="tab-panel on" data-tab-group="ac" data-tab="coa">
+      <div class="filters" style="border-radius:0">
+        <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Code or name…" style="width:200px"></div>
+        <select class="select"><option>Type: All</option><option>Asset</option><option>Liability</option><option>Equity</option><option>Revenue</option><option>COGS</option><option>Expense</option></select>
+        <div class="seg"><button class="on">All</button><button>System</button><button>Custom</button></div>
+        <span class="spacer"></span>
+        <span class="muted" style="font-size:11.5px">26 seeded · 1 custom</span>
+      </div>
+      <table class="tbl dense fin" id="coaTbl">
+        <thead><tr><th>Code</th><th>Account</th><th>Type</th><th>Normal</th><th>system_key</th><th class="right">Closing</th><th></th></tr></thead>
+        <tbody>
+          <tr class="head"><td colspan="7">1000 Assets</td></tr>
+          <tr><td class="mono">1010</td><td class="l1"><a href="report-ledger.html">Cash in Hand</a></td><td>asset</td><td>Dr</td><td class="mono">cash</td><td class="num">64,600.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">1020</td><td class="l1">Bank</td><td>asset</td><td>Dr</td><td class="mono">bank</td><td class="num">1,280,000.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">1030</td><td class="l1">Mobile Wallets</td><td>asset</td><td>Dr</td><td class="mono">wallet</td><td class="num">42,300.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">1040</td><td class="l1">Card Receivable</td><td>asset</td><td>Dr</td><td class="mono">card_clearing</td><td class="num">0.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">1100</td><td class="l1"><a href="report-aging.html">Accounts Receivable</a></td><td>asset</td><td>Dr</td><td class="mono">ar</td><td class="num">412,860.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">1200</td><td class="l1"><a href="report-stock.html#val">Inventory</a></td><td>asset</td><td>Dr</td><td class="mono">inventory</td><td class="num">2,418,300.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">1300</td><td class="l1">Input Tax Receivable</td><td>asset</td><td>Dr</td><td class="mono">input_tax</td><td class="num">13,256.80</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">1400</td><td class="l1">Supplier Advances</td><td>asset</td><td>Dr</td><td class="mono">supplier_advance</td><td class="num">0.00</td><td><span class="badge">System</span></td></tr>
+          <tr class="head"><td colspan="7">2000 Liabilities</td></tr>
+          <tr><td class="mono">2100</td><td class="l1"><a href="report-aging.html#ap">Accounts Payable</a></td><td>liability</td><td>Cr</td><td class="mono">ap</td><td class="num">(688,300.00)</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">2200</td><td class="l1">Sales Tax Payable</td><td>liability</td><td>Cr</td><td class="mono">output_tax</td><td class="num">(13,920.00)</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">2300</td><td class="l1">Customer Advances</td><td>liability</td><td>Cr</td><td class="mono">customer_advance</td><td class="num">0.00</td><td><span class="badge">System</span></td></tr>
+          <tr class="head"><td colspan="7">3000 Equity</td></tr>
+          <tr><td class="mono">3100</td><td class="l1">Owner Capital</td><td>equity</td><td>Cr</td><td class="mono">capital</td><td class="num">(2,500,000.00)</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">3900</td><td class="l1">Opening Balance Equity</td><td>equity</td><td>Cr</td><td class="mono">obe</td><td class="num">(926,938.00)</td><td><span class="badge">System</span></td></tr>
+          <tr class="head"><td colspan="7">4000 Revenue</td></tr>
+          <tr><td class="mono">4100</td><td class="l1"><a href="reports.html">Sales Revenue</a></td><td>revenue</td><td>Cr</td><td class="mono">sales_revenue</td><td class="num">(1,312,400.00)</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">4200</td><td class="l1">Sales Returns</td><td>revenue</td><td>Dr</td><td class="mono">sales_returns</td><td class="num">8,640.00</td><td><span class="badge">System</span></td></tr>
+          <tr class="head"><td colspan="7">5000 Cost of sales</td></tr>
+          <tr><td class="mono">5100</td><td class="l1"><a href="report-cogs.html">Cost of Goods Sold</a></td><td>cogs</td><td>Dr</td><td class="mono">cogs</td><td class="num">988,120.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">5200</td><td class="l1">Inventory Shrinkage</td><td>cogs</td><td>Dr</td><td class="mono">inventory_variance</td><td class="num">3,180.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">5300</td><td class="l1">Damaged &amp; Expired Stock Loss</td><td>cogs</td><td>Dr</td><td class="mono">stock_loss</td><td class="num">9,100.00</td><td><span class="badge">System</span></td></tr>
+          <tr><td class="mono">5400</td><td class="l1">Purchase Return Variance</td><td>cogs</td><td>Dr</td><td class="mono">purchase_variance</td><td class="num">14.00</td><td><span class="badge">System</span></td></tr>
+          <tr class="head"><td colspan="7">6000 Operating expenses</td></tr>
+          <tr><td class="mono">6100</td><td class="l1">Rent</td><td>expense</td><td>Dr</td><td class="muted">—</td><td class="num">50,000.00</td><td><span class="muted">custom</span></td></tr>
+          <tr><td class="mono">6300</td><td class="l1">Utilities</td><td>expense</td><td>Dr</td><td class="muted">—</td><td class="num">8,400.00</td><td><span class="muted">custom</span></td></tr>
+          <tr><td class="mono">6400</td><td class="l1">Bank &amp; Wallet Charges</td><td>expense</td><td>Dr</td><td class="mono">bank_charges</td><td class="num">1,120.00</td><td><span class="badge">System</span></td></tr>
+          <tr id="accCustom0"><td class="mono">6110</td><td class="l1">Electricity</td><td>expense</td><td>Dr</td><td class="muted">—</td><td class="num">0.00</td><td><button class="btn xs ghost" data-action="toast" data-msg="Deactivated 6110 · history kept">Deactivate</button></td></tr>
+        </tbody>
+      </table>
+      <div class="table-foot"><span>6100 Rent is tenant-added (no system_key). 4100 / 5100 are posted only by sales — you never type into them. New expense accounts show on <a href="reports.html">P&amp;L</a> after an expense voucher or journal posts.</span></div>
+    </div>
+
+    <div class="tab-panel" data-tab-group="ac" data-tab="jrn">
+      <div class="filters" style="border-radius:0">
+        <span class="muted">From</span><input class="input" value="01 Oct 2026"><span class="muted">to</span><input class="input" value="08 Oct 2026">
+        <select class="select"><option>Source: All</option><option>Sale</option><option>Purchase</option><option>Payment</option><option>Manual</option><option>Expense</option></select>
+        <span class="spacer"></span>
+        <a class="btn sm" href="report-ledger.html">Open ledger</a>
+      </div>
+      <table class="tbl dense">
+        <thead><tr><th>Journal</th><th>Date</th><th>Source</th><th>Narration</th><th class="right">Debit</th><th class="right">Credit</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="mono">JRN26-004131</td><td>08 Oct</td><td><span class="badge warn">draft adj</span></td><td>ADJ26-000031 damage — not posted</td><td class="num">0.00</td><td class="num">0.00</td><td></td></tr>
+          <tr><td class="mono">JRN26-004128</td><td>08 Oct</td><td><a href="sales.html">INV26-000412</a></td><td>Walk-in cash sale + COGS</td><td class="num">1,398.20</td><td class="num">1,398.20</td><td><a class="btn xs" href="report-ledger.html">Lines</a></td></tr>
+          <tr><td class="mono">JRN26-004119</td><td>08 Oct</td><td><a href="purchase-entry.html">PUR26-000301</a></td><td>Purchase Muller</td><td class="num">43,638.00</td><td class="num">43,638.00</td><td><a class="btn xs" href="report-ledger.html">Lines</a></td></tr>
+          <tr><td class="mono">JRN26-004088</td><td>01 Oct</td><td><span class="tag">Expense</span></td><td>Rent October · 6100 / 1010</td><td class="num">50,000.00</td><td class="num">50,000.00</td><td><a class="btn xs" href="report-ledger.html">Lines</a></td></tr>
+        </tbody>
+      </table>
+      <div class="table-foot"><span>Posted journals are immutable. Correction = reverse + new (FR-ACC-07).</span></div>
+    </div>
+
+    <div class="tab-panel card-body" data-tab-group="ac" data-tab="map">
+      <div class="note info mb-12" style="font-size:12px">The engine always posts to these keys. You may point a key at a different account of the same type. You cannot invent a new key or stop sales from hitting <span class="mono">sales_revenue</span>.</div>
+      <table class="tbl dense">
+        <thead><tr><th>Key</th><th>Used by</th><th>Account now</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">ar</td><td>Credit sales, receipts, customer opening</td><td>1100 Accounts Receivable</td></tr>
+          <tr><td class="mono">ap</td><td>Credit purchases, supplier payments</td><td>2100 Accounts Payable</td></tr>
+          <tr><td class="mono">inventory / cogs</td><td>Purchases, FEFO sales, returns</td><td>1200 / 5100</td></tr>
+          <tr><td class="mono">sales_revenue</td><td>Every posted sale</td><td>4100 Sales Revenue</td></tr>
+          <tr><td class="mono">cash / bank / wallet / card_clearing</td><td>Payment methods</td><td>1010 / 1020 / 1030 / 1040</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="newacc"><div class="modal">
+  <div class="modal-head"><h2>New account</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid">
+      <div class="field col-6"><label>Group <span class="req">*</span></label>
+        <select class="select" id="accGrp">
+          <option value="1000">1000 Assets</option>
+          <option value="2000">2000 Liabilities</option>
+          <option value="3000">3000 Equity</option>
+          <option value="4000">4000 Revenue</option>
+          <option value="5000">5000 Cost of sales</option>
+          <option value="6000" selected>6000 Operating expenses</option>
+        </select>
+      </div>
+      <div class="field col-3"><label>Code <span class="req">*</span></label><input class="input mono" id="accCode" value="6120"><div class="help">Unique per tenant</div></div>
+      <div class="field col-3"><label>Type</label><input class="input" id="accType" value="expense" disabled></div>
+      <div class="field col-12"><label>Name <span class="req">*</span></label><input class="input" id="accName" value="Salaries &amp; Wages"></div>
+      <div class="col-12"><div class="note warn" style="font-size:11.5px">No <span class="mono">system_key</span> — this account is never posted by sales/purchases until you use it on an expense voucher or manual journal. System accounts (4100, 5100, 1200…) cannot be created or re-typed here.</div></div>
+    </div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" id="accSave">Create account</button></div></div>
+</div></div>
+
+<div class="overlay" id="expv"><div class="modal">
+  <div class="modal-head"><h2>Expense voucher</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid">
+      <div class="field col-6"><label>Expense account <span class="req">*</span></label>
+        <select class="select" id="exAcc">
+          <option>6100 Rent</option>
+          <option selected>6110 Electricity</option>
+          <option>6120 Salaries &amp; Wages</option>
+          <option>6300 Utilities</option>
+        </select>
+      </div>
+      <div class="field col-6"><label>Pay from</label><select class="select"><option>1010 Cash in Hand</option><option>1020 Bank</option></select></div>
+      <div class="field col-4"><label>Amount <span class="req">*</span></label><input class="input num" id="exAmt" value="12,400.00"></div>
+      <div class="field col-4"><label>Date</label><input class="input" value="08 Oct 2026"></div>
+      <div class="field col-4"><label>Reference</label><input class="input" placeholder="K-Electric Oct"></div>
+      <div class="col-12"><div class="note info" style="font-size:11.5px">Shortcut for <span class="mono">Dr &lt;expense&gt; / Cr &lt;cash or bank&gt;</span>. Needs <span class="mono">accounting.journal.post</span>. Unbalanced journals cannot post.</div></div>
+    </div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" id="exPost">Post voucher</button></div></div>
+</div></div>
+
+<div class="overlay" id="jnew"><div class="modal wide">
+  <div class="modal-head"><h2>Manual journal</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid mb-12">
+      <div class="field col-4"><label>Date</label><input class="input" value="08 Oct 2026"></div>
+      <div class="field col-8"><label>Narration <span class="req">*</span></label><input class="input" value="Owner drawings October"></div>
+    </div>
+    <table class="tbl dense">
+      <thead><tr><th>Account</th><th class="right">Debit</th><th class="right">Credit</th></tr></thead>
+      <tbody>
+        <tr><td><select class="select"><option>3200 Owner Drawings</option><option>6100 Rent</option></select></td><td><input class="input num" value="20,000.00"></td><td><input class="input num" value="0.00"></td></tr>
+        <tr><td><select class="select"><option>1010 Cash in Hand</option><option>1020 Bank</option></select></td><td><input class="input num" value="0.00"></td><td><input class="input num" value="20,000.00"></td></tr>
+      </tbody>
+      <tfoot><tr><td>Must balance</td><td class="num">20,000.00</td><td class="num">20,000.00</td></tr></tfoot>
+    </table>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close data-action="toast" data-msg="JRN26-004140 posted · balanced">Post journal</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  const meta = { '1000':['asset','Dr','1050'], '2000':['liability','Cr','2910'], '3000':['equity','Cr','3400'], '4000':['revenue','Cr','4910'], '5000':['cogs','Dr','5500'], '6000':['expense','Dr','6120'] };
+  const grp = document.getElementById('accGrp');
+  const code = document.getElementById('accCode');
+  const type = document.getElementById('accType');
+  grp.addEventListener('change', () => { const m = meta[grp.value]; type.value = m[0]; code.value = m[2]; });
+  document.getElementById('accSave').addEventListener('click', () => {
+    const name = document.getElementById('accName').value.trim();
+    if (!name || !code.value.trim()) { toast('Code and name required','danger'); return; }
+    const m = meta[grp.value];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="mono">${code.value}</td><td class="l1">${name}</td><td>${m[0]}</td><td>${m[1]}</td><td class="muted">—</td><td class="num">0.00</td><td><button class="btn xs ghost">Deactivate</button></td>`;
+    document.querySelector('#coaTbl tbody').append(tr);
+    document.getElementById('newacc').classList.remove('open');
+    toast(code.value + ' ' + name + ' created · use an expense voucher to hit P&L','ok');
+  });
+  document.getElementById('exPost').addEventListener('click', () => {
+    document.getElementById('expv').classList.remove('open');
+    toast('EXP26-000044 posted · Dr ' + document.getElementById('exAcc').value + ' / Cr 1010','ok');
+  });
+})();
+</script>
+</body></html>

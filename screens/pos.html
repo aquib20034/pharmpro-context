@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — POS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  body { overflow: hidden; }
+  .pos { display: grid; grid-template-rows: 40px 1fr; height: 100vh; }
+  .pos-top { background: var(--ink); color: #c7cfdd; display: flex; align-items: center; gap: 10px; padding: 0 12px; font-size: 12px; }
+  .pos-top .brand { height: auto; padding: 0; border: 0; }
+  .pos-top .brand .name { font-size: 13px; }
+  .pos-top .meta { display: flex; gap: 14px; margin-left: 10px; }
+  .pos-top .meta b { color: #fff; font-weight: 600; }
+  .pos-top .right { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+  .pos-top .btn { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.12); color: #fff; height: 26px; }
+  .pos-top .btn:hover { background: rgba(255,255,255,.14); }
+  .pos-top .btn.danger { color: #ffb4b9; }
+  .pos-body { display: grid; grid-template-columns: 1fr 400px; gap: 10px; padding: 10px; min-height: 0; }
+  .cart { display: flex; flex-direction: column; min-height: 0; }
+  .scanbar { display: flex; gap: 8px; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  .scanbar .input-wrap { flex: 1; }
+  .scanbar .input { height: 34px; font-size: 14px; padding-left: 32px; border-width: 1.5px; }
+  .scanbar .input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(15,157,143,.18); }
+  .scanbar svg { width: 16px; height: 16px; left: 10px; }
+  .cart-table { flex: 1; overflow: auto; }
+  .cart-table .tbl td { height: 34px; }
+  .cart-table .qty { display: inline-flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; }
+  .cart-table .qty button { width: 22px; height: 24px; border: 0; background: #fff; cursor: pointer; font: inherit; color: var(--muted); }
+  .cart-table .qty button:hover { background: var(--surface-2); color: var(--text); }
+  .cart-table .qty input { width: 40px; height: 24px; border: 0; border-left: 1px solid var(--line); border-right: 1px solid var(--line); text-align: center; font: inherit; font-family: var(--mono); font-size: 12px; }
+  .cart-table .unit { font-size: 11.5px; height: 22px; border: 1px solid var(--line-strong); border-radius: 5px; background: #fff; padding: 0 4px; font-family: inherit; }
+  .cart-table .batch { font-size: 10.5px; color: var(--muted); display: flex; gap: 4px; align-items: center; margin-top: 1px; }
+  .cart-table .batch .exp { font-size: 10px; padding: 0 4px; }
+  .cart-table .price-in { width: 72px; text-align: right; }
+  .cart-table .disc-in { width: 54px; text-align: right; }
+  .cart-table tr.warn td:first-child { box-shadow: inset 3px 0 0 var(--warn); }
+  .cart-foot { border-top: 1px solid var(--line); padding: 8px 10px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; }
+  .cust { display: flex; align-items: center; gap: 8px; border: 1px dashed var(--line-strong); border-radius: 8px; padding: 6px 8px; cursor: pointer; max-width: 420px; }
+  .cust:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .cust .avatar { width: 28px; height: 28px; background: #e9ecf3; color: var(--muted); }
+  .cust .credit { margin-left: auto; text-align: right; font-size: 11px; color: var(--muted); }
+  .cust .credit b { display: block; font-size: 12px; color: var(--text); }
+  .cust .credit .progress { width: 80px; margin-top: 3px; }
+  .totals { display: grid; grid-template-columns: auto auto; gap: 2px 18px; font-size: 12.5px; text-align: right; }
+  .totals .l { color: var(--muted); text-align: left; }
+  .totals .grand { font-size: 22px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--line-strong); padding-top: 6px; margin-top: 4px; }
+  .totals .grand small { font-size: 11px; font-weight: 500; color: var(--muted); }
+  .totals input { width: 70px; height: 22px; text-align: right; }
+  .side { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+  .results { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .results .list { flex: 1; overflow: auto; }
+  .rrow { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; padding: 7px 10px; border-bottom: 1px solid var(--line); cursor: pointer; font-size: 12.5px; }
+  .rrow:hover, .rrow.on { background: var(--accent-soft); }
+  .rrow .n { font-weight: 600; } .rrow .g { font-size: 11px; color: var(--muted); }
+  .rrow .p { font-family: var(--mono); font-size: 12px; text-align: right; font-weight: 600; }
+  .rrow .s { font-size: 11px; color: var(--muted); text-align: right; }
+  .rrow .units { display: flex; gap: 4px; margin-top: 3px; grid-column: 1 / -1; }
+  .rrow .units span { font-size: 10.5px; border: 1px solid var(--line-strong); border-radius: 4px; padding: 0 5px; line-height: 16px; background: #fff; }
+  .rrow .units span:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .actions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .actions-grid .btn { height: 40px; flex-direction: column; gap: 1px; font-size: 11.5px; }
+  .actions-grid .btn kbd { margin: 0; }
+  .pay { height: 52px !important; font-size: 14px !important; grid-column: span 2; flex-direction: row !important; gap: 8px !important; }
+  .tender-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .tender { border: 1px solid var(--line-strong); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
+  .tender.on { border-color: var(--accent); background: var(--accent-soft); }
+  .tender.disabled { opacity: .45; cursor: not-allowed; }
+  .tender b { font-size: 12px; }
+  .tender input { height: 26px; text-align: right; font-family: var(--mono); }
+  .pay-summary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; text-align: center; }
+  .pay-summary div { background: var(--surface-2); border-radius: 8px; padding: 8px; }
+  .pay-summary b { display: block; font-size: 18px; font-variant-numeric: tabular-nums; }
+  .pay-summary small { font-size: 11px; color: var(--muted); }
+  .receipt { font-family: var(--mono); font-size: 11px; background: #fff; border: 1px solid var(--line); padding: 12px; width: 260px; margin: 0 auto; box-shadow: var(--shadow); }
+  .receipt .c { text-align: center; } .receipt hr { border: 0; border-top: 1px dashed #bbb; margin: 6px 0; }
+  .receipt table { width: 100%; border-collapse: collapse; } .receipt td { padding: 1px 0; vertical-align: top; } .receipt td.r { text-align: right; }
+</style></head>
+<body>
+<div class="pos">
+  <div class="pos-top">
+    <div class="brand"><div class="mark"></div><div class="name">PharmaPro</div></div>
+    <div class="meta"><span>Branch <b>Main</b></span><span>Warehouse <b>Shop floor</b></span><span>Cashier <b>Bilal</b></span><span>Date <b>08 Oct 2026</b></span><span><b id="clock">14:06</b></span></div>
+    <div class="right">
+      <span class="badge" style="background:rgba(255,255,255,.1);color:#fff">Online · synced</span>
+      <button class="btn sm" data-open="held">Held carts <span class="badge warn" style="height:15px">2</span> <kbd>F7</kbd></button>
+      <button class="btn sm" data-open="returnm">Return <kbd>F8</kbd></button>
+      <button class="btn sm" data-open="shortcuts">?</button>
+      <a class="btn sm danger" href="dashboard.html">Exit POS</a>
+    </div>
+  </div>
+
+  <div class="pos-body">
+    <!-- CART -->
+    <section class="card cart">
+      <div class="scanbar">
+        <div class="input-wrap">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3v10M4.5 3v10M7 3v10M9 3v10M11.5 3v10M14 3v10"/></svg>
+          <input id="scan" class="input" placeholder="Scan barcode or type to search (name, generic, SKU)…  — Esc returns here" autofocus autocomplete="off">
+          <span class="suffix"><kbd>/</kbd> search</span>
+        </div>
+        <div class="seg"><button class="on" title="Retail prices">Retail</button><button title="Wholesale prices">Wholesale</button></div>
+      </div>
+      <div class="cart-table">
+        <table class="tbl" id="cart">
+          <thead><tr><th style="width:30px">#</th><th>Item</th><th>Unit</th><th>Qty</th><th class="right">Price</th><th class="right">Disc</th><th class="right">Tax</th><th class="right">Total</th><th style="width:30px"></th></tr></thead>
+          <tbody id="cartBody"></tbody>
+        </table>
+        <div class="empty hide" id="cartEmpty"><div class="ill">⌁</div>Scan a barcode or search to start a sale.<br><small>Tip: scanning the same barcode again increments the line.</small></div>
+      </div>
+      <div class="cart-foot">
+        <div>
+          <div class="section-title">Customer <kbd>F4</kbd></div>
+          <div class="cust" data-open="custm">
+            <div class="avatar">AR</div>
+            <div><b>Ahmed Raza</b> <span class="badge indigo">Retail</span><div class="muted" style="font-size:11px">0300-1234567 · 14 purchases · last 02 Oct</div></div>
+            <div class="credit">available credit<b>PKR 800 / 20,000</b><div class="progress danger"><i style="width:96%"></i></div></div>
+          </div>
+          <div class="flex gap-4 mt-8" style="font-size:11.5px">
+            <span class="badge warn dot">Near limit</span>
+            <span class="badge ok dot">FEFO auto</span>
+            <span class="muted">3 lines · 23 base units · est. margin <b class="text-ok">22.8%</b></span>
+          </div>
+        </div>
+        <div class="totals" id="totals">
+          <span class="l">Subtotal</span><span id="tSub">0.00</span>
+          <span class="l">Line discounts</span><span id="tLDisc" class="text-danger">0.00</span>
+          <span class="l">Invoice discount <input class="input sm" id="invDisc" value="0" style="width:46px;display:inline-block;height:20px;text-align:right"> %</span><span id="tIDisc" class="text-danger">0.00</span>
+          <span class="l">Tax</span><span id="tTax">0.00</span>
+          <span class="l">Rounding</span><span id="tRound">0.00</span>
+          <div class="grand"><small>TOTAL PKR</small><span id="tGrand">0.00</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIDE -->
+    <aside class="side">
+      <div class="card results">
+        <div class="card-head"><h2>Results</h2><span class="muted" id="rcount" style="font-size:11.5px">6 products</span><div class="actions"><span class="muted" style="font-size:11px">↑↓ select · ↵ add · 1-9 unit</span></div></div>
+        <div class="list" id="results"></div>
+      </div>
+      <div class="card" style="padding:8px">
+        <div class="actions-grid">
+          <button class="btn" data-open="heldsave">Hold<kbd>F6</kbd></button>
+          <button class="btn" data-open="held">Resume<kbd>F7</kbd></button>
+          <button class="btn" data-open="discm">Discount<kbd>F3</kbd></button>
+          <button class="btn danger" onclick="clearCart()">Clear<kbd>Del</kbd></button>
+          <button class="btn primary pay" data-open="paym">Payment · <span id="payTotal">0.00</span><kbd>F9</kbd></button>
+          <button class="btn dark" style="height:52px;flex-direction:column" onclick="toast('Cash sale posted · INV26-000413 · printing…','ok')">Quick cash<kbd>Ctrl ↵</kbd></button>
+          <button class="btn" style="height:52px;flex-direction:column" data-open="recm">Receipt preview</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Payment modal -->
+<div class="overlay" id="paym"><div class="modal wide">
+  <div class="modal-head"><h2>Payment</h2><span class="badge indigo">Ahmed Raza</span><span class="muted" style="font-size:12px">INV draft #8812</span><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="pay-summary mb-12">
+      <div><small>Total due</small><b id="pTotal">0.00</b></div>
+      <div><small>Tendered</small><b id="pTend">0.00</b></div>
+      <div><small id="pLbl">Remaining</small><b id="pRem" class="text-danger">0.00</b></div>
+    </div>
+    <div class="tender-grid">
+      <label class="tender on"><b>Cash <kbd>1</kbd></b><input class="input tender-in" data-m="Cash" value="0"><small class="muted">Drawer: PKR 42,300</small></label>
+      <label class="tender"><b>JazzCash <kbd>2</kbd></b><input class="input tender-in" data-m="JazzCash" value="0"><small class="muted">Ref # optional</small></label>
+      <label class="tender"><b>Easypaisa <kbd>3</kbd></b><input class="input tender-in" data-m="Easypaisa" value="0"></label>
+      <label class="tender"><b>Card <kbd>4</kbd></b><input class="input tender-in" data-m="Card" value="0"><small class="muted">Posts to card clearing</small></label>
+      <label class="tender"><b>Bank transfer <kbd>5</kbd></b><input class="input tender-in" data-m="Bank" value="0"></label>
+      <label class="tender" title="Customer has PKR 800 available credit"><b>Credit (AR) <kbd>6</kbd></b><input class="input tender-in" data-m="Credit" value="0" max="800"><small class="text-warn">Available PKR 800 · override needs manager</small></label>
+    </div>
+    <div class="flex gap-4 mt-12" style="font-size:12px">
+      <span class="muted">Quick cash:</span>
+      <button class="btn xs" onclick="quick(500)">500</button><button class="btn xs" onclick="quick(1000)">1,000</button><button class="btn xs" onclick="quick(2000)">2,000</button><button class="btn xs" onclick="quick(5000)">5,000</button><button class="btn xs" onclick="quickExact()">Exact</button>
+      <span class="grow"></span>
+      <label class="check"><input type="checkbox" checked> Print receipt</label>
+      <label class="check"><input type="checkbox"> WhatsApp receipt</label>
+    </div>
+    <div class="note info mt-12" style="font-size:11.5px">Posting is atomic: stock (FEFO), COGS, journal and tenders commit together. An <span class="mono">Idempotency-Key</span> protects against double posting on retry.</div>
+  </div>
+  <div class="modal-foot"><span class="muted" style="font-size:11.5px">Press <kbd>Ctrl ↵</kbd> to post &amp; print</span><div class="right"><button class="btn" data-close>Back</button><button class="btn primary lg" id="postBtn" onclick="postSale()">Post &amp; print <kbd>Ctrl ↵</kbd></button></div></div>
+</div></div>
+
+<!-- Held carts -->
+<div class="overlay" id="held"><div class="modal">
+  <div class="modal-head"><h2>Held carts</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body tight" style="padding:0">
+    <table class="tbl dense"><thead><tr><th>Label</th><th>Customer</th><th class="right">Lines</th><th class="right">Total</th><th>Held</th><th></th></tr></thead>
+    <tbody>
+      <tr><td><b>Mrs Khan — waiting for Rx</b></td><td>Walk-in</td><td class="num">4</td><td class="num">2,340.00</td><td class="muted">13:21 · Bilal</td><td class="right"><button class="btn xs primary" data-close>Resume</button> <button class="btn xs ghost">Discard</button></td></tr>
+      <tr><td><b>Blue bag counter 2</b></td><td>City Clinic</td><td class="num">9</td><td class="num">11,860.00</td><td class="muted">12:48 · Sana</td><td class="right"><button class="btn xs primary" data-close>Resume</button> <button class="btn xs ghost">Discard</button></td></tr>
+    </tbody></table>
+  </div>
+  <div class="modal-foot"><span class="muted" style="font-size:11.5px">Held carts do not reserve stock. Auto-discarded after 2 days.</span></div>
+</div></div>
+<div class="overlay" id="heldsave"><div class="modal narrow">
+  <div class="modal-head"><h2>Hold cart</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body"><div class="field"><label>Label</label><input class="input" placeholder="e.g. customer name or bag colour" autofocus></div></div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Cart held · F7 to resume','ok')">Hold <kbd>↵</kbd></button></div></div>
+</div></div>
+
+<!-- Discount -->
+<div class="overlay" id="discm"><div class="modal narrow">
+  <div class="modal-head"><h2>Invoice discount</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="seg mb-12"><button class="on">Percent</button><button>Amount</button></div>
+    <div class="field"><label>Discount</label><div class="input-wrap"><input class="input" value="5" style="padding-left:8px"><span class="suffix">%</span></div><div class="help">Your limit as Cashier is 10%. Above that a manager PIN is required and the override is audited.</div></div>
+    <div class="field mt-12"><label>Reason (required above 5%)</label><select class="select"><option>Regular customer</option><option>Price match</option><option>Damaged pack</option><option>Other…</option></select></div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="document.getElementById('invDisc').value=5;recalc();toast('5% invoice discount applied')">Apply</button></div></div>
+</div></div>
+
+<!-- Customer -->
+<div class="overlay" id="custm"><div class="modal">
+  <div class="modal-head"><h2>Select customer</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="input-wrap mb-12"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Name or phone…" autofocus></div>
+    <table class="tbl dense"><tbody>
+      <tr data-select><td><b>Walk-in customer</b><span class="sub">default · cash only</span></td><td></td><td class="right"><span class="badge">System</span></td></tr>
+      <tr data-select class="selected"><td><b>Ahmed Raza</b><span class="sub">0300-1234567</span></td><td class="num">Bal 19,200 / 20,000</td><td class="right"><span class="badge indigo">Retail</span></td></tr>
+      <tr data-select><td><b>City Clinic</b><span class="sub">021-3456789 · 30 days</span></td><td class="num">Bal 84,000 / 250,000</td><td class="right"><span class="badge accent">Institutional</span></td></tr>
+      <tr data-select><td><b>Sadia Medical Store</b><span class="sub">0321-9876543</span></td><td class="num">Bal 0 / 100,000</td><td class="right"><span class="badge">Wholesale</span></td></tr>
+    </tbody></table>
+  </div>
+  <div class="modal-foot"><button class="btn sm ghost" data-open="custnew">+ New customer</button><div class="right"><button class="btn primary" data-close>Select <kbd>↵</kbd></button></div></div>
+</div></div>
+
+<div class="overlay" id="custnew"><div class="modal narrow">
+  <div class="modal-head"><h2>Quick-add customer</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="note info mb-12" style="font-size:11.5px"><span class="mono">customers.create</span> — name and phone only. Credit limit is set later under Customers.</div>
+    <div class="form-grid">
+      <div class="field col-12"><label>Name <span class="req">*</span></label><input class="input" id="posCName" placeholder="Walk-up name"></div>
+      <div class="field col-8"><label>Phone</label><input class="input" id="posCPhone" placeholder="03xx…"></div>
+      <div class="field col-4"><label>Type</label><select class="select"><option>Retail</option><option>Wholesale</option><option>Institutional</option></select></div>
+    </div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" id="posCSave">Save &amp; select</button></div></div>
+</div></div>
+
+<!-- Return -->
+<div class="overlay" id="returnm"><div class="modal wide">
+  <div class="modal-head"><h2>Sales return</h2><span class="badge">Linked to original sale</span><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="flex gap-12 mb-12"><div class="field grow"><label>Receipt number or scan receipt barcode</label><input class="input" value="INV26-000388" autofocus></div><div class="field"><label>&nbsp;</label><a class="btn" href="sales-return.html">Open full page</a></div><div class="field"><label>&nbsp;</label><a class="btn ghost" href="sales-return.html#unlinked" title="Needs sales.return.unlinked">Unlinked return…</a></div></div>
+    <div class="note info mb-12" style="font-size:11.5px">INV26-000388 · 02 Oct 2026 · Ahmed Raza · Cashier Sana · paid Cash 2,000 + Credit 4,420</div>
+    <table class="tbl dense"><thead><tr><th>Item</th><th>Batch</th><th class="right">Sold</th><th class="right">Returned</th><th class="right">Return qty</th><th>Disposition</th><th class="right">Refund</th></tr></thead>
+    <tbody>
+      <tr><td>Panadol 500mg <span class="sub">strip</span></td><td class="mono">P5A · exp Dec 26</td><td class="num">4</td><td class="num">0</td><td class="right"><input class="input sm" value="1" style="width:56px;text-align:right"></td><td><select class="select sm"><option>Restock</option><option>Write-off (damaged)</option></select></td><td class="num">95.00</td></tr>
+      <tr><td>Augmentin 625mg <span class="sub">tablet</span></td><td class="mono">AX2240 · exp Mar 27</td><td class="num">12</td><td class="num">0</td><td class="right"><input class="input sm" value="0" style="width:56px;text-align:right"></td><td><select class="select sm"><option>Restock</option><option>Write-off (damaged)</option></select></td><td class="num">0.00</td></tr>
+    </tbody></table>
+    <div class="form-grid mt-12">
+      <div class="field col-4"><label>Refund by</label><select class="select"><option>Cash</option><option>Credit to customer account (AR)</option><option>JazzCash</option></select></div>
+      <div class="field col-8"><label>Reason</label><input class="input" placeholder="Customer changed mind / wrong item / damaged…"></div>
+    </div>
+  </div>
+  <div class="modal-foot"><span class="muted" style="font-size:11.5px">Restock returns stock to batch P5A at its allocation cost.</span><div class="right"><a class="btn ghost" href="sales-return.html">Full return page</a><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Return RET26-000019 posted · refund PKR 95 cash','ok')">Post return · 95.00</button></div></div>
+</div></div>
+
+<!-- Receipt preview -->
+<div class="overlay" id="recm"><div class="modal narrow">
+  <div class="modal-head"><h2>Receipt preview</h2><div class="seg" style="margin-left:8px"><button class="on">80mm</button><button>58mm</button><button>A4</button></div><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body" style="background:var(--surface-2)">
+    <div class="receipt">
+      <div class="c"><b>DEMO PHARMACY</b><br>Shop 12, Main Market, Karachi<br>021-1234567 · NTN 1234567-8</div><hr>
+      <table><tr><td>Receipt</td><td class="r">INV26-000413</td></tr><tr><td>Date</td><td class="r">08-10-2026 14:06</td></tr><tr><td>Cashier</td><td class="r">Bilal</td></tr><tr><td>Customer</td><td class="r">Ahmed Raza</td></tr></table><hr>
+      <table id="recLines"></table><hr>
+      <table id="recTotals"></table><hr>
+      <div class="c">Batch/expiry printed per line · Returns within 7 days with receipt<br>Thank you — get well soon</div>
+    </div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Close</button><button class="btn primary" onclick="toast('Sent to printer')">Print</button></div></div>
+</div></div>
+
+<div class="overlay" id="shortcuts"><div class="modal narrow"><div class="modal-head"><h2>POS shortcuts</h2><button class="iconbtn" data-close>✕</button></div><div class="modal-body"><div class="shortcut-list">
+<div>Focus barcode<kbd>Esc</kbd></div><div>Search<kbd>/</kbd></div><div>Discount<kbd>F3</kbd></div><div>Customer<kbd>F4</kbd></div><div>Hold<kbd>F6</kbd></div><div>Resume<kbd>F7</kbd></div><div>Return<kbd>F8</kbd></div><div>Payment<kbd>F9</kbd></div><div>Post &amp; print<kbd>Ctrl ↵</kbd></div><div>Qty +/−<kbd>+ / −</kbd></div><div>Remove line<kbd>Del</kbd></div><div>Change unit<kbd>1–9</kbd></div>
+</div></div></div></div>
+<div class="toast-wrap" id="toasts"></div>
+<div class="wire-note"><b>Wireframe</b> · POS mockup · cart and payment math are simulated client-side for the demo only</div>
+
+<script>
+const PRODUCTS = [
+  { id:1, n:'Panadol 500mg Tablet', g:'Paracetamol · GSK', units:[{u:'tablet',f:1,p:3.2},{u:'strip',f:10,p:32},{u:'box',f:100,p:300}], stock:'1,240 tabs', batch:'P5A', exp:'Dec 26', expc:'d90', bc:'8964000123456', tax:0 },
+  { id:2, n:'Augmentin 625mg Tablet', g:'Co-amoxiclav · GSK', units:[{u:'tablet',f:1,p:58},{u:'strip',f:6,p:348}], stock:'18 tabs', batch:'AX2240', exp:'Mar 27', expc:'ok', bc:'8964000222222', tax:0, low:true },
+  { id:3, n:'Risek 20mg Capsule', g:'Omeprazole · Getz', units:[{u:'capsule',f:1,p:18.5},{u:'strip',f:14,p:259}], stock:'420 caps', batch:'RK0091', exp:'28 Oct 26', expc:'d30', bc:'8964000333333', tax:0, near:true },
+  { id:4, n:'Brufen 400mg Tablet', g:'Ibuprofen · Abbott', units:[{u:'tablet',f:1,p:4.1},{u:'strip',f:10,p:41},{u:'box',f:300,p:1180}], stock:'2,900 tabs', batch:'BF771', exp:'Aug 27', expc:'ok', bc:'8964000444444', tax:0 },
+  { id:5, n:'Ventolin Inhaler 100mcg', g:'Salbutamol · GSK', units:[{u:'piece',f:1,p:390}], stock:'22 pcs', batch:'VN88', exp:'Jun 27', expc:'ok', bc:'8964000555555', tax:0 },
+  { id:6, n:'Dettol Antiseptic 250ml', g:'Chloroxylenol · RB', units:[{u:'bottle',f:1,p:265}], stock:'40 btl', batch:'N/A', exp:'—', expc:'ok', bc:'8964000666666', tax:17 },
+];
+let cart = [ {pid:1, ui:1, q:2, d:0}, {pid:3, ui:1, q:1, d:5}, {pid:5, ui:0, q:1, d:0} ];
+const fmt = n => n.toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function renderResults(filter='') {
+  const f = filter.toLowerCase();
+  const list = PRODUCTS.filter(p => !f || p.n.toLowerCase().includes(f) || p.g.toLowerCase().includes(f) || p.bc.includes(f));
+  document.getElementById('rcount').textContent = list.length + ' products';
+  document.getElementById('results').innerHTML = list.map((p,i) => `
+    <div class="rrow ${i===0?'on':''}" onclick="add(${p.id},${p.units.length>1?1:0})">
+      <div class="n">${p.n} ${p.low?'<span class="badge warn">Low</span>':''} ${p.near?'<span class="badge danger">Near expiry</span>':''}</div>
+      <div class="p">${fmt(p.units[p.units.length>1?1:0].p)}<div class="s" style="font-weight:400">per ${p.units[p.units.length>1?1:0].u}</div></div>
+      <div class="g">${p.g} · <span class="mono">${p.stock}</span> · FEFO ${p.batch} <span class="exp ${p.expc}">${p.exp}</span></div>
+      <div class="s"></div>
+      <div class="units">${p.units.map((u,ui)=>`<span onclick="event.stopPropagation();add(${p.id},${ui})" title="Add 1 ${u.u}">${ui+1}· ${u.u} ${fmt(u.p)}</span>`).join('')}</div>
+    </div>`).join('');
+}
+function add(pid, ui) {
+  const ex = cart.find(l => l.pid===pid && l.ui===ui);
+  if (ex) ex.q++; else cart.push({pid, ui, q:1, d:0});
+  renderCart(); toast(`Added ${PRODUCTS.find(p=>p.id===pid).n}`); document.getElementById('scan').value=''; renderResults(); focusScan();
+}
+function setQ(i, v) { cart[i].q = Math.max(0, +v||0); if (cart[i].q===0) cart.splice(i,1); renderCart(); }
+function setU(i, v) { cart[i].ui = +v; renderCart(); }
+function setD(i, v) { cart[i].d = Math.min(100, Math.max(0, +v||0)); renderCart(); }
+function rm(i) { cart.splice(i,1); renderCart(); }
+function clearCart() { cart = []; renderCart(); }
+function lineCalc(l) { const p = PRODUCTS.find(x=>x.id===l.pid); const u = p.units[l.ui]; const gross = u.p*l.q; const disc = gross*l.d/100; const net = gross-disc; const tax = net*p.tax/100; return {p,u,gross,disc,net,tax,total:net+tax}; }
+function renderCart() {
+  const body = document.getElementById('cartBody');
+  body.innerHTML = cart.map((l,i) => { const c = lineCalc(l); return `
+    <tr class="${c.p.near||c.p.low?'warn':''}">
+      <td class="muted">${i+1}</td>
+      <td><b>${c.p.n}</b><div class="batch">FEFO → <span class="mono">${c.p.batch}</span><span class="exp ${c.p.expc}">${c.p.exp}</span> · ${l.q*c.u.f} base ${c.p.near?'<span class="badge danger" style="height:14px;font-size:9.5px">near expiry</span>':''}${c.p.low?'<span class="badge warn" style="height:14px;font-size:9.5px">low stock</span>':''}</div></td>
+      <td><select class="unit" onchange="setU(${i},this.value)">${c.p.units.map((u,ui)=>`<option value="${ui}" ${ui===l.ui?'selected':''}>${u.u}</option>`).join('')}</select></td>
+      <td><div class="qty"><button onclick="setQ(${i},${l.q-1})">−</button><input value="${l.q}" onchange="setQ(${i},this.value)"><button onclick="setQ(${i},${l.q+1})">+</button></div></td>
+      <td class="right"><input class="input price-in" value="${fmt(c.u.p)}" title="MRP ${fmt(c.u.p)} · override needs permission" readonly></td>
+      <td class="right"><input class="input disc-in" value="${l.d}" onchange="setD(${i},this.value)"><span class="muted" style="font-size:10px">%</span></td>
+      <td class="num muted">${c.p.tax?c.p.tax+'%':'0%'}</td>
+      <td class="num"><b>${fmt(c.total)}</b></td>
+      <td><button class="iconbtn" style="width:22px;height:22px" onclick="rm(${i})" title="Remove">✕</button></td>
+    </tr>`; }).join('');
+  document.getElementById('cartEmpty').classList.toggle('hide', cart.length>0);
+  recalc();
+}
+let totals = {};
+function recalc() {
+  let sub=0, ld=0, tax=0; cart.forEach(l => { const c=lineCalc(l); sub+=c.gross; ld+=c.disc; tax+=c.tax; });
+  const idp = +document.getElementById('invDisc').value||0; const id = (sub-ld)*idp/100;
+  const raw = sub-ld-id+tax; const grand = Math.round(raw); const round = grand-raw;
+  totals = {sub,ld,id,tax,round,grand};
+  const s = (k,v)=>document.getElementById(k).textContent=v;
+  s('tSub',fmt(sub)); s('tLDisc',ld?'-'+fmt(ld):'0.00'); s('tIDisc',id?'-'+fmt(id):'0.00'); s('tTax',fmt(tax)); s('tRound',(round>=0?'+':'')+fmt(round)); s('tGrand',fmt(grand)); s('payTotal',fmt(grand)); s('pTotal',fmt(grand));
+  document.querySelectorAll('.tender-in').forEach(i=>i.value=0); document.querySelector('.tender-in[data-m="Cash"]').value=grand; payCalc();
+  renderReceipt();
+}
+function payCalc() {
+  let t=0; document.querySelectorAll('.tender-in').forEach(i=>{ t+= +String(i.value).replace(/,/g,'')||0; i.closest('.tender').classList.toggle('on', (+String(i.value).replace(/,/g,'')||0)>0); });
+  const rem = totals.grand - t;
+  document.getElementById('pTend').textContent = fmt(t);
+  const r = document.getElementById('pRem'); const l = document.getElementById('pLbl');
+  if (rem>0.004) { l.textContent='Remaining'; r.textContent=fmt(rem); r.className='text-danger'; document.getElementById('postBtn').disabled=true; }
+  else { l.textContent='Change'; r.textContent=fmt(Math.abs(rem)); r.className='text-ok'; document.getElementById('postBtn').disabled=false; }
+}
+function quick(v){ const c=document.querySelector('.tender-in[data-m="Cash"]'); c.value=v; payCalc(); }
+function quickExact(){ let o=0; document.querySelectorAll('.tender-in').forEach(i=>{ if(i.dataset.m!=='Cash') o+= +i.value||0; }); quick(Math.max(0,totals.grand-o)); }
+function postSale(){ document.getElementById('paym').classList.remove('open'); toast('Posted INV26-000413 · PKR '+fmt(totals.grand)+' · receipt printing','ok'); cart=[]; renderCart(); focusScan(); }
+function renderReceipt(){
+  document.getElementById('recLines').innerHTML = cart.map(l=>{const c=lineCalc(l);return `<tr><td colspan="2">${c.p.n}</td></tr><tr><td>&nbsp;${l.q} ${c.u.u} × ${fmt(c.u.p)} · ${c.p.batch} ${c.p.exp}</td><td class="r">${fmt(c.total)}</td></tr>`;}).join('');
+  document.getElementById('recTotals').innerHTML = `<tr><td>Subtotal</td><td class="r">${fmt(totals.sub)}</td></tr>${(totals.ld+totals.id)?`<tr><td>Discount</td><td class="r">-${fmt(totals.ld+totals.id)}</td></tr>`:''}<tr><td>Tax</td><td class="r">${fmt(totals.tax)}</td></tr><tr><td><b>TOTAL</b></td><td class="r"><b>${fmt(totals.grand)}</b></td></tr><tr><td>Cash</td><td class="r">${fmt(totals.grand)}</td></tr><tr><td>Change</td><td class="r">0.00</td></tr><tr><td>Balance due (AR)</td><td class="r">19,200.00</td></tr>`;
+}
+function focusScan(){ document.getElementById('scan').focus(); }
+document.getElementById('scan').addEventListener('input', e => renderResults(e.target.value));
+document.getElementById('scan').addEventListener('keydown', e => { if (e.key==='Enter') { const v=e.target.value.trim(); const byBc = PRODUCTS.find(p=>p.bc===v); if (byBc) add(byBc.id, byBc.units.length>1?1:0); else { const first = document.querySelector('.rrow'); if (first) first.click(); else toast('No product matches "'+v+'"','danger'); } } });
+document.getElementById('invDisc').addEventListener('input', recalc);
+document.querySelectorAll('.tender-in').forEach(i=>i.addEventListener('input', payCalc));
+document.addEventListener('keydown', e => {
+  const map = { F3:'discm', F4:'custm', F6:'heldsave', F7:'held', F8:'returnm', F9:'paym' };
+  if (map[e.key]) { e.preventDefault(); document.getElementById(map[e.key]).classList.add('open'); const inp=document.querySelector('#'+map[e.key]+' input'); if(inp) setTimeout(()=>inp.focus(),30); }
+  if (e.key==='Escape') { document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open')); focusScan(); }
+  if (e.key==='/' && !/INPUT|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); focusScan(); }
+  if (e.ctrlKey && e.key==='Enter') { e.preventDefault(); if (document.getElementById('paym').classList.contains('open')) postSale(); else document.getElementById('paym').classList.add('open'); }
+  if (e.key==='?' && !/INPUT|SELECT/.test(document.activeElement.tagName)) document.getElementById('shortcuts').classList.add('open');
+});
+document.addEventListener('click', e => {
+  const o = e.target.closest('[data-open]'); if (o) { document.getElementById(o.dataset.open).classList.add('open'); const inp=document.querySelector('#'+o.dataset.open+' input'); if(inp) setTimeout(()=>inp.focus(),30); return; }
+  const c = e.target.closest('[data-close]'); if (c) { c.closest('.overlay').classList.remove('open'); focusScan(); return; }
+  if (e.target.classList.contains('overlay')) { e.target.classList.remove('open'); focusScan(); return; }
+  const seg = e.target.closest('.seg button'); if (seg) seg.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===seg));
+  const row = e.target.closest('tr[data-select]'); if (row) row.parentElement.querySelectorAll('tr').forEach(r=>r.classList.toggle('selected',r===row));
+});
+function toast(msg, kind){ const t=document.createElement('div'); t.className='toast '+(kind||''); t.textContent=msg; document.getElementById('toasts').append(t); setTimeout(()=>t.remove(),2600); }
+document.getElementById('posCSave').addEventListener('click', () => {
+  const n = document.getElementById('posCName').value.trim();
+  if (!n) { toast('Name is required','danger'); return; }
+  document.getElementById('custnew').classList.remove('open');
+  document.getElementById('custm').classList.remove('open');
+  const chip = document.querySelector('.cust');
+  chip.querySelector('.avatar').textContent = n.slice(0,2).toUpperCase();
+  chip.querySelector('b').textContent = n;
+  chip.querySelector('.muted').textContent = (document.getElementById('posCPhone').value || 'no phone') + ' · new · cash only';
+  chip.querySelector('.credit b').textContent = 'no credit';
+  chip.querySelector('.progress i').style.width = '0';
+  toast('CUS-00058 '+n+' saved · no credit until an Owner sets a limit','ok');
+});
+setInterval(()=>{ const d=new Date(); document.getElementById('clock').textContent=d.toTimeString().slice(0,5); },1000);
+renderResults(); renderCart(); focusScan();
+</script>
+</body></html>

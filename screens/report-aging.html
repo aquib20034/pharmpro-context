@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Aging</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Financial / Aging">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="ar"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Receivables &amp; payables aging</h1><div class="sub">As of business date 08 Oct 2026 · buckets from tenant settings · balances from journal lines with counterparty</div></div>
+        <div class="actions"><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="card">
+        <div class="tabs" data-tabs="ag"><button class="on" data-tab="ar">AR aging</button><button data-tab="ap">AP aging</button></div>
+        <div class="tab-panel on" data-tab-group="ag" data-tab="ar">
+          <div class="filters" style="border-radius:0"><span class="muted">As of</span><input class="input" value="08 Oct 2026"><select class="select"><option>Customer type: All</option><option>Retail</option><option>Wholesale</option><option>Institutional</option></select><span class="spacer"></span><button class="btn sm primary">Run</button></div>
+          <div class="card-body" style="padding-bottom:8px">
+            <div class="aging"><div class="a1">Current<b>210,420</b></div><div class="a2">1–30<b>164,240</b></div><div class="a3">31–60<b>38,200</b></div><div class="a4">61–90<b>0</b></div><div class="a5">90+<b>0</b></div></div>
+          </div>
+          <table class="tbl dense">
+            <thead><tr><th>Customer</th><th>Type</th><th class="right">Balance</th><th class="right">Current</th><th class="right">1–30</th><th class="right">31–60</th><th class="right">61–90</th><th class="right">90+</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><a href="customer.html">Ahmed Raza</a></td><td>Retail</td><td class="num">19,200.00</td><td class="num">10,420.00</td><td class="num">8,780.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td><a class="btn xs" href="customer.html">Statement</a></td></tr>
+              <tr><td>City Clinic</td><td>Institutional</td><td class="num">186,400.00</td><td class="num">148,200.00</td><td class="num">0.00</td><td class="num">38,200.00</td><td class="num">0.00</td><td class="num">0.00</td><td><button class="btn xs">Statement</button></td></tr>
+              <tr><td>Gulberg Lab</td><td>Wholesale</td><td class="num">82,060.00</td><td class="num">51,800.00</td><td class="num">30,260.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td><button class="btn xs">Statement</button></td></tr>
+              <tr><td>Central Hospital</td><td>Institutional</td><td class="num">125,200.00</td><td class="num">0.00</td><td class="num">125,200.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td><button class="btn xs">Statement</button></td></tr>
+              <tr><td>Walk-in</td><td class="muted">system</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td><span class="muted">no AR</span></td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="2">Total AR</td><td class="num">412,860.00</td><td class="num">210,420.00</td><td class="num">164,240.00</td><td class="num">38,200.00</td><td class="num">0.00</td><td class="num">0.00</td><td></td></tr></tfoot>
+          </table>
+          <div class="table-foot"><span>38,200 in 31–60 is City Clinic INV26-000240. Total equals 1100 on the trial balance.</span></div>
+        </div>
+        <div class="tab-panel" data-tab-group="ag" data-tab="ap">
+          <div class="filters" style="border-radius:0"><span class="muted">As of</span><input class="input" value="08 Oct 2026"><select class="select"><option>Supplier: All</option></select><span class="spacer"></span><button class="btn sm primary">Run</button></div>
+          <div class="card-body" style="padding-bottom:8px">
+            <div class="aging"><div class="a1">Not due<b>559,900</b></div><div class="a2">1–30 overdue<b>128,400</b></div><div class="a3">31–60<b>0</b></div><div class="a4">61–90<b>0</b></div><div class="a5">90+<b>0</b></div></div>
+          </div>
+          <table class="tbl dense">
+            <thead><tr><th>Supplier</th><th class="right">Balance</th><th class="right">Not due</th><th class="right">1–30</th><th class="right">31–60</th><th class="right">61–90</th><th class="right">90+</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><a href="supplier.html">Muller &amp; Phipps</a></td><td class="num">258,438.00</td><td class="num">130,038.00</td><td class="num text-danger">128,400.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td><a class="btn xs" href="supplier.html">Open</a></td></tr>
+              <tr><td>Getz Distribution</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td><span class="muted">paid</span></td></tr>
+              <tr><td>Abbott / M&amp;P</td><td class="num">429,862.00</td><td class="num">429,862.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td><a class="btn xs" href="report-payables.html">Invoices</a></td></tr>
+            </tbody>
+            <tfoot><tr><td>Total AP</td><td class="num">688,300.00</td><td class="num">559,900.00</td><td class="num">128,400.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.00</td><td></td></tr></tfoot>
+          </table>
+          <div class="table-foot"><span>PUR26-000240 Muller is 6 days past 02 Oct terms → 1–30 overdue bucket.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

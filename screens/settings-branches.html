@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Branches</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .tree { font-size: 12.5px; }
+  .tree .br { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+  .tree .hd { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--surface-2); }
+  .tree .wh { padding: 6px 10px 6px 28px; display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--line); }
+  .tree .loc { padding: 4px 10px 4px 52px; font-size: 12px; color: var(--muted); border-top: 1px dashed var(--line); }
+</style></head>
+<body data-page="settings" data-crumbs="Settings / Branches">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="branches"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Branches &amp; warehouses</h1><div class="sub">A branch is a shop. Each new branch gets a default warehouse. Locations (bins) are optional labels — no picking workflow in MVP. Plan cap: 3 branches · 2 used.</div></div>
+        <div class="actions"><button class="btn sm primary" data-open="addbr">Add branch</button></div>
+      </div>
+      <div class="tree">
+        <div class="br">
+          <div class="hd"><b>Main</b> <span class="badge">default</span> <span class="muted">MAIN · Main Boulevard, Gulberg · 042-111-234567</span><span class="grow"></span><button class="btn xs">Edit</button></div>
+          <div class="wh"><b>Shop floor</b> <span class="badge">default</span> <span class="muted">POS warehouse</span><span class="grow"></span><button class="btn xs ghost" data-open="addloc">+ Location</button></div>
+          <div class="loc">Zone Shop · Rack R2 · Shelf S1 <span class="muted">· optional · used on some batches</span></div>
+          <div class="wh"><b>Store room</b> <span class="muted">bulk · no POS</span><span class="grow"></span><button class="btn xs ghost">+ Location</button></div>
+        </div>
+        <div class="br">
+          <div class="hd"><b>Gulberg 2</b> <span class="muted">GUL · added 02 Sep by Owner</span><span class="grow"></span><button class="btn xs">Edit</button></div>
+          <div class="wh"><b>Shop floor</b> <span class="badge">default</span> <span class="muted">auto-created with the branch</span></div>
+        </div>
+      </div>
+      <div class="note info" style="font-size:11.5px">Cannot deactivate a warehouse that still has stock, or the default warehouse. Users are assigned to branches under Settings → Users. Super admin does not edit this tree.</div>
+    </div>
+  </div>
+</main>
+</div>
+<div class="overlay" id="addbr"><div class="modal narrow">
+  <div class="modal-head"><h2>Add branch</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="note info mb-12" style="font-size:11.5px">Creates warehouse “Shop floor” automatically. This will be branch 3 of 3 on Professional.</div>
+    <div class="form-grid">
+      <div class="field col-4"><label>Code <span class="req">*</span></label><input class="input mono" value="DHA"></div>
+      <div class="field col-8"><label>Name <span class="req">*</span></label><input class="input" value="DHA Phase 5"></div>
+      <div class="field col-12"><label>Address</label><input class="input" placeholder="Street, city"></div>
+      <div class="field col-6"><label>Phone</label><input class="input"></div>
+      <div class="field col-6"><label>Email</label><input class="input"></div>
+    </div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Branch DHA created · warehouse Shop floor seeded','ok')">Create branch</button></div></div>
+</div></div>
+<div class="overlay" id="addloc"><div class="modal narrow">
+  <div class="modal-head"><h2>Add location</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid">
+      <div class="field col-6"><label>Type</label><select class="select"><option>Zone</option><option>Rack</option><option>Shelf</option><option>Bin</option></select></div>
+      <div class="field col-6"><label>Code</label><input class="input mono" value="R3"></div>
+      <div class="field col-12"><label>Name</label><input class="input" value="Rack 3"></div>
+      <div class="field col-12"><label>Parent</label><select class="select"><option>Shop (zone)</option></select></div>
+    </div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Location R3 added','ok')">Add</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

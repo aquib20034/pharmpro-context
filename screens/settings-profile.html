@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Business profile</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / Business profile">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="profile"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Business profile</h1><div class="sub">Tenant identity and regional defaults. Currency is one per tenant. Fiscal year start locks after the first posted document.</div></div>
+        <div class="actions"><button class="btn sm primary" data-action="toast" data-msg="Profile saved · settings change audited">Save</button></div>
+      </div>
+      <div class="card card-body">
+        <div class="section-title">Identity</div>
+        <div class="form-grid">
+          <div class="field col-6"><label>Business name <span class="req">*</span></label><input class="input" value="Demo Pharmacy"></div>
+          <div class="field col-6"><label>Legal name</label><input class="input" value="Demo Pharmacy (Pvt) Ltd"></div>
+          <div class="field col-4"><label>NTN / STRN</label><input class="input mono" value="4220111-7"></div>
+          <div class="field col-4"><label>Phone</label><input class="input" value="042-111-234567"></div>
+          <div class="field col-4"><label>Email</label><input class="input" value="owner@demopharmacy.pk"></div>
+          <div class="field col-12"><label>Address</label><input class="input" value="Main Boulevard, Gulberg, Lahore"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="section-title">Regional</div>
+        <div class="form-grid">
+          <div class="field col-4"><label>Timezone</label><select class="select"><option>Asia/Karachi</option><option>Asia/Dubai</option></select></div>
+          <div class="field col-4"><label>Currency</label><select class="select" disabled><option>PKR</option></select><div class="help">Multi-currency is not planned</div></div>
+          <div class="field col-4"><label>Fiscal year start</label><select class="select" disabled><option>July (Pakistan default)</option></select><div class="help">Locked — documents already posted in FY 2026–27</div></div>
+          <div class="field col-4"><label>Mode</label><select class="select" disabled><option>Pharmacy</option></select></div>
+          <div class="field col-4"><label>Rounding of grand total</label><select class="select"><option>Nearest 1 rupee</option><option>Nearest 0.50</option><option>None (2 dp)</option></select><div class="help">Difference posts to 5900 Rounding</div></div>
+          <div class="field col-4"><label>Default tax behaviour</label><select class="select"><option>Exclusive</option><option>Inclusive</option></select></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

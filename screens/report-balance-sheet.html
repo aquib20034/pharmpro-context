@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Balance sheet</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Financial / Balance sheet">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="bs"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Balance sheet</h1><div class="sub">As of 08 Oct 2026 · current-year earnings computed on the fly (year-end close is P2)</div></div>
+        <div class="actions"><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="card">
+        <div class="filters"><span class="muted">As of</span><input class="input" value="08 Oct 2026"><select class="select"><option>Compare: 30 Sep 2026</option></select><span class="spacer"></span><button class="btn sm primary">Run</button></div>
+        <table class="tbl fin">
+          <thead><tr><th>Account</th><th class="right">08 Oct 2026</th><th class="right">30 Sep 2026</th></tr></thead>
+          <tbody>
+            <tr class="head"><td colspan="3">Assets</td></tr>
+            <tr><td class="l1">1010 Cash in Hand</td><td class="num">64,600.00</td><td class="num">42,300.00</td></tr>
+            <tr><td class="l1">1020 Bank</td><td class="num">1,280,000.00</td><td class="num">1,240,000.00</td></tr>
+            <tr><td class="l1">1030 Mobile Wallets</td><td class="num">42,300.00</td><td class="num">18,200.00</td></tr>
+            <tr><td class="l1">1100 Accounts Receivable</td><td class="num">412,860.00</td><td class="num">388,400.00</td></tr>
+            <tr><td class="l1">1200 Inventory</td><td class="num">2,418,300.00</td><td class="num">2,380,100.00</td></tr>
+            <tr><td class="l1">1300 Input Tax Receivable</td><td class="num">13,256.80</td><td class="num">12,400.00</td></tr>
+            <tr class="total"><td>Total assets</td><td class="num">4,231,316.80</td><td class="num">4,081,400.00</td></tr>
+            <tr class="head"><td colspan="3">Liabilities</td></tr>
+            <tr><td class="l1">2100 Accounts Payable</td><td class="num">688,300.00</td><td class="num">644,662.00</td></tr>
+            <tr><td class="l1">2200 Sales Tax Payable</td><td class="num">13,920.00</td><td class="num">9,800.00</td></tr>
+            <tr class="total"><td>Total liabilities</td><td class="num">702,220.00</td><td class="num">654,462.00</td></tr>
+            <tr class="head"><td colspan="3">Equity</td></tr>
+            <tr><td class="l1">3100 Owner Capital</td><td class="num">2,500,000.00</td><td class="num">2,500,000.00</td></tr>
+            <tr><td class="l1">3900 Opening Balance Equity</td><td class="num">926,938.00</td><td class="num">926,938.00</td></tr>
+            <tr><td class="l1">Current year earnings (P&amp;L YTD)</td><td class="num text-ok">102,158.80</td><td class="num">0.00</td></tr>
+            <tr class="total"><td>Total equity</td><td class="num">3,529,096.80</td><td class="num">3,426,938.00</td></tr>
+            <tr class="total"><td>Liabilities + equity</td><td class="num">4,231,316.80</td><td class="num">4,081,400.00</td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span class="badge ok">Assets = liabilities + equity</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

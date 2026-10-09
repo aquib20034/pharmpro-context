@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Expiry report</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Inventory / Expiry">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="expiry"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Expiry report</h1><div class="sub">On-hand batches only · heat tokens match inventory · suggested action is guidance, not a posting</div></div>
+        <div class="actions"><button class="btn sm">★ Favourite</button><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="card">
+        <div class="filters">
+          <div class="seg"><button>Expired</button><button class="on">≤ 30d</button><button>≤ 60d</button><button>≤ 90d</button><button>Custom</button></div>
+          <select class="select"><option>Warehouse: All</option><option>Shop floor</option><option>Store room</option></select>
+          <span class="spacer"></span>
+          <span class="muted">7 batches · PKR 48,200 at cost · PKR 61,900 at MRP</span>
+          <button class="btn sm primary">Run</button>
+        </div>
+        <table class="tbl dense">
+          <thead><tr><th>Product</th><th>Batch</th><th class="sort asc">Expiry</th><th>Days</th><th>Warehouse</th><th class="right">Qty (base)</th><th class="right">Value @ cost</th><th>Supplier</th><th>Suggested action</th></tr></thead>
+          <tbody>
+            <tr><td>Brufen Syrup 100ml</td><td class="mono">77Q1</td><td><span class="exp d30">14 Oct 26</span></td><td>6</td><td>Shop floor</td><td class="num">12</td><td class="num">1,536.00</td><td>Abbott / M&amp;P</td><td><a class="badge warn" href="purchase-return.html">Return to supplier</a></td></tr>
+            <tr><td>Risek 20mg</td><td class="mono">RK0091</td><td><span class="exp d30">28 Oct 26</span></td><td>20</td><td>Shop floor</td><td class="num">420</td><td class="num">5,964.00</td><td>Getz</td><td><span class="badge info">Promote / FEFO active</span></td></tr>
+            <tr><td>Cefspan Syrup</td><td class="mono">CS311</td><td><span class="exp d30">31 Oct 26</span></td><td>23</td><td>Store room</td><td class="num">30</td><td class="num">9,600.00</td><td>Barrett Hodgson</td><td><a class="badge warn" href="purchase-return.html">Return to supplier</a></td></tr>
+            <tr><td>Arinac Forte</td><td class="mono">AF0021</td><td><span class="exp d30">31 Oct 26</span></td><td>23</td><td>Shop floor</td><td class="num">600</td><td class="num">4,800.00</td><td>Abbott</td><td><span class="badge info">Move to shop floor</span></td></tr>
+            <tr><td>Nuberol Forte</td><td class="mono">NB77</td><td><span class="exp d30">31 Oct 26</span></td><td>23</td><td>Store room</td><td class="num">900</td><td class="num">7,200.00</td><td>Searle</td><td><a class="badge warn" href="purchase-return.html">Return to supplier</a></td></tr>
+            <tr><td>Calpol Drops</td><td class="mono">CD12</td><td><span class="exp d30">05 Nov 26</span></td><td>28</td><td>Shop floor</td><td class="num">40</td><td class="num">6,000.00</td><td>GSK</td><td><span class="badge info">Promote</span></td></tr>
+            <tr><td>Motilium 10mg</td><td class="mono">MT9</td><td><span class="exp d30">07 Nov 26</span></td><td>30</td><td>Store room</td><td class="num">1,000</td><td class="num">13,100.00</td><td>Getz</td><td><a class="badge warn" href="purchase-return.html">Return to supplier</a></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="5">Total</td><td class="num">3,002</td><td class="num">48,200.00</td><td colspan="2"></td></tr></tfoot>
+        </table>
+        <div class="table-foot"><span>Expired stock is blocked at POS. Write-off is an adjustment (reason EXPIRY) posting to 5300.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

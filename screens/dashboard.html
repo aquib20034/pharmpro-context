@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .bars { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding: 6px 0 0; }
+  .bars div { flex: 1; background: linear-gradient(180deg, #19c3b2, var(--accent)); border-radius: 3px 3px 0 0; position: relative; min-width: 8px; }
+  .bars div.today { background: linear-gradient(180deg, #8b8ef5, var(--indigo)); }
+  .bars div:hover::after { content: attr(data-v); position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; font-size: 10px; padding: 2px 5px; border-radius: 4px; white-space: nowrap; }
+  .axis { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 4px; }
+  .heat { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+  .heat div { border-radius: 5px; padding: 6px; font-size: 11px; text-align: center; cursor: pointer; }
+  .heat b { display: block; font-size: 15px; font-variant-numeric: tabular-nums; }
+  .donut { width: 84px; height: 84px; border-radius: 50%; background: conic-gradient(var(--accent) 0 58%, var(--indigo) 58% 80%, #f59e0b 80% 93%, #94a3b8 93% 100%); display: grid; place-items: center; flex: none; }
+  .donut::after { content: ''; width: 56px; height: 56px; border-radius: 50%; background: #fff; }
+  .legend { font-size: 12px; display: grid; gap: 4px; }
+  .legend i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; margin-right: 6px; }
+  .legend .row { display: flex; justify-content: space-between; gap: 14px; }
+  .onb { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+  .onb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .onb-list li { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; padding: 5px 0; border-bottom: 1px dashed var(--line); }
+  .onb-list li:last-child { border-bottom: 0; }
+  .onb-list .mk { width: 16px; height: 16px; border-radius: 50%; flex: none; margin-top: 1px; font-size: 9px; font-weight: 700; display: grid; place-items: center; border: 1px solid var(--line-strong); color: var(--muted); }
+  .onb-list .done .mk { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .onb-list .now .mk { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-soft, #eef0ff); }
+  .onb-list .now { font-weight: 600; }
+  .onb-list .muted-row { color: var(--muted); }
+  .onb-side { min-width: 200px; max-width: 240px; }
+</style></head>
+<body data-page="dashboard" data-crumbs="Dashboard">
+<div class="app">
+<main class="main">
+  <div class="note warn mb-12" style="font-size:12.5px"><b>Professional plan ends 20 Oct 2026</b> (12 days). POS still works. <a href="settings-subscription.html">View subscription</a></div>
+
+  <div class="card mb-12" id="onbCard">
+    <div class="card-head">
+      <h2>Go-live checklist <span class="badge indigo">4 / 6</span></h2>
+      <div class="actions">
+        <button class="btn xs ghost" id="onbDismiss" type="button">Dismiss</button>
+      </div>
+    </div>
+    <div class="card-body onb">
+      <div>
+        <div class="sub mb-8" style="margin-top:0">Tenant create seeds structure only — <b>shelf stock stays empty</b> until you import it. Order matters (ONB-05).</div>
+        <ul class="onb-list">
+          <li class="done"><span class="mk">✓</span><div>Accept invite &amp; set password</div></li>
+          <li class="done"><span class="mk">✓</span><div>Business profile · fiscal year · currency · receipt header</div></li>
+          <li class="done"><span class="mk">✓</span><div>Invite Cashier / Pharmacist / Accountant</div></li>
+          <li class="done"><span class="mk">✓</span><div>Import <b>Products</b> catalog (SKUs, units, barcodes)</div></li>
+          <li class="now"><span class="mk">5</span><div>Import <b>Opening stock</b> — batch, expiry, qty, cost, warehouse <span class="sub">posts OPENING + Dr 1200 / Cr 3900</span></div></li>
+          <li class="muted-row"><span class="mk">6</span><div>Confirm inventory valuation equals account <span class="mono">1200</span> · then open POS</div></li>
+        </ul>
+      </div>
+      <div class="onb-side">
+        <div class="note info" style="font-size:11.5px;margin:0">Existing register / Excel stock goes here — not via fake purchase invoices.</div>
+        <a class="btn primary mt-12" href="settings-imports.html" style="width:100%;justify-content:center">Open Imports</a>
+        <a class="btn mt-8" href="settings-imports.html" style="width:100%;justify-content:center;font-size:11.5px">Download template</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-head">
+    <div><h1>Good afternoon, Aquib</h1><div class="sub">Main Branch · Wednesday 08 Oct 2026 · fiscal period Oct-26 open</div></div>
+    <div class="actions">
+      <div class="seg"><button class="on">Today</button><button>7d</button><button>MTD</button><button>FY</button></div>
+      <a class="btn primary" href="pos.html">Open POS <kbd>F2</kbd></a>
+    </div>
+  </div>
+
+  <div class="grid cols-6 mb-12">
+    <div class="card kpi accent"><div class="lbl">Sales today</div><div class="val"><small>PKR</small>186,420</div><span class="delta text-ok">▲ 12% vs last Wed</span>
+      <svg class="spark" viewBox="0 0 72 28"><polyline fill="none" stroke="var(--accent)" stroke-width="1.5" points="0,22 10,18 20,20 30,12 40,14 50,8 60,10 72,4"/></svg></div>
+    <div class="card kpi"><div class="lbl">Cash collected</div><div class="val"><small>PKR</small>142,100</div><span class="muted" style="font-size:11px">Cash 61% · Wallet 24% · Card 15%</span></div>
+    <div class="card kpi indigo"><div class="lbl">Receivables</div><div class="val"><small>PKR</small>412,860</div><span class="delta text-warn">38,200 overdue &gt;30d</span></div>
+    <div class="card kpi"><div class="lbl">Payables</div><div class="val"><small>PKR</small>688,300</div><span class="muted" style="font-size:11px">3 due this week</span></div>
+    <div class="card kpi warn"><div class="lbl">Low stock</div><div class="val">14 <small>products</small></div><span class="muted" style="font-size:11px">4 with no preferred supplier</span></div>
+    <div class="card kpi danger"><div class="lbl">Expiring ≤ 30 days</div><div class="val">7 <small>batches</small></div><span class="delta text-danger">PKR 48,200 at cost</span></div>
+  </div>
+
+  <div class="grid" style="grid-template-columns: 1.6fr 1fr 1fr">
+    <div class="card">
+      <div class="card-head"><h2>Sales &amp; gross profit — last 14 days</h2><div class="actions"><span class="badge accent dot">Sales</span><span class="badge indigo dot">Today</span><button class="btn xs ghost">Report ›</button></div></div>
+      <div class="card-body">
+        <div class="bars">
+          <div style="height:52%" data-v="PKR 121k"></div><div style="height:61%" data-v="PKR 142k"></div><div style="height:48%" data-v="PKR 112k"></div><div style="height:70%" data-v="PKR 163k"></div><div style="height:66%" data-v="PKR 154k"></div><div style="height:80%" data-v="PKR 186k"></div><div style="height:38%" data-v="PKR 88k (Sun)"></div>
+          <div style="height:58%" data-v="PKR 135k"></div><div style="height:63%" data-v="PKR 147k"></div><div style="height:55%" data-v="PKR 128k"></div><div style="height:74%" data-v="PKR 172k"></div><div style="height:69%" data-v="PKR 161k"></div><div style="height:84%" data-v="PKR 196k"></div><div class="today" style="height:80%" data-v="PKR 186k (today)"></div>
+        </div>
+        <div class="axis"><span>25 Sep</span><span>01 Oct</span><span>08 Oct</span></div>
+        <div class="divider"></div>
+        <div class="flex gap-16" style="font-size:12px">
+          <div><div class="muted">Gross profit MTD</div><b style="font-size:14px">PKR 318,400</b> <span class="text-ok">21.4%</span></div>
+          <div><div class="muted">Avg basket</div><b style="font-size:14px">PKR 1,452</b></div>
+          <div><div class="muted">Transactions</div><b style="font-size:14px">1,284</b></div>
+          <div><div class="muted">Returns</div><b style="font-size:14px">9</b> <span class="muted">0.7%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Expiry heat map</h2><div class="actions"><a class="btn xs ghost" href="inventory.html">Open ›</a></div></div>
+      <div class="card-body">
+        <div class="heat">
+          <div style="background:#3b0a0e;color:#ffd7da"><b>2</b>expired</div>
+          <div style="background:var(--danger-soft);color:var(--danger)"><b>1</b>today</div>
+          <div style="background:var(--danger-soft);color:var(--danger)"><b>4</b>7d</div>
+          <div style="background:var(--warn-soft);color:var(--warn)"><b>7</b>30d</div>
+          <div style="background:#fff7e6;color:#8a5a00"><b>19</b>60d</div>
+          <div style="background:var(--surface-2);color:var(--muted)"><b>41</b>90d</div>
+        </div>
+        <div class="section-title mt-12">Nearest</div>
+        <table class="tbl dense"><tbody>
+          <tr><td>Augmentin 625mg <span class="sub">B# AX2231</span></td><td class="num">180 tabs</td><td class="right"><span class="exp expired">09/26</span></td></tr>
+          <tr><td>Brufen Syrup 100ml <span class="sub">B# 77Q1</span></td><td class="num">12 btl</td><td class="right"><span class="exp d30">14 Oct</span></td></tr>
+          <tr><td>Risek 20mg <span class="sub">B# RK0091</span></td><td class="num">420 caps</td><td class="right"><span class="exp d30">28 Oct</span></td></tr>
+          <tr><td>Panadol 500mg <span class="sub">B# P5A</span></td><td class="num">1,100 tabs</td><td class="right"><span class="exp d90">Dec 26</span></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Needs your action</h2><span class="badge danger">5</span></div>
+      <div class="card-body tight">
+        <table class="tbl dense"><tbody>
+          <tr><td><span class="badge warn">Approve</span></td><td>ADJ26-000031 · Damage write-off <span class="sub">PKR 12,600 · by Sana · 11:42</span></td><td class="right"><a class="btn xs" href="approvals.html">Review</a></td></tr>
+          <tr><td><span class="badge warn">Approve</span></td><td>Stocktake STK26-0004 · Store room <span class="sub">variance −PKR 3,180 · 12 lines</span></td><td class="right"><a class="btn xs" href="approvals.html">Review</a></td></tr>
+          <tr><td><span class="badge danger">Overdue</span></td><td>Muller &amp; Phipps · PKR 128,400 <span class="sub">due 02 Oct · 6 days late</span></td><td class="right"><a class="btn xs" href="supplier.html">Pay</a></td></tr>
+          <tr><td><span class="badge info">Reorder</span></td><td>14 products below reorder level <span class="sub">suggested PO value PKR 86,000</span></td><td class="right"><a class="btn xs" href="report-low-stock.html">List</a></td></tr>
+          <tr><td><span class="badge">Credit</span></td><td>Ahmed Raza at 96% of limit <span class="sub">PKR 19,200 / 20,000</span></td><td class="right"><a class="btn xs" href="customer.html">Statement</a></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid mt-12" style="grid-template-columns: 1.6fr 1fr 1fr">
+    <div class="card">
+      <div class="card-head"><h2>Recent sales</h2><div class="actions"><a class="btn xs ghost" href="sales.html">All sales ›</a></div></div>
+      <div class="card-body tight table-wrap">
+        <table class="tbl dense">
+          <thead><tr><th>Receipt</th><th>Time</th><th>Customer</th><th>Cashier</th><th class="right">Items</th><th class="right">Total</th><th>Tender</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">INV26-000412</td><td>14:02</td><td>Walk-in</td><td>Bilal</td><td class="num">3</td><td class="num">1,860.00</td><td><span class="tag">Cash</span></td><td><span class="badge ok dot">Posted</span></td></tr>
+            <tr><td class="mono">INV26-000411</td><td>13:58</td><td>Ahmed Raza</td><td>Bilal</td><td class="num">7</td><td class="num">6,420.00</td><td><span class="tag">Credit</span></td><td><span class="badge ok dot">Posted</span></td></tr>
+            <tr><td class="mono">INV26-000410</td><td>13:51</td><td>Walk-in</td><td>Sana</td><td class="num">1</td><td class="num">240.00</td><td><span class="tag">JazzCash</span></td><td><span class="badge ok dot">Posted</span></td></tr>
+            <tr><td class="mono">INV26-000409</td><td>13:40</td><td>City Clinic</td><td>Sana</td><td class="num">12</td><td class="num">18,900.00</td><td><span class="tag">Cash</span> <span class="tag">Card</span></td><td><span class="badge ok dot">Posted</span></td></tr>
+            <tr><td class="mono">INV26-000405</td><td>12:12</td><td>Walk-in</td><td>Bilal</td><td class="num">2</td><td class="num">980.00</td><td><span class="tag">Cash</span></td><td><span class="badge danger dot">Voided</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Cash by method · today</h2></div>
+      <div class="card-body flex gap-16">
+        <div class="donut"></div>
+        <div class="legend grow">
+          <div class="row"><span><i style="background:var(--accent)"></i>Cash</span><b>86,700</b></div>
+          <div class="row"><span><i style="background:var(--indigo)"></i>JazzCash / Easypaisa</span><b>34,100</b></div>
+          <div class="row"><span><i style="background:#f59e0b"></i>Card</span><b>21,300</b></div>
+          <div class="row"><span><i style="background:#94a3b8"></i>Credit (AR)</span><b>44,320</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Top products · MTD</h2></div>
+      <div class="card-body tight">
+        <table class="tbl dense"><tbody>
+          <tr><td>Panadol 500mg</td><td style="width:40%"><div class="progress"><i style="width:92%"></i></div></td><td class="num">48,200</td></tr>
+          <tr><td>Augmentin 625mg</td><td><div class="progress"><i style="width:71%"></i></div></td><td class="num">37,100</td></tr>
+          <tr><td>Risek 20mg</td><td><div class="progress"><i style="width:55%"></i></div></td><td class="num">28,800</td></tr>
+          <tr><td>Brufen 400mg</td><td><div class="progress"><i style="width:41%"></i></div></td><td class="num">21,400</td></tr>
+          <tr><td>Ventolin Inhaler</td><td><div class="progress"><i style="width:30%"></i></div></td><td class="num">15,600</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+<script>
+document.getElementById('onbDismiss')?.addEventListener('click', () => {
+  document.getElementById('onbCard')?.remove();
+  toast('Checklist hidden · reopen from Settings → Imports any time', 'ok');
+});
+</script>
+</body></html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Platform sign in</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  body { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; background: #fff; }
+  .hero { background: radial-gradient(1200px 600px at -10% -10%, #5b5fe8 0%, transparent 55%), radial-gradient(900px 500px at 110% 110%, #19c3b2 0%, transparent 55%), var(--ink); color: #c7cfdd; padding: 36px; display: flex; flex-direction: column; }
+  .hero h2 { color: #fff; font-size: 24px; line-height: 1.25; letter-spacing: -.02em; }
+  .hero p { margin-top: 10px; font-size: 13px; color: #9aa6bd; max-width: 420px; }
+  .hero .pitch { margin-top: auto; }
+  .panel { display: grid; place-items: center; padding: 24px; }
+  .form { width: 340px; }
+  .form h1 { font-size: 20px; }
+  .form .sub { color: var(--muted); margin: 4px 0 18px; font-size: 12.5px; }
+  .form .field { margin-bottom: 12px; }
+  .foot { margin-top: 18px; font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; }
+</style></head>
+<body>
+  <section class="hero">
+    <div class="brand"><div class="mark"></div><div class="name" style="color:#fff">PharmaPro<small style="color:#8b96ad">Platform</small></div></div>
+    <div class="pitch">
+      <h2>Create companies. Watch subscriptions. Freeze posting — never another tenant’s stock.</h2>
+      <p>This login is for PharmaPro operators only. Pharmacy owners sign in on the tenant app.</p>
+    </div>
+  </section>
+  <section class="panel">
+    <form class="form" onsubmit="event.preventDefault(); location.href='platform-tenants.html'">
+      <h1>Platform sign in</h1>
+      <div class="sub">Separate guard · not a tenant user</div>
+      <div class="field"><label>Email <span class="req">*</span></label><input class="input" type="email" value="ops@pharmapro.pk" required></div>
+      <div class="field"><label>Password <span class="req">*</span></label><input class="input" type="password" value="••••••••••" required></div>
+      <button class="btn primary lg block" type="submit">Sign in to platform</button>
+      <div class="note info mt-16">You cannot post sales or open POS from here. To run a pharmacy, use the tenant login.</div>
+      <div class="foot"><a href="login.html">← Tenant sign in</a><span>v0.1 · staging</span></div>
+    </form>
+  </section>
+</body></html>

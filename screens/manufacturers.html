@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Manufacturers</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="manufacturers" data-crumbs="Manufacturers">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Manufacturers <span class="badge">48</span></h1><div class="sub">Catalog brand owners. <b>Not</b> the same as suppliers — GSK can be the manufacturer while Muller &amp; Phipps is who you buy from (FR-MFR-01 / CAT-01).</div></div>
+    <div class="actions"><button class="btn sm primary" data-open="newm">+ Manufacturer <kbd>Alt N</kbd></button></div>
+  </div>
+  <div class="card">
+    <div class="filters">
+      <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Name or code…" style="width:220px"></div>
+      <span class="filter-chip on"><b>Status:</b> Active <span class="x">✕</span></span>
+      <span class="spacer"></span>
+      <span class="muted" style="font-size:11.5px">Used on product form · POS search shows brand</span>
+    </div>
+    <table class="tbl">
+      <thead><tr><th class="sort asc">Manufacturer</th><th>Code</th><th>Contact</th><th>Phone</th><th class="right">Products</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><b>GSK Pakistan</b></td><td class="mono">MFR-00001</td><td>—</td><td class="mono">021-111-475475</td><td class="num">214</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs" data-open="newm">Edit</button></span></td></tr>
+        <tr><td><b>Getz Pharma</b></td><td class="mono">MFR-00002</td><td>Orders desk</td><td class="mono">021-36600000</td><td class="num">186</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button></span></td></tr>
+        <tr><td><b>Abbott Laboratories</b></td><td class="mono">MFR-00003</td><td>—</td><td class="mono">021-111-000111</td><td class="num">142</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button></span></td></tr>
+        <tr><td><b>Searle Pakistan</b></td><td class="mono">MFR-00008</td><td>Hassan</td><td class="mono">021-32561011</td><td class="num">61</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button></span></td></tr>
+        <tr style="opacity:.55"><td><b>UCB (old)</b></td><td class="mono">MFR-00022</td><td>—</td><td class="muted">—</td><td class="num">3</td><td><span class="badge">Inactive</span></td><td><span class="row-actions"><button class="btn xs">Activate</button></span></td></tr>
+      </tbody>
+    </table>
+    <div class="table-foot"><span>Deactivating hides them from new product pickers; history on existing products stays.</span></div>
+  </div>
+</main>
+</div>
+<div class="overlay" id="newm"><div class="modal">
+  <div class="modal-head"><h2>Manufacturer</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid">
+      <div class="field col-4"><label>Code</label><input class="input mono" value="MFR-00049" disabled></div>
+      <div class="field col-8"><label>Name <span class="req">*</span></label><input class="input" id="mname" value="Hilton Pharma" autofocus></div>
+      <div class="field col-6"><label>Contact person</label><input class="input"></div>
+      <div class="field col-6"><label>Contact phone</label><input class="input"></div>
+      <div class="field col-6"><label>Phone</label><input class="input" value="021-111-445566"></div>
+      <div class="field col-6"><label>Email</label><input class="input"></div>
+      <div class="field col-8"><label>Address</label><input class="input"></div>
+      <div class="field col-4"><label>Website</label><input class="input" placeholder="https://"></div>
+      <div class="field col-12"><label>Notes</label><input class="input"></div>
+    </div>
+    <div class="note info mt-12" style="font-size:11.5px">UAT CAT-01: create manufacturer first, then product Panadol under GSK, then supplier Muller separately.</div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" id="msave">Save</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+<script>
+document.getElementById('msave').addEventListener('click', () => {
+  const n = document.getElementById('mname').value.trim();
+  if (!n) { toast('Name is required','danger'); return; }
+  document.getElementById('newm').classList.remove('open');
+  toast('MFR-00049 ' + n + ' saved','ok');
+});
+</script>
+</body></html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Products</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .stockbar { display: inline-flex; align-items: center; gap: 6px; }
+  .stockbar .progress { width: 56px; }
+</style></head>
+<body data-page="products" data-crumbs="Products / All products">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Products <span class="badge">2,418</span></h1><div class="sub">Catalog definitions. Stock lives in batches — see <a href="inventory.html">Inventory</a>.</div></div>
+    <div class="actions">
+      <button class="btn">Import CSV</button>
+      <button class="btn">Export</button>
+      <div class="btn-group"><button class="btn" data-open="labels">Print labels</button><button class="btn">▾</button></div>
+      <a class="btn primary" href="product-form.html">+ New product <kbd>Alt N</kbd></a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tabs" data-tabs="pt">
+      <button class="on" data-tab="all">All <span class="count">2,418</span></button>
+      <button data-tab="low">Low stock <span class="count">14</span></button>
+      <button data-tab="nosup">No preferred supplier <span class="count">61</span></button>
+      <button data-tab="rx">Rx only <span class="count">302</span></button>
+      <button data-tab="inactive">Inactive <span class="count">37</span></button>
+    </div>
+    <div class="filters" style="border-radius:0">
+      <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Search name, generic, SKU, barcode…" style="width:260px"></div>
+      <select class="select"><option>Category: All</option><option>Analgesics</option><option>Antibiotics</option><option>Gastro</option></select>
+      <select class="select"><option>Manufacturer: All</option><option>GSK</option><option>Getz</option><option>Abbott</option></select>
+      <select class="select"><option>Form: All</option><option>Tablet</option><option>Capsule</option><option>Syrup</option></select>
+      <span class="filter-chip on"><b>Tax:</b> Exempt <span class="x">✕</span></span>
+      <span class="filter-chip">+ Filter</span>
+      <span class="spacer"></span>
+      <span class="muted" style="font-size:11.5px">Showing 1–50 of 2,418</span>
+      <button class="btn sm ghost">Columns ▾</button>
+      <div class="seg"><button class="on" title="Comfortable">☰</button><button title="Dense">≡</button></div>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr>
+          <th style="width:28px"><input type="checkbox"></th>
+          <th class="sort asc">Product</th><th>SKU</th><th>Form · Strength</th><th>Manufacturer</th><th>Units (→ base)</th><th class="right">Retail / sale unit</th><th class="right">On hand</th><th>Nearest expiry</th><th>Reorder</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox"></td><td><b>Augmentin 625mg</b><span class="sub">Co-amoxiclav · Antibiotics</span></td><td class="mono">AUG625</td><td>Tablet · 625mg</td><td>GSK</td><td><span class="tag">tablet</span> <span class="tag">strip ×6</span></td><td class="num">348.00 <span class="sub">strip</span></td><td class="right"><span class="stockbar"><span class="num text-warn">18</span><div class="progress danger"><i style="width:12%"></i></div></span></td><td><span class="exp ok">Mar 27</span></td><td class="num">60 / 300</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost">Stock</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Brufen 400mg</b><span class="sub">Ibuprofen · Analgesics</span></td><td class="mono">BRU400</td><td>Tablet · 400mg</td><td>Abbott</td><td><span class="tag">tablet</span> <span class="tag">strip ×10</span> <span class="tag">box ×300</span></td><td class="num">41.00 <span class="sub">strip</span></td><td class="right"><span class="stockbar"><span class="num">2,900</span><div class="progress"><i style="width:80%"></i></div></span></td><td><span class="exp ok">Aug 27</span></td><td class="num">500 / 4,000</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost">Stock</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Brufen Syrup 100ml</b><span class="sub">Ibuprofen · Analgesics</span></td><td class="mono">BRUSYP</td><td>Suspension · 100mg/5ml</td><td>Abbott</td><td><span class="tag">bottle</span></td><td class="num">165.00 <span class="sub">bottle</span></td><td class="right"><span class="stockbar"><span class="num">12</span><div class="progress warn"><i style="width:30%"></i></div></span></td><td><span class="exp d30">14 Oct 26</span></td><td class="num">10 / 60</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost">Stock</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Dettol Antiseptic 250ml</b><span class="sub">Chloroxylenol · General</span></td><td class="mono">DET250</td><td>General · 250ml</td><td>Reckitt</td><td><span class="tag">bottle</span></td><td class="num">265.00 <span class="sub">bottle</span></td><td class="right"><span class="stockbar"><span class="num">40</span><div class="progress"><i style="width:66%"></i></div></span></td><td><span class="muted">no batch</span></td><td class="num">12 / 80</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost">Stock</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Panadol 500mg</b> <span class="badge accent">Top seller</span><span class="sub">Paracetamol · Analgesics</span></td><td class="mono">PAN500</td><td>Tablet · 500mg</td><td>GSK</td><td><span class="tag">tablet</span> <span class="tag">strip ×10</span> <span class="tag">box ×100</span></td><td class="num">32.00 <span class="sub">strip</span></td><td class="right"><span class="stockbar"><span class="num">1,240</span><div class="progress"><i style="width:55%"></i></div></span></td><td><span class="exp d90">Dec 26</span></td><td class="num">400 / 3,000</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost">Stock</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Risek 20mg</b><span class="sub">Omeprazole · Gastro</span></td><td class="mono">RIS20</td><td>Capsule · 20mg</td><td>Getz</td><td><span class="tag">capsule</span> <span class="tag">strip ×14</span></td><td class="num">259.00 <span class="sub">strip</span></td><td class="right"><span class="stockbar"><span class="num">420</span><div class="progress"><i style="width:48%"></i></div></span></td><td><span class="exp d30">28 Oct 26</span></td><td class="num">140 / 1,400</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost">Stock</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Tramal 50mg</b> <span class="badge danger outline">Rx</span><span class="sub">Tramadol · Analgesics</span></td><td class="mono">TRA50</td><td>Capsule · 50mg</td><td>Searle</td><td><span class="tag">capsule</span> <span class="tag">strip ×10</span></td><td class="num">120.00 <span class="sub">strip</span></td><td class="right"><span class="stockbar"><span class="num">230</span><div class="progress"><i style="width:40%"></i></div></span></td><td><span class="exp ok">Jan 28</span></td><td class="num">50 / 600</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost">Stock</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Ventolin Inhaler 100mcg</b><span class="sub">Salbutamol · Respiratory</span></td><td class="mono">VEN100</td><td>Inhaler · 100mcg</td><td>GSK</td><td><span class="tag">piece</span></td><td class="num">390.00 <span class="sub">piece</span></td><td class="right"><span class="stockbar"><span class="num">22</span><div class="progress"><i style="width:44%"></i></div></span></td><td><span class="exp ok">Jun 27</span></td><td class="num">10 / 50</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost">Stock</button></span></td></tr>
+          <tr style="opacity:.55"><td><input type="checkbox"></td><td><b>Xyzal 5mg (old pack)</b><span class="sub">Levocetirizine · Allergy</span></td><td class="mono">XYZ5O</td><td>Tablet · 5mg</td><td>UCB</td><td><span class="tag">tablet</span> <span class="tag">strip ×10</span></td><td class="num">—</td><td class="num">0</td><td>—</td><td class="num">—</td><td><span class="badge dot">Inactive</span></td><td><span class="row-actions"><button class="btn xs">Activate</button></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-foot">
+      <span>0 selected</span><button class="btn xs" disabled>Deactivate</button><button class="btn xs" disabled>Change category</button><button class="btn xs" disabled>Print labels</button>
+      <span class="pages"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><span style="padding:0 4px">…</span><button>49</button><button>›</button></span>
+      <select class="select sm" style="width:auto"><option>50 / page</option><option>100</option><option>200</option></select>
+    </div>
+  </div>
+</main>
+</div>
+<div class="overlay" id="labels"><div class="modal narrow"><div class="modal-head"><h2>Print barcode labels</h2><button class="iconbtn" data-close>✕</button></div><div class="modal-body"><div class="form-grid"><div class="field col-12"><label>Products</label><input class="input" value="Selected (0) — choose rows first"></div><div class="field col-6"><label>Unit barcode</label><select class="select"><option>Strip (internal EAN-13)</option><option>Box</option></select></div><div class="field col-6"><label>Label size</label><select class="select"><option>38 × 25 mm</option><option>50 × 30 mm</option></select></div><div class="field col-6"><label>Copies per product</label><input class="input" value="1"></div><div class="col-6 field"><label>&nbsp;</label><label class="check"><input type="checkbox" checked> Include price</label></div></div></div><div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close>Generate PDF</button></div></div></div></div>
+<script src="assets/app.js"></script>
+</body></html>

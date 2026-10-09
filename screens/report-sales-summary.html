@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Sales summary</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Sales / Summary">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="ssum"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Sales summary</h1><div class="sub">Posted receipts · net of discounts · tax shown separately · COGS from allocations</div></div>
+        <div class="actions"><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="card">
+        <div class="filters"><span class="muted">From</span><input class="input" value="01 Oct 2026"><span class="muted">to</span><input class="input" value="08 Oct 2026"><select class="select"><option>Branch: All</option></select><span class="spacer"></span><button class="btn sm primary">Run</button></div>
+        <div class="tabs" data-tabs="ss"><button class="on" data-tab="sum">Summary</button><button data-tab="product">By product</button><button data-tab="customer">By customer</button><button data-tab="disc">Discounts</button></div>
+        <div class="tab-panel on" data-tab-group="ss" data-tab="sum">
+          <table class="tbl dense">
+            <thead><tr><th>Day</th><th class="right">Receipts</th><th class="right">Gross</th><th class="right">Disc</th><th class="right">Returns</th><th class="right">Net</th><th class="right">Tax</th><th class="right">COGS</th><th class="right">GP%</th></tr></thead>
+            <tbody>
+              <tr><td>01 Oct</td><td class="num">118</td><td class="num">172,400.00</td><td class="num">3,200.00</td><td class="num">0.00</td><td class="num">169,200.00</td><td class="num">1,120.00</td><td class="num">131,800.00</td><td class="num text-ok">22.1</td></tr>
+              <tr><td>02 Oct</td><td class="num">124</td><td class="num">181,200.00</td><td class="num">4,100.00</td><td class="num">32.00</td><td class="num">177,068.00</td><td class="num">980.00</td><td class="num">138,400.00</td><td class="num text-ok">21.8</td></tr>
+              <tr><td>08 Oct</td><td class="num">128</td><td class="num">190,800.00</td><td class="num">4,380.00</td><td class="num">1,240.00</td><td class="num">186,420.00</td><td class="num">1,860.00</td><td class="num">145,210.00</td><td class="num text-ok">22.1</td></tr>
+            </tbody>
+            <tfoot><tr><td>Period</td><td class="num">886</td><td class="num">1,312,400.00</td><td class="num">32,180.00</td><td class="num">8,640.00</td><td class="num">1,271,580.00</td><td class="num">8,420.00</td><td class="num">988,120.00</td><td class="num">21.3</td></tr></tfoot>
+          </table>
+          <div class="table-foot"><span>Net sales 1,271,580 matches P&amp;L. Open a day in <a href="sales.html">Sales</a> for receipt detail.</span></div>
+        </div>
+        <div class="tab-panel" data-tab-group="ss" data-tab="product">
+          <table class="tbl dense">
+            <thead><tr><th>Product</th><th class="right">Qty (base)</th><th class="right">Net</th><th class="right">COGS</th><th class="right">GP</th><th class="right">GP%</th></tr></thead>
+            <tbody>
+              <tr><td>Panadol 500mg</td><td class="num">12,400</td><td class="num">39,680.00</td><td class="num">30,628.00</td><td class="num">9,052.00</td><td class="num text-ok">22.8</td></tr>
+              <tr><td>Augmentin 625mg</td><td class="num">1,860</td><td class="num">107,880.00</td><td class="num">76,800.00</td><td class="num">31,080.00</td><td class="num text-ok">28.8</td></tr>
+              <tr><td>Risek 20mg</td><td class="num">3,220</td><td class="num">59,570.00</td><td class="num">45,724.00</td><td class="num">13,846.00</td><td class="num text-ok">23.2</td></tr>
+              <tr><td>Ventolin Inhaler</td><td class="num">86</td><td class="num">33,540.00</td><td class="num">26,832.00</td><td class="num">6,708.00</td><td class="num text-ok">20.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-panel" data-tab-group="ss" data-tab="customer">
+          <table class="tbl dense">
+            <thead><tr><th>Customer</th><th class="right">Receipts</th><th class="right">Net</th><th class="right">On credit</th><th class="right">Collected</th></tr></thead>
+            <tbody>
+              <tr><td>Walk-in</td><td class="num">612</td><td class="num">842,100.00</td><td class="num">0.00</td><td class="num">842,100.00</td></tr>
+              <tr><td><a href="customer.html">Ahmed Raza</a></td><td class="num">14</td><td class="num">48,620.00</td><td class="num">28,400.00</td><td class="num">20,220.00</td></tr>
+              <tr><td>City Clinic</td><td class="num">9</td><td class="num">186,400.00</td><td class="num">186,400.00</td><td class="num">0.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-panel" data-tab-group="ss" data-tab="disc">
+          <table class="tbl dense">
+            <thead><tr><th>Receipt</th><th>Cashier</th><th>Reason</th><th class="right">Line disc</th><th class="right">Invoice disc</th><th>Override</th></tr></thead>
+            <tbody>
+              <tr><td class="mono"><a href="sales.html">INV26-000411</a></td><td>Bilal</td><td>Retail goodwill</td><td class="num">0.00</td><td class="num">200.00</td><td><span class="badge">within limit</span></td></tr>
+              <tr><td class="mono">INV26-000409</td><td>Sana</td><td>Institutional 2.5%</td><td class="num">0.00</td><td class="num">500.00</td><td><span class="badge">within limit</span></td></tr>
+              <tr><td class="mono">INV26-000388</td><td>Sana</td><td>Line promo</td><td class="num">32.00</td><td class="num">0.00</td><td><span class="badge warn">audited override</span></td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3">Period</td><td class="num">18,400.00</td><td class="num">13,780.00</td><td></td></tr></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Inventory</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 12px; }
+  .strip .card { padding: 8px 10px; cursor: pointer; border-top: 2px solid transparent; }
+  .strip .card:hover { border-color: var(--line-strong); }
+  .strip .card.on { border-top-color: var(--accent); }
+  .strip .lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  .strip .val { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .strip .val small { font-size: 11px; color: var(--muted); font-weight: 500; }
+</style></head>
+<body data-page="inventory" data-crumbs="Inventory / Stock by batch">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Inventory</h1><div class="sub">Balances are projections of the movement ledger · last verified 06:00 today · <span class="text-ok">0 mismatches</span></div></div>
+    <div class="actions">
+      <div class="seg"><button class="on">By batch</button><button>By product</button><button>Ledger</button></div>
+      <button class="btn" data-open="adj">Stock adjustment</button>
+      <a class="btn" href="stocktake.html">Stocktake</a>
+      <button class="btn">Export</button>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="card"><div class="lbl">Stock value</div><div class="val"><small>PKR</small> 2,418,300</div></div>
+    <div class="card"><div class="lbl">Batches</div><div class="val">1,942</div></div>
+    <div class="card" style="border-top-color:#3b0a0e"><div class="lbl">Expired</div><div class="val text-danger">2 <small>PKR 9,100</small></div></div>
+    <div class="card" style="border-top-color:var(--danger)"><div class="lbl">≤ 30 days</div><div class="val text-danger">7 <small>PKR 48,200</small></div></div>
+    <div class="card" style="border-top-color:var(--warn)"><div class="lbl">31–90 days</div><div class="val text-warn">60 <small>PKR 212,800</small></div></div>
+    <div class="card"><div class="lbl">Low stock</div><div class="val">14 <small>products</small></div></div>
+    <div class="card"><div class="lbl">Quarantined</div><div class="val">1 <small>batch</small></div></div>
+  </div>
+
+  <div class="card">
+    <div class="filters">
+      <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Product, batch, barcode…" style="width:240px"></div>
+      <select class="select"><option>Warehouse: All</option><option>Shop floor</option><option>Store room</option></select>
+      <select class="select"><option>Category: All</option></select>
+      <select class="select"><option>Manufacturer: All</option></select>
+      <span class="filter-chip on"><b>Expiry:</b> ≤ 90 days <span class="x">✕</span></span>
+      <span class="filter-chip"><b>Status:</b> Saleable</span>
+      <span class="filter-chip">Low stock only</span>
+      <span class="filter-chip">Hide zero</span>
+      <span class="spacer"></span>
+      <span class="muted" style="font-size:11.5px">69 batches · PKR 270,100</span>
+      <button class="btn sm ghost">Columns ▾</button>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr>
+          <th style="width:28px"><input type="checkbox"></th>
+          <th class="sort">Product</th><th>Batch</th><th class="sort asc">Expiry</th><th>Warehouse · Location</th><th class="right">On hand</th><th class="right">Reserved</th><th class="right">Available</th><th class="right">Cost / base</th><th class="right">MRP / base</th><th class="right">Value</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox"></td><td><b>Augmentin 625mg</b><span class="sub">AUG625 · GSK</span></td><td class="mono">AX2231</td><td><span class="exp expired">30 Sep 26</span> <span class="badge danger" style="height:15px;font-size:9.5px">8d ago</span></td><td>Shop floor <span class="muted">· R2-S1</span></td><td class="num">180 <span class="sub">30 strips</span></td><td class="num muted">0</td><td class="num">0 <span class="sub text-danger">blocked</span></td><td class="num">41.2000</td><td class="num">58.00</td><td class="num">7,416.00</td><td><span class="badge danger dot">Expired</span></td><td><span class="row-actions"><button class="btn xs">Write off</button><a class="btn xs ghost" href="purchase-return.html">Return to supplier</a></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Cefspan 400mg</b><span class="sub">CEF400 · Barrett Hodgson</span></td><td class="mono">CF9012</td><td><span class="exp expired">30 Sep 26</span></td><td>Store room</td><td class="num">40</td><td class="num muted">0</td><td class="num">0</td><td class="num">42.1000</td><td class="num">60.00</td><td class="num">1,684.00</td><td><span class="badge danger dot">Expired</span></td><td><span class="row-actions"><button class="btn xs">Write off</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Brufen Syrup 100ml</b><span class="sub">BRUSYP · Abbott</span></td><td class="mono">77Q1</td><td><span class="exp d30">14 Oct 26</span> <span class="muted" style="font-size:10.5px">6d</span></td><td>Shop floor</td><td class="num">12</td><td class="num muted">0</td><td class="num">12</td><td class="num">128.0000</td><td class="num">165.00</td><td class="num">1,536.00</td><td><span class="badge ok dot">Saleable</span></td><td><span class="row-actions"><button class="btn xs">Ledger</button><a class="btn xs ghost" href="purchase-return.html">Return</a></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Risek 20mg</b><span class="sub">RIS20 · Getz</span></td><td class="mono">RK0091</td><td><span class="exp d30">28 Oct 26</span> <span class="muted" style="font-size:10.5px">20d</span></td><td>Shop floor</td><td class="num">420 <span class="sub">30 strips</span></td><td class="num muted">0</td><td class="num">420</td><td class="num">14.2000</td><td class="num">18.50</td><td class="num">5,964.00</td><td><span class="badge ok dot">Saleable</span></td><td><span class="row-actions"><button class="btn xs">Ledger</button><a class="btn xs ghost" href="purchase-return.html">Return</a></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Risek 20mg</b><span class="sub">RIS20 · Getz</span></td><td class="mono">RK0110</td><td><span class="exp ok">31 May 27</span></td><td>Store room</td><td class="num">1,400</td><td class="num muted">0</td><td class="num">1,400</td><td class="num">14.6000</td><td class="num">18.50</td><td class="num">20,440.00</td><td><span class="badge ok dot">Saleable</span></td><td><span class="row-actions"><button class="btn xs">Ledger</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Panadol 500mg</b><span class="sub">PAN500 · GSK</span></td><td class="mono">P5A</td><td><span class="exp d90">31 Dec 26</span> <span class="muted" style="font-size:10.5px">84d</span></td><td>Shop floor</td><td class="num">1,100 <span class="sub">11 boxes</span></td><td class="num muted">0</td><td class="num">1,100</td><td class="num">2.4700</td><td class="num">3.20</td><td class="num">2,717.00</td><td><span class="badge ok dot">Saleable</span></td><td><span class="row-actions"><button class="btn xs">Ledger</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Flagyl 400mg</b><span class="sub">FLA400 · Sanofi</span></td><td class="mono">FG220</td><td><span class="exp d90">30 Nov 26</span></td><td>Shop floor</td><td class="num">300</td><td class="num muted">0</td><td class="num">0 <span class="sub text-warn">quarantined</span></td><td class="num">6.8000</td><td class="num">9.00</td><td class="num">2,040.00</td><td><span class="badge warn dot">Quarantined</span></td><td><span class="row-actions"><button class="btn xs">Release</button><button class="btn xs ghost">Write off</button></span></td></tr>
+          <tr><td><input type="checkbox"></td><td><b>Augmentin 625mg</b> <span class="badge warn" style="height:15px;font-size:9.5px">low</span><span class="sub">AUG625 · GSK</span></td><td class="mono">AX2240</td><td><span class="exp ok">31 Mar 27</span></td><td>Shop floor</td><td class="num">18 <span class="sub">3 strips</span></td><td class="num muted">0</td><td class="num">18</td><td class="num">41.2000</td><td class="num">58.00</td><td class="num">741.60</td><td><span class="badge ok dot">Saleable</span></td><td><span class="row-actions"><button class="btn xs">Reorder</button></span></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="5">Filtered total</td><td class="num">3,470</td><td class="num">0</td><td class="num">2,950</td><td></td><td></td><td class="num">42,538.60</td><td colspan="2"></td></tr></tfoot>
+      </table>
+    </div>
+    <div class="table-foot"><span>0 selected</span><button class="btn xs" disabled>Write off selected</button><button class="btn xs" disabled>Quarantine</button><span class="pages"><button>‹</button><button class="on">1</button><button>2</button><button>›</button></span></div>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="adj"><div class="modal wide">
+  <div class="modal-head"><h2>Stock adjustment</h2><span class="badge">Draft</span><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid mb-12">
+      <div class="field col-3"><label>Warehouse</label><select class="select"><option>Shop floor</option><option>Store room</option></select></div>
+      <div class="field col-3"><label>Reason</label><select class="select"><option>Expiry</option><option>Damage</option><option>Theft</option><option>Count correction</option><option>Other</option></select></div>
+      <div class="field col-3"><label>Business date</label><input class="input" value="08 Oct 2026"></div>
+      <div class="field col-3"><label>Attachment</label><button class="btn w-100">Upload photo…</button></div>
+    </div>
+    <table class="tbl dense">
+      <thead><tr><th>Product</th><th>Batch</th><th>Dir</th><th class="right">Qty</th><th>Unit</th><th class="right">Base</th><th class="right">Cost</th><th class="right">Value</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Augmentin 625mg</td><td class="mono">AX2231 <span class="exp expired">09/26</span></td><td><span class="badge danger">OUT</span></td><td><input class="input" value="30" style="width:60px;text-align:right"></td><td><select class="select"><option>strip</option><option>tablet</option></select></td><td class="num">180</td><td class="num">41.20</td><td class="num">7,416.00</td><td><button class="iconbtn" style="width:22px;height:22px">✕</button></td></tr>
+        <tr><td>Cefspan 400mg</td><td class="mono">CF9012 <span class="exp expired">09/26</span></td><td><span class="badge danger">OUT</span></td><td><input class="input" value="40" style="width:60px;text-align:right"></td><td><select class="select"><option>capsule</option></select></td><td class="num">40</td><td class="num">42.10</td><td class="num">1,684.00</td><td><button class="iconbtn" style="width:22px;height:22px">✕</button></td></tr>
+        <tr class="draft-row"><td colspan="9"><input class="input" placeholder="+ Type product or scan to add a line…" style="border:0;background:transparent"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="7">Total value</td><td class="num">9,100.00</td><td></td></tr></tfoot>
+    </table>
+    <div class="note warn mt-12" style="font-size:11.5px">PKR 9,100 is above your approval threshold (PKR 5,000). Submitting routes this to Branch Manager for approval. Posting will write <span class="mono">Dr Damaged &amp; Expired Stock Loss / Cr Inventory</span>.</div>
+    <div class="field mt-12"><label>Notes</label><input class="input" placeholder="Why and what was done with the stock…"></div>
+  </div>
+  <div class="modal-foot"><button class="btn ghost" data-close>Save draft</button><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('ADJ26-000032 submitted for approval','warn')">Submit for approval</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Sign in</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  body { display: grid; grid-template-columns: 1.1fr 1fr; min-height: 100vh; background: #fff; }
+  .hero { background: radial-gradient(1200px 600px at -10% -10%, #19c3b2 0%, transparent 55%), radial-gradient(900px 500px at 110% 110%, #5b5fe8 0%, transparent 55%), var(--ink); color: #c7cfdd; padding: 36px; display: flex; flex-direction: column; }
+  .hero .brand .name { font-size: 16px; }
+  .hero .pitch { margin-top: auto; max-width: 440px; }
+  .hero h2 { color: #fff; font-size: 26px; line-height: 1.2; letter-spacing: -.02em; }
+  .hero p { margin-top: 10px; font-size: 13px; color: #9aa6bd; }
+  .ticker { margin-top: 26px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .ticker div { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 8px 10px; }
+  .ticker b { color: #fff; font-size: 15px; display: block; font-variant-numeric: tabular-nums; }
+  .ticker span { font-size: 10.5px; color: #8b96ad; text-transform: uppercase; letter-spacing: .06em; }
+  .panel { display: grid; place-items: center; padding: 24px; }
+  .form { width: 340px; }
+  .form h1 { font-size: 20px; }
+  .form .sub { color: var(--muted); margin: 4px 0 18px; font-size: 12.5px; }
+  .form .field { margin-bottom: 12px; }
+  .pw { position: relative; } .pw .btn { position: absolute; right: 3px; top: 3px; }
+  .foot { margin-top: 18px; font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; }
+</style></head>
+<body>
+  <section class="hero">
+    <div class="brand"><div class="mark"></div><div class="name" style="color:#fff">PharmaPro</div></div>
+    <div class="pitch">
+      <h2>Batch-exact stock. Balanced books. A POS that keeps up with the counter.</h2>
+      <p>One engine for pharmacies, distributors and warehouses. Every tablet tracked to its batch, every rupee to its journal.</p>
+      <div class="ticker">
+        <div><b>1,284</b><span>sales today</span></div>
+        <div><b>0</b><span>unbalanced journals</span></div>
+        <div><b>7</b><span>batches expiring ≤30d</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <form class="form" onsubmit="event.preventDefault(); location.href='dashboard.html'">
+      <h1>Sign in</h1>
+      <div class="sub">Demo Pharmacy · Main Branch</div>
+      <div class="field"><label>Email <span class="req">*</span></label><input class="input" type="email" value="owner@demopharmacy.pk" required></div>
+      <div class="field"><label>Password <span class="req">*</span></label><div class="pw"><input class="input" type="password" value="••••••••••" required><button type="button" class="btn xs ghost">Show</button></div></div>
+      <div class="flex between mb-12"><label class="check"><input type="checkbox" checked> Keep me signed in on this device</label><a href="forgot-password.html">Forgot password?</a></div>
+      <button class="btn primary lg block" type="submit">Sign in <kbd>↵</kbd></button>
+      <div class="note info mt-16">Sessions expire after 12 hours. First login after invite → <a href="password-change.html">forced password change</a>. Accept invite demo: <a href="invite-accept.html">invite-accept.html</a>.</div>
+      <div class="foot"><span>v0.1 · staging</span><a href="platform-login.html">Platform admin →</a></div>
+    </form>
+  </section>
+</body></html>

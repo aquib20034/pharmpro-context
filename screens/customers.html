@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Customers</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="customers" data-crumbs="Customers">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Customers <span class="badge">186</span></h1><div class="sub">Named AR counterparties. Walk-in is seeded once per tenant and cannot be edited. Balance is the AR sub-ledger, not a stored field.</div></div>
+    <div class="actions">
+      <button class="btn">Import CSV</button>
+      <a class="btn primary" href="customer-new.html">+ New customer <kbd>Alt N</kbd></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tabs" data-tabs="cu">
+      <button class="on" data-tab="all">All <span class="count">186</span></button>
+      <button data-tab="credit">On credit <span class="count">41</span></button>
+      <button data-tab="over">Overdue <span class="count">6</span></button>
+      <button data-tab="inst">Institutional <span class="count">9</span></button>
+    </div>
+    <div class="filters" style="border-radius:0">
+      <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Name, phone, code…" style="width:240px"></div>
+      <select class="select"><option>Type: All</option><option>Retail</option><option>Wholesale</option><option>Institutional</option><option>Walk-in</option></select>
+      <span class="filter-chip on"><b>Status:</b> Active <span class="x">✕</span></span>
+      <span class="spacer"></span>
+      <span class="muted" style="font-size:11.5px">AR total 412,860 · matches 1100</span>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th class="sort asc">Customer</th><th>Type</th><th>Phone</th><th class="right">Limit</th><th class="right">Balance</th><th>Terms</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <tr style="opacity:.7"><td><b>Walk-in customer</b><span class="sub">CUS-00001 · system · cash only</span></td><td><span class="badge">Walk-in</span></td><td class="muted">—</td><td class="num muted">no credit</td><td class="num">0.00</td><td class="muted">—</td><td><span class="badge">System</span></td><td><span class="muted" style="font-size:11px">locked</span></td></tr>
+          <tr><td><a href="customer.html"><b>Ahmed Raza</b></a><span class="sub">CUS-00041 · Gulshan Block 4</span></td><td><span class="badge indigo">Retail</span></td><td class="mono">0300-1234567</td><td class="num">20,000</td><td class="num">19,200.00</td><td>15d</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><a class="btn xs" href="customer.html">Open</a><a class="btn xs ghost" href="pos.html">Sale</a></span></td></tr>
+          <tr><td><b>City Clinic</b><span class="sub">CUS-00012 · 30 days</span></td><td><span class="badge accent">Institutional</span></td><td class="mono">021-3456789</td><td class="num">250,000</td><td class="num">186,400.00</td><td>30d</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Open</button><a class="btn xs ghost" href="pos.html">Sale</a></span></td></tr>
+          <tr><td><b>Gulberg Lab</b><span class="sub">CUS-00028</span></td><td><span class="badge">Wholesale</span></td><td class="mono">042-3571001</td><td class="num">100,000</td><td class="num">82,060.00</td><td>15d</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Open</button></span></td></tr>
+          <tr><td><b>Central Hospital</b><span class="sub">CUS-00007</span></td><td><span class="badge accent">Institutional</span></td><td class="mono">021-111-000222</td><td class="num">400,000</td><td class="num">125,200.00</td><td>30d</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Open</button></span></td></tr>
+          <tr><td><b>Sadia Medical Store</b><span class="sub">CUS-00055 · wholesale price type</span></td><td><span class="badge">Wholesale</span></td><td class="mono">0321-9876543</td><td class="num">100,000</td><td class="num">0.00</td><td>7d</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Open</button><a class="btn xs ghost" href="pos.html">Sale</a></span></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="4">Page AR</td><td class="num">412,860.00</td><td colspan="3"></td></tr></tfoot>
+      </table>
+    </div>
+    <div class="table-foot"><span>Walk-in cannot buy on credit (FR-CUS-03). POS quick-add uses <span class="mono">customers.create</span> — name and phone only, no limit.</span></div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

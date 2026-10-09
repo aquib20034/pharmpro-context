@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Platform · Demo Pharmacy</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .use-row { display: grid; grid-template-columns: 90px 1fr 40px; gap: 8px; align-items: center; font-size: 12.5px; margin-bottom: 8px; }
+  .meter { font-family: var(--mono); font-size: 11.5px; color: var(--muted); text-align: right; }
+</style></head>
+<body data-shell="platform" data-page="tenants" data-crumbs="Tenants / Demo Pharmacy">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Demo Pharmacy <span class="badge warn dot">Due in 12d</span> <span class="badge indigo">Pharmacy</span></h1><div class="sub">TEN-004 · created 12 Jun 2026 · PKR · Asia/Karachi · FY July. Owner sees the same countdown in Settings → Subscription.</div></div>
+    <div class="actions">
+      <a class="btn" href="platform-tenants.html">All tenants</a>
+      <button class="btn" data-open="paid">Mark paid</button>
+      <button class="btn" data-open="extend">Extend 30 days</button>
+      <button class="btn" data-open="readonly">Read-only</button>
+      <button class="btn danger" data-open="suspend">Suspend</button>
+    </div>
+  </div>
+
+  <div class="grid cols-4 mb-12">
+    <div class="card kpi warn"><div class="lbl">Period ends</div><div class="val" style="font-size:16px">20 Oct 2026</div><span class="delta text-warn">12 days left · grace starts 21 Oct</span></div>
+    <div class="card kpi"><div class="lbl">Plan</div><div class="val" style="font-size:16px">Professional</div><span class="muted" style="font-size:11px">PKR 24,000 / month · collected outside app</span></div>
+    <div class="card kpi"><div class="lbl">Users</div><div class="val">6 <small>/ 10</small></div><div class="progress mt-8"><i style="width:60%"></i></div></div>
+    <div class="card kpi"><div class="lbl">Branches</div><div class="val">2 <small>/ 3</small></div><div class="progress mt-8"><i style="width:66%"></i></div></div>
+  </div>
+
+  <div class="card mb-12">
+    <div class="tabs" data-tabs="td">
+      <button class="on" data-tab="ov">Overview</button>
+      <button data-tab="sub">Subscription</button>
+      <button data-tab="org">Seeded org</button>
+      <button data-tab="log">Audit</button>
+    </div>
+    <div class="tab-panel on" data-tab-group="td" data-tab="ov">
+      <div class="card-body">
+        <div class="split" style="grid-template-columns: 1fr 1fr">
+          <div>
+            <div class="section-title">Identity</div>
+            <dl class="kv">
+              <dt>Legal name</dt><dd>Demo Pharmacy (Pvt) Ltd</dd>
+              <dt>NTN</dt><dd class="mono">1234567-8</dd>
+              <dt>Phone</dt><dd>042-111-234567</dd>
+              <dt>Email</dt><dd>info@demopharmacy.pk</dd>
+              <dt>Address</dt><dd>Main Boulevard, Gulberg, Lahore</dd>
+            </dl>
+          </div>
+          <div>
+            <div class="section-title">Owner</div>
+            <dl class="kv">
+              <dt>Name</dt><dd>Aquib Khan</dd>
+              <dt>Email</dt><dd>owner@demopharmacy.pk</dd>
+              <dt>Last login</dt><dd>today 14:02 from Main</dd>
+              <dt>Invite</dt><dd><span class="badge ok">Accepted 12 Jun</span></dd>
+            </dl>
+            <div class="note info mt-12" style="font-size:11.5px">No impersonation in MVP. Support looks at this panel only — stock and journals stay in the tenant app.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" data-tab-group="td" data-tab="sub">
+      <div class="card-body">
+        <div class="split">
+          <div>
+            <div class="section-title">Lifecycle</div>
+            <ul class="timeline">
+              <li class="ok"><div>Created · Professional · Active to 12 Jul 2026<div class="t">12 Jun · ops@pharmapro.pk</div></div></li>
+              <li class="ok"><div>Renewed · paid JazzCash PKR 24,000 · to 12 Aug<div class="t">11 Jul</div></div></li>
+              <li class="ok"><div>Renewed · to 20 Oct 2026<div class="t">12 Sep</div></div></li>
+              <li class="warn"><div>Due-soon banner shown to Owner / Admin (14-day, then 3-day)<div class="t">06 Oct 06:00 · job</div></div></li>
+              <li><div class="muted">If unpaid: grace 21–27 Oct → read-only 28 Oct → you may Suspend</div></li>
+            </ul>
+          </div>
+          <div>
+            <div class="section-title">What the Owner sees</div>
+            <div class="note warn" style="font-size:11.5px"><b>Professional plan ends 20 Oct 2026.</b> Contact support to renew. POS still works until grace ends.</div>
+            <div class="section-title mt-12">Caps</div>
+            <div class="use-row"><span>Users</span><div class="progress"><i style="width:60%"></i></div><span class="meter">6/10</span></div>
+            <div class="use-row"><span>Branches</span><div class="progress"><i style="width:66%"></i></div><span class="meter">2/3</span></div>
+            <div class="help muted" style="font-size:11.5px">Creating a 4th branch is blocked with <span class="mono">PLAN_LIMIT_EXCEEDED</span> unless you raise the cap.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" data-tab-group="td" data-tab="org">
+      <div class="card-body">
+        <div class="note info mb-12" style="font-size:11.5px">Seeded at create: branch, warehouse, CoA, roles — <b>not</b> shelf stock. Extra shops are owned by the tenant (<a href="settings-branches.html">Settings → Branches</a>). Opening stock is Owner-side via <a href="settings-imports.html">Settings → Imports</a>. Read-only here.</div>
+        <table class="tbl dense">
+          <thead><tr><th>Branch</th><th>Warehouses</th><th>Locations</th><th>Users assigned</th></tr></thead>
+          <tbody>
+            <tr><td><b>Main</b> <span class="badge">default</span><div class="sub">Main Boulevard, Gulberg</div></td><td>Shop floor · Store room</td><td>R2-S1 (optional bins)</td><td>6</td></tr>
+            <tr><td><b>Gulberg 2</b><div class="sub">added by Owner 02 Sep</div></td><td>Shop floor</td><td>—</td><td>2</td></tr>
+          </tbody>
+        </table>
+        <div class="note warn mt-12" style="font-size:11.5px"><b>Go-live stock:</b> Owner imports Products → Opening stock CSV. Posts <span class="mono">OPENING</span> movements and Dr 1200 / Cr 3900. Platform ops never enter qty here.</div>
+      </div>
+    </div>
+    <div class="tab-panel" data-tab-group="td" data-tab="log">
+      <div class="card-body">
+        <ul class="timeline">
+          <li class="warn"><div>Due-soon email sent to owner@demopharmacy.pk<div class="t">06 Oct 06:00</div></div></li>
+          <li><div>Plan unchanged · Professional<div class="t">12 Sep · ops</div></div></li>
+          <li class="ok"><div>Owner accepted invite<div class="t">12 Jun</div></div></li>
+          <li class="ok"><div>Tenant created TEN-004<div class="t">12 Jun · ops@pharmapro.pk</div></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="paid"><div class="modal narrow">
+  <div class="modal-head"><h2>Mark paid?</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body"><p style="font-size:12.5px">Sets status Active and period end to 20 Nov 2026. Owner banner clears.</p>
+    <div class="field mt-12"><label>Payment ref (internal)</label><input class="input" placeholder="JazzCash / bank slip #"></div></div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Demo Pharmacy marked paid · Active to 20 Nov','ok')">Confirm</button></div></div>
+</div></div>
+<div class="overlay" id="extend"><div class="modal narrow">
+  <div class="modal-head"><h2>Extend 30 days</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body"><p style="font-size:12.5px">20 Oct → 19 Nov 2026. Use when they paid late or you granted goodwill.</p></div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Extended to 19 Nov 2026','ok')">Extend</button></div></div>
+</div></div>
+<div class="overlay" id="readonly"><div class="modal narrow">
+  <div class="modal-head"><h2>Force read-only?</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body"><div class="note danger" style="font-size:11.5px">Login still works. Sales, purchases, payments, returns and adjustments cannot post. Reports and reprints remain.</div></div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn danger" data-close onclick="toast('Demo Pharmacy is read-only · SUBSCRIPTION_EXPIRED on post','warn')">Set read-only</button></div></div>
+</div></div>
+<div class="overlay" id="suspend"><div class="modal narrow">
+  <div class="modal-head"><h2>Suspend tenant?</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body"><p style="font-size:12.5px">Users cannot log in. Data is kept. Resume restores access. This is the MVP “cancel subscription”.</p>
+    <div class="field mt-12"><label>Reason <span class="req">*</span></label><select class="select"><option>Non-payment</option><option>Contract ended</option><option>Abuse</option><option>Requested by owner</option></select></div></div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn danger" data-close onclick="toast('Demo Pharmacy suspended','danger')">Suspend</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

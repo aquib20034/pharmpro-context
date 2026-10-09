@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Platform · Health</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .okdot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); display: inline-block; }
+  .warndot { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); display: inline-block; }
+</style></head>
+<body data-shell="platform" data-page="health" data-crumbs="Health">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Health</h1><div class="sub"><span class="mono">GET /api/v1/platform/health</span> · platform admin only. Tenant isolation and backups are ops concerns, not pharmacy screens.</div></div>
+    <div class="actions"><span class="badge ok dot">All green</span></div>
+  </div>
+  <div class="grid cols-4 mb-12">
+    <div class="card kpi"><div class="lbl"><span class="okdot"></span> API</div><div class="val" style="font-size:16px">Up</div><span class="muted" style="font-size:11px">p95 82 ms</span></div>
+    <div class="card kpi"><div class="lbl"><span class="okdot"></span> MySQL</div><div class="val" style="font-size:16px">Up</div><span class="muted" style="font-size:11px">connections 24 / 150</span></div>
+    <div class="card kpi"><div class="lbl"><span class="okdot"></span> Redis</div><div class="val" style="font-size:16px">Up</div><span class="muted" style="font-size:11px">queue wait 0.2 s</span></div>
+    <div class="card kpi"><div class="lbl"><span class="okdot"></span> Last backup</div><div class="val" style="font-size:16px">03:12</div><span class="muted" style="font-size:11px">1.8 GB · restore tested 01 Oct</span></div>
+  </div>
+  <div class="split">
+    <div class="card">
+      <div class="card-head"><h2>Queue depth</h2></div>
+      <div class="table-wrap">
+        <table class="tbl dense"><thead><tr><th>Queue</th><th class="right">Waiting</th><th class="right">Failed</th></tr></thead>
+          <tbody>
+            <tr><td>default</td><td class="num">2</td><td class="num">0</td></tr>
+            <tr><td>mail</td><td class="num">0</td><td class="num">0</td></tr>
+            <tr><td>imports</td><td class="num">1</td><td class="num">0</td></tr>
+            <tr><td>reports</td><td class="num">0</td><td class="num">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card card-body">
+      <div class="section-title">Runbooks</div>
+      <ul class="timeline">
+        <li class="ok"><div>Onboard a tenant — <a href="platform-tenant-new.html">create form</a></div></li>
+        <li class="warn"><div>Suspend a tenant — tenant detail → Suspend</div></li>
+        <li><div>Restore from backup — ops doc, not in-app</div></li>
+      </ul>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

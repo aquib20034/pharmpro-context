@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Payables</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Purchases / Payables">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="pay"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Open payables</h1><div class="sub">Posted credit purchases minus payments and purchase-return AP credits · invoice-level, not just supplier totals</div></div>
+        <div class="actions"><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="card">
+        <div class="filters"><select class="select"><option>Supplier: All</option><option>Muller &amp; Phipps</option><option>Getz Distribution</option></select><select class="select"><option>Status: Open</option><option>Overdue</option><option>Paid</option></select><span class="spacer"></span><button class="btn sm primary">Run</button></div>
+        <table class="tbl dense">
+          <thead><tr><th>Invoice</th><th>Supplier</th><th>Date</th><th>Due</th><th class="right">Total</th><th class="right">Paid</th><th class="right">Returned</th><th class="right">Balance</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono"><a href="purchase-entry.html">PUR26-000301</a></td><td><a href="supplier.html">Muller &amp; Phipps</a></td><td>08 Oct</td><td>07 Nov</td><td class="num">43,638.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">43,638.00</td><td><span class="badge warn dot">Unpaid</span></td></tr>
+            <tr><td class="mono"><a href="purchase-entry.html">PUR26-000288</a></td><td><a href="supplier.html">Muller &amp; Phipps</a></td><td>01 Oct</td><td>31 Oct</td><td class="num">86,400.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">86,400.00</td><td><span class="badge warn dot">Unpaid</span></td></tr>
+            <tr><td class="mono"><a href="purchase-entry.html">PUR26-000240</a></td><td><a href="supplier.html">Muller &amp; Phipps</a></td><td>02 Sep</td><td>02 Oct</td><td class="num">128,400.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num text-danger">128,400.00</td><td><span class="badge danger dot">Overdue 6d</span></td></tr>
+            <tr><td class="mono">PUR26-000310</td><td>Abbott / M&amp;P</td><td>28 Sep</td><td>28 Oct</td><td class="num">429,862.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">429,862.00</td><td><span class="badge warn dot">Unpaid</span></td></tr>
+            <tr><td class="mono">PUR26-000228</td><td>Abbott / M&amp;P</td><td>20 Aug</td><td>19 Sep</td><td class="num">31,200.00</td><td class="num">31,200.00</td><td class="num">4,800.00</td><td class="num">0.00</td><td><span class="badge ok dot">Paid</span> <span class="badge warn">part returned</span></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="7">Open balance</td><td class="num">688,300.00</td><td></td></tr></tfoot>
+        </table>
+        <div class="table-foot"><span>Equals AP aging and 2100 on the trial balance. Open <a href="supplier.html">Muller</a> for statement + pay with allocation (PUR-04).</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

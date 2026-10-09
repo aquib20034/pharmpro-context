@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Suppliers</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="suppliers" data-crumbs="Suppliers">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Suppliers <span class="badge">24</span></h1><div class="sub">AP counterparties. Manufacturer ≠ supplier. Balance = opening + credit purchases − payments − return credits.</div></div>
+    <div class="actions">
+      <button class="btn">Import CSV</button>
+      <a class="btn primary" href="supplier-new.html">+ New supplier <kbd>Alt N</kbd></a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tabs" data-tabs="su">
+      <button class="on" data-tab="all">All <span class="count">24</span></button>
+      <button data-tab="open">Open AP <span class="count">2</span></button>
+      <button data-tab="over">Overdue <span class="count">1</span></button>
+    </div>
+    <div class="filters" style="border-radius:0">
+      <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Name, NTN, code…" style="width:240px"></div>
+      <span class="spacer"></span>
+      <span class="muted" style="font-size:11.5px">AP total 688,300 · matches 2100</span>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th class="sort asc">Supplier</th><th>Contact</th><th>Phone</th><th>Terms</th><th class="right">Our credit limit</th><th class="right">Balance</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><a href="supplier.html"><b>Muller &amp; Phipps</b></a><span class="sub">SUP-00003 · GSK / Abbott line</span></td><td>Imran Qureshi</td><td class="mono">021-111-786000</td><td>30d</td><td class="num">500,000</td><td class="num">258,438.00</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><a class="btn xs" href="supplier.html">Open</a><a class="btn xs ghost" href="purchase-entry.html">Buy</a></span></td></tr>
+          <tr><td><b>Abbott / M&amp;P</b><span class="sub">SUP-00004</span></td><td>Nadia</td><td class="mono">021-111-000111</td><td>30d</td><td class="num">800,000</td><td class="num">429,862.00</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><a class="btn xs" href="report-payables.html">Invoices</a><a class="btn xs ghost" href="purchase-entry.html">Buy</a></span></td></tr>
+          <tr><td><b>Getz Distribution</b><span class="sub">SUP-00002</span></td><td>Kamran</td><td class="mono">021-36600000</td><td>15d</td><td class="num">300,000</td><td class="num">0.00</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><a class="btn xs ghost" href="purchase-entry.html">Buy</a></span></td></tr>
+          <tr><td><b>Barrett Hodgson</b><span class="sub">SUP-00011</span></td><td>—</td><td class="mono">021-32561000</td><td>30d</td><td class="num muted">unlimited</td><td class="num">0.00</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><a class="btn xs ghost" href="purchase-entry.html">Buy</a></span></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="5">Page AP</td><td class="num">688,300.00</td><td colspan="2"></td></tr></tfoot>
+      </table>
+    </div>
+    <div class="table-foot"><span>Nullable credit limit = unlimited (FR-SUP-01). Exceeding their limit on a purchase is a warning + override, not a hard block like customer AR.</span></div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

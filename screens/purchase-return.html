@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Purchase return</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .doc-head { display: grid; grid-template-columns: 1fr 320px; gap: 12px; align-items: start; }
+  .lines .tbl td { height: 34px; }
+  .lines .ret-in { width: 64px; text-align: right; font-family: var(--mono); }
+  .lines tr.off td { color: var(--muted); } .lines tr.off .ret-in { background: var(--surface-2); }
+  .lines tr.on td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  .lines tr.blocked td { background: #fbfbfd; }
+  .avail { display: inline-flex; align-items: center; gap: 5px; }
+  .avail .progress { width: 48px; }
+  .var { font-size: 10.5px; }
+  .doc-totals { display: grid; grid-template-columns: 1fr auto; gap: 3px 16px; font-size: 12.5px; text-align: right; }
+  .doc-totals .l { color: var(--muted); text-align: left; }
+  .doc-totals .grand { grid-column: 1 / -1; display: flex; justify-content: space-between; border-top: 1px solid var(--line-strong); margin-top: 4px; padding-top: 6px; font-size: 17px; font-weight: 700; }
+  .posting { font-family: var(--mono); font-size: 11px; background: var(--surface-2); border-radius: 6px; padding: 8px; line-height: 1.6; }
+  .posting b { color: var(--accent-ink); font-weight: 600; }
+  .settle { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .settle label { border: 1px solid var(--line-strong); border-radius: 7px; padding: 8px 10px; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+  .settle label.on { border-color: var(--accent); background: var(--accent-soft); }
+  .settle small { color: var(--muted); font-size: 10.5px; }
+  .src-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .src { border: 1px solid var(--line-strong); border-radius: 6px; padding: 5px 10px; font-size: 12px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; white-space: nowrap; }
+  .src.on { border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+  .src .badge { height: 15px; font-size: 9.5px; }
+</style></head>
+<body data-page="purchases" data-crumbs="Purchases / Returns / New purchase return">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Purchase return <span class="badge">DRAFT-1192</span> <span class="badge accent">Supplier · Muller &amp; Phipps</span></h1><div class="sub">Return quantity is capped by what was received on the original line <i>and</i> by what is still on hand in that batch. Stock leaves at the batch's current cost; any difference from the original price posts to Purchase Return Variance.</div></div>
+    <div class="actions">
+      <div class="steps"><span class="step done"><i>✓</i>Supplier &amp; source</span><span class="line"></span><span class="step on"><i>2</i>Lines</span><span class="line"></span><span class="step"><i>3</i>Settle &amp; post</span></div>
+      <a class="btn" href="purchases.html">Purchases list</a>
+      <button class="btn">Print return note</button>
+    </div>
+  </div>
+
+  <div class="doc-head mb-12">
+    <div class="card card-body">
+      <div class="form-grid mb-12">
+        <div class="field col-4"><label>Supplier <span class="req">*</span></label><select class="select"><option>Muller &amp; Phipps Pakistan</option><option>Getz Distribution</option></select><div class="help">Balance <b>PKR 171,838</b> · 3 open invoices · terms 30 days</div></div>
+        <div class="field col-2"><label>Business date</label><input class="input" value="08 Oct 2026"></div>
+        <div class="field col-3"><label>From warehouse</label><select class="select"><option>Main · Shop floor</option><option>Main · Store room</option></select></div>
+        <div class="field col-3"><label>Supplier return ref</label><input class="input mono" placeholder="Supplier's CN / GRN #"></div>
+      </div>
+      <div class="section-title">Pick source lines from</div>
+      <div class="src-tabs">
+        <span class="src on">Purchase PUR26-000288 <span class="badge">01 Oct · 86,400</span></span>
+        <span class="src">PUR26-000261 <span class="badge">18 Sep</span></span>
+        <span class="src">PUR26-000240 <span class="badge">02 Sep</span></span>
+        <span class="src">Expiring / expired from this supplier <span class="badge danger">5 batches</span></span>
+        <span class="src">Any batch supplied by them</span>
+      </div>
+    </div>
+    <div class="card card-body">
+      <div class="section-title">Supplier return terms</div>
+      <dl class="kv">
+        <dt>Expiry returns</dt><dd>Accepted up to 3 months before expiry · 90% credit</dd>
+        <dt>Damaged</dt><dd>Within 7 days of receipt, with photos</dd>
+        <dt>Credit note</dt><dd>Issued against next invoice (AP credit)</dd>
+        <dt>Pickup</dt><dd>Tuesdays · rep: Imran 0333-5551212</dd>
+      </dl>
+      <div class="note info mt-8" style="font-size:11px">Terms are stored on the supplier record and shown here as guidance only.</div>
+    </div>
+  </div>
+
+  <div class="card lines">
+    <div class="card-head"><h2>Returnable lines · PUR26-000288</h2><span class="muted" style="font-size:11.5px">Received − already returned − sold since = returnable. Lines with nothing left on hand are shown but locked.</span><div class="actions"><button class="btn sm ghost" type="button" id="prExpiring">Add expiring from this supplier</button><button class="btn sm ghost" type="button" id="prClear">Clear</button></div></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th style="width:28px"></th><th style="min-width:220px">Product · batch</th><th class="right">Received</th><th class="right">Returned</th><th class="right">On hand</th><th class="right">Return qty</th><th>Unit</th><th class="right">Orig. price</th><th class="right">Batch cost now</th><th>Reason</th><th class="right">Credit</th></tr></thead>
+        <tbody id="prBody">
+          <tr class="on" data-recv="24" data-already="0" data-onhand="12" data-orig-base="128" data-cost-now="128" data-tax="0">
+            <td><input type="checkbox" checked></td>
+            <td><b>Brufen Syrup 100ml</b><div class="muted" style="font-size:11px">batch <span class="mono">77Q1</span> · <span class="exp d30">14 Oct 26</span> · expires in 6 days</div></td>
+            <td class="num">24 btl</td><td class="num">0</td>
+            <td class="right"><span class="avail"><span class="num">12</span><div class="progress warn"><i style="width:50%"></i></div></span></td>
+            <td><input class="input ret-in" value="12"></td>
+            <td><select class="select unit" style="width:76px"><option value="1" selected>bottle</option></select></td>
+            <td class="num js-orig">128.00</td>
+            <td class="num">128.0000 <span class="var muted">= orig</span></td>
+            <td><select class="select" style="width:120px"><option>Near expiry</option><option>Expired</option><option>Damaged</option><option>Wrong item</option><option>Overstock</option></select></td>
+            <td class="num js-cred"><b>1,536.00</b></td>
+          </tr>
+          <tr class="on" data-recv="700" data-already="0" data-onhand="420" data-orig-base="14.25" data-cost-now="14.20" data-tax="0">
+            <td><input type="checkbox" checked></td>
+            <td><b>Risek 20mg</b><div class="muted" style="font-size:11px">batch <span class="mono">RK0091</span> · <span class="exp d30">28 Oct 26</span> · re-received since → cost drifted</div></td>
+            <td class="num">50 strip</td><td class="num">0</td>
+            <td class="right"><span class="avail"><span class="num">30 strip</span><div class="progress warn"><i style="width:60%"></i></div></span></td>
+            <td><input class="input ret-in" value="20"></td>
+            <td><select class="select unit" style="width:76px"><option value="14" selected>strip</option><option value="1">capsule</option></select></td>
+            <td class="num js-orig">199.50 <span class="var muted">/14 = 14.25</span></td>
+            <td class="num">14.2000 <span class="var text-warn">Δ −0.05</span></td>
+            <td><select class="select" style="width:120px"><option>Near expiry</option><option>Expired</option><option>Damaged</option><option>Wrong item</option><option>Overstock</option></select></td>
+            <td class="num js-cred"><b>3,990.00</b></td>
+          </tr>
+          <tr class="on" data-recv="240" data-already="0" data-onhand="180" data-orig-base="41.20" data-cost-now="41.20" data-tax="0">
+            <td><input type="checkbox" checked></td>
+            <td><b>Augmentin 625mg</b><div class="muted" style="font-size:11px">batch <span class="mono">AX2231</span> · <span class="exp expired">30 Sep 26</span> · <span class="badge danger" style="height:14px;font-size:9.5px">expired · blocked for sale</span></div></td>
+            <td class="num">40 strip</td><td class="num">0</td>
+            <td class="right"><span class="avail"><span class="num">30 strip</span><div class="progress danger"><i style="width:75%"></i></div></span></td>
+            <td><input class="input ret-in" value="30"></td>
+            <td><select class="select unit" style="width:76px"><option value="6" selected>strip</option><option value="1">tablet</option></select></td>
+            <td class="num js-orig">247.20</td>
+            <td class="num">41.2000 <span class="var muted">= orig</span></td>
+            <td><select class="select" style="width:120px"><option>Expired</option><option>Near expiry</option><option>Damaged</option></select></td>
+            <td class="num js-cred"><b>7,416.00</b></td>
+          </tr>
+          <tr class="off" data-recv="1000" data-already="0" data-onhand="1100" data-orig-base="2.47" data-cost-now="2.47" data-tax="0">
+            <td><input type="checkbox"></td>
+            <td><b>Panadol 500mg</b><div class="muted" style="font-size:11px">batch <span class="mono">P5A</span> · <span class="exp d90">31 Dec 26</span></div></td>
+            <td class="num">10 box</td><td class="num">0</td>
+            <td class="right"><span class="avail"><span class="num">11 box</span><div class="progress"><i style="width:100%"></i></div></span></td>
+            <td><input class="input ret-in" value="0"></td>
+            <td><select class="select unit" style="width:76px"><option value="100">box</option><option value="10" selected>strip</option></select></td>
+            <td class="num js-orig">24.70</td>
+            <td class="num">2.4700</td>
+            <td><select class="select" style="width:120px"><option>Overstock</option></select></td>
+            <td class="num js-cred">0.00</td>
+          </tr>
+          <tr class="off blocked" data-locked="1">
+            <td><input type="checkbox" disabled></td>
+            <td><b>Ventolin Inhaler</b><div class="muted" style="font-size:11px">batch <span class="mono">VN88</span> · <span class="exp ok">Jun 27</span> · <span class="badge" style="height:14px;font-size:9.5px">0 on hand in this warehouse</span></div></td>
+            <td class="num">24 pc</td><td class="num">0</td>
+            <td class="right"><span class="avail"><span class="num">0</span><div class="progress"><i style="width:0"></i></div></span></td>
+            <td><input class="input ret-in" value="0" disabled></td>
+            <td><select class="select unit" style="width:76px" disabled><option value="1">piece</option></select></td>
+            <td class="num">312.00</td>
+            <td class="num">312.0000</td>
+            <td><span class="muted">—</span></td>
+            <td class="num">0.00</td>
+          </tr>
+          <tr class="off blocked" data-locked="1">
+            <td><input type="checkbox" disabled></td>
+            <td><b>Flagyl 400mg</b><div class="muted" style="font-size:11px">batch <span class="mono">FG220</span> · <span class="exp d90">30 Nov 26</span> · <span class="badge warn" style="height:14px;font-size:9.5px">quarantined — release first</span></div></td>
+            <td class="num">30 strip</td><td class="num">0</td>
+            <td class="right"><span class="avail"><span class="num">30</span><div class="progress warn"><i style="width:100%"></i></div></span></td>
+            <td><input class="input ret-in" value="0" disabled></td>
+            <td><select class="select unit" style="width:76px" disabled><option value="10">strip</option></select></td>
+            <td class="num">68.00</td>
+            <td class="num">6.8000</td>
+            <td><span class="muted">—</span></td>
+            <td class="num">0.00</td>
+          </tr>
+        </tbody>
+        <tfoot><tr><td colspan="10" id="prFootLbl">3 lines · stock leaving</td><td class="num" id="prFootCred">12,942.00</td></tr></tfoot>
+      </table>
+    </div>
+    <div class="note warn" style="margin:8px 12px;font-size:11.5px">Risek <span class="mono">RK0091</span> was re-received at a different price after this invoice, so its batch cost (14.20/cap) no longer equals the original line (14.25/cap). The 20 strips are credited at the original price (3,990.00) and leave inventory at 3,976.00; the 14.00 difference posts to <b>5400 Purchase Return Variance</b>.</div>
+  </div>
+
+  <div class="split mt-12" style="grid-template-columns: 1fr 1fr 360px">
+    <div class="card card-body">
+      <div class="section-title">Settlement</div>
+      <div class="settle" id="settle">
+        <label class="on" data-s="ap"><b>Credit note against AP</b><small id="apHint">Supplier balance 171,838 → 158,896</small></label>
+        <label data-s="cash"><b>Cash refund received</b><small>Rep pays on pickup · choose method</small></label>
+      </div>
+      <div class="form-grid mt-12">
+        <div class="field col-6"><label>Allocate credit to</label><select class="select"><option>Oldest open invoice first (PUR26-000240)</option><option>PUR26-000288 (this purchase)</option><option>Leave unallocated (supplier advance)</option></select></div>
+        <div class="field col-6"><label>Expected supplier CN date</label><input class="input" value="15 Oct 2026"></div>
+        <div class="field col-12"><label>Notes</label><input class="input" value="Pickup Tue 14 Oct · photos of Brufen caps attached"></div>
+        <div class="field col-12"><label>Attachments</label><div class="flex gap-4"><button class="btn sm">📎 brufen-caps-1.jpg</button><button class="btn sm">📎 brufen-caps-2.jpg</button><button class="btn sm ghost">+ Add</button></div></div>
+      </div>
+    </div>
+    <div class="card card-body">
+      <div class="section-title">Accounting preview (generated on post)</div>
+      <div class="posting" id="prPost"></div>
+      <div class="flex gap-4 mt-8 wrap" style="font-size:11.5px" id="prBadges"></div>
+    </div>
+    <div class="card card-body">
+      <div class="doc-totals">
+        <span class="l">Goods at original price</span><span id="tGoods">12,942.00</span>
+        <span class="l">Tax reversed</span><span id="tTax">0.00</span>
+        <span class="l">Inventory relieved @ cost</span><span class="muted" id="tInv">12,928.00</span>
+        <span class="l">Variance</span><span class="text-warn" id="tVar">+14.00</span>
+        <div class="grand"><span>Credit from supplier</span><span id="tGrand">12,942.00</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="flex gap-4">
+        <button class="btn">Save draft</button>
+        <button class="btn ghost danger">Discard</button>
+        <span class="grow"></span>
+        <button class="btn primary lg" data-open="confirm">Post return <kbd>Ctrl ↵</kbd></button>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="confirm"><div class="modal narrow">
+  <div class="modal-head"><h2>Post purchase return?</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <p style="font-size:12.5px" id="confirmCopy">Remove stock and record a supplier credit.</p>
+    <div class="note warn mt-12" style="font-size:11.5px">Stock leaves now. If the supplier later rejects part of the return, receive it back with a new purchase invoice at zero price referencing this return.</div>
+    <label class="check mt-12"><input type="checkbox" checked> Print return note for the rep to sign</label>
+    <label class="check mt-8"><input type="checkbox"> Email / WhatsApp return note to supplier</label>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Back</button><button class="btn primary" data-close onclick="toast('PRT26-000041 posted · AP credit PKR 12,942.00','ok')">Post PRT26-000041</button></div></div>
+</div></div>
+
+<script src="assets/app.js"></script>
+<script>
+const fmt = n => n.toLocaleString('en-PK', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pad = (label, n) => label.padEnd(44, '.') + ' ' + fmt(n);
+function settle() { const on = document.querySelector('#settle label.on'); return on ? on.dataset.s : 'ap'; }
+function recalc(src) {
+  let credit = 0, inv = 0, tax = 0, varAmt = 0, baseOut = 0, lines = 0;
+  document.querySelectorAll('#prBody tr').forEach(tr => {
+    if (tr.dataset.locked) return;
+    const cb = tr.querySelector('input[type=checkbox]');
+    const inp = tr.querySelector('.ret-in');
+    const f = +(tr.querySelector('.unit') && tr.querySelector('.unit').value) || 1;
+    const recvLeft = (+tr.dataset.recv) - (+tr.dataset.already);
+    const onhand = +tr.dataset.onhand;
+    const capBase = Math.min(recvLeft, onhand);
+    const capQty = capBase / f;
+    let qty = cb && cb.checked ? (+inp.value || 0) : 0;
+    if (qty < 0) qty = 0;
+    if (qty > capQty + 1e-9) {
+      qty = Math.floor(capQty * 1000) / 1000;
+      inp.value = qty;
+      if (src === inp) {
+        const code = onhand < recvLeft ? 'INSUFFICIENT_STOCK' : 'RETURN_EXCEEDS_RECEIVED';
+        toast(code + ' · max ' + capQty + ' in this unit', 'danger');
+      }
+    }
+    const origU = (+tr.dataset.origBase) * f;
+    const costNow = +tr.dataset.costNow;
+    const origB = +tr.dataset.origBase;
+    const base = qty * f;
+    const lineCred = qty * origU;
+    const lineInv = base * costNow;
+    const lineVar = base * (costNow - origB);
+    if (tr.querySelector('.js-orig')) tr.querySelector('.js-orig').childNodes[0].textContent = fmt(origU) + ' ';
+    if (!qty) {
+      if (tr.querySelector('.js-cred')) tr.querySelector('.js-cred').textContent = '0.00';
+    } else {
+      tr.querySelector('.js-cred').innerHTML = '<b>' + fmt(lineCred) + '</b>';
+      lines++; credit += lineCred; inv += lineInv; varAmt += lineVar; tax += lineCred * (+tr.dataset.tax || 0); baseOut += base;
+    }
+  });
+  const grand = credit + tax;
+  document.getElementById('prFootLbl').textContent = lines + ' line' + (lines === 1 ? '' : 's') + ' · ' + baseOut + ' base units leaving stock';
+  document.getElementById('prFootCred').textContent = fmt(grand);
+  document.getElementById('tGoods').textContent = fmt(credit);
+  document.getElementById('tTax').textContent = fmt(tax);
+  document.getElementById('tInv').textContent = fmt(inv);
+  document.getElementById('tVar').textContent = (Math.abs(varAmt) < 0.0005 ? '0.00' : (varAmt > 0 ? 'Dr ' : 'Cr ') + fmt(Math.abs(varAmt)));
+  document.getElementById('tGrand').textContent = fmt(grand);
+  document.getElementById('apHint').textContent = 'Supplier balance 171,838 → ' + fmt(171838 - (settle() === 'ap' ? grand : 0));
+  const drAcct = settle() === 'ap' ? '2100 Accounts Payable · Muller & Phipps' : '1010 Cash in Hand';
+  const bits = [
+    '<b>Dr</b> ' + pad(drAcct, grand),
+    '<b>Cr</b> ' + pad('1200 Inventory (at current batch cost)', inv),
+    '<b>Cr</b> ' + pad('1300 Input Tax Receivable', tax)
+  ];
+  if (Math.abs(varAmt) > 0.0005) {
+    bits.push((varAmt < 0 ? '<b>Cr</b> ' : '<b>Dr</b> ') + pad('5400 Purchase Return Variance', Math.abs(varAmt)));
+  }
+  bits.push('<span class="muted">Balanced · period Oct-26 open · lock date 30 Jun 2026</span>');
+  document.getElementById('prPost').innerHTML = bits.join('<br>');
+  document.getElementById('prBadges').innerHTML =
+    '<span class="badge danger dot">Stock −' + baseOut + ' base units</span>' +
+    '<span class="badge indigo dot">' + (settle() === 'ap' ? 'AP' : 'Cash') + ' −' + fmt(grand) + '</span>' +
+    (Math.abs(varAmt) > 0.0005 ? '<span class="badge warn dot">variance ' + fmt(Math.abs(varAmt)) + '</span>' : '');
+  document.getElementById('confirmCopy').innerHTML = 'Remove <b>' + baseOut + ' base units</b> from Shop floor and record a <b>PKR ' + fmt(grand) + '</b> ' + (settle() === 'ap' ? 'credit against Muller &amp; Phipps' : 'cash refund') + '.';
+}
+document.addEventListener('click', e => {
+  const s = e.target.closest('.src'); if (s) { s.parentElement.querySelectorAll('.src').forEach(b => b.classList.toggle('on', b === s)); toast(s.textContent.trim().split('  ')[0] + ' · lines loaded', 'ok'); return; }
+  const r = e.target.closest('#settle label'); if (r) { r.parentElement.querySelectorAll('label').forEach(b => b.classList.toggle('on', b === r)); recalc(); return; }
+  const cb = e.target.closest('#prBody input[type=checkbox]');
+  if (cb) {
+    const tr = cb.closest('tr'); tr.classList.toggle('on', cb.checked); tr.classList.toggle('off', !cb.checked);
+    if (cb.checked && !(+tr.querySelector('.ret-in').value)) tr.querySelector('.ret-in').value = 1;
+    if (!cb.checked) tr.querySelector('.ret-in').value = 0;
+    recalc();
+  }
+});
+function fillQty(all) {
+  document.querySelectorAll('#prBody tr').forEach(tr => {
+    if (tr.dataset.locked) return;
+    const cb = tr.querySelector('input[type=checkbox]');
+    const inp = tr.querySelector('.ret-in');
+    const f = +(tr.querySelector('.unit') && tr.querySelector('.unit').value) || 1;
+    const capQty = Math.min((+tr.dataset.recv) - (+tr.dataset.already), +tr.dataset.onhand) / f;
+    cb.checked = all && capQty > 0;
+    inp.value = cb.checked ? (Math.floor(capQty * 1000) / 1000) : 0;
+    tr.classList.toggle('on', cb.checked); tr.classList.toggle('off', !cb.checked);
+  });
+  recalc();
+}
+document.getElementById('prExpiring').addEventListener('click', () => { fillQty(true); toast('Filled every returnable qty (capped by on-hand)', 'ok'); });
+document.getElementById('prClear').addEventListener('click', () => fillQty(false));
+document.getElementById('prBody').addEventListener('input', e => recalc(e.target));
+document.getElementById('prBody').addEventListener('change', e => recalc(e.target));
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); document.getElementById('confirm').classList.add('open'); }
+});
+recalc();
+</script>
+</body></html>

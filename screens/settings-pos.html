@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — POS &amp; receipts</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / POS &amp; receipts">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="pos"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>POS &amp; receipts</h1><div class="sub">Printed on every receipt. Cashier discount cap is a tenant setting; exceeding it needs <span class="mono">sales.discount.override</span>.</div></div>
+        <div class="actions"><button class="btn sm primary" data-action="toast" data-msg="POS settings saved">Save</button></div>
+      </div>
+      <div class="card card-body">
+        <div class="section-title">Receipt</div>
+        <div class="form-grid">
+          <div class="field col-8"><label>Header</label><input class="input" value="Demo Pharmacy · Gulberg · NTN 4220111-7"></div>
+          <div class="field col-4"><label>Default format</label><select class="select"><option>80 mm thermal</option><option>58 mm thermal</option><option>A4 invoice</option></select></div>
+          <div class="field col-12"><label>Footer</label><input class="input" value="Goods once sold can be returned within 7 days with receipt. Expired stock is not sold."></div>
+          <div class="col-12 flex gap-16">
+            <label class="check"><input type="checkbox" checked> Show batch &amp; expiry on receipt</label>
+            <label class="check"><input type="checkbox" checked> Auto-print after post</label>
+            <label class="check"><input type="checkbox"> Show generic name</label>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="section-title">Counter behaviour</div>
+        <div class="form-grid">
+          <div class="field col-4"><label>Max cashier discount %</label><input class="input num" value="10"><div class="help">Bilal is blocked at 15% without a manager PIN</div></div>
+          <div class="field col-4"><label>Discard held carts after (days)</label><input class="input" value="3"><div class="help">Held carts do not reserve stock</div></div>
+          <div class="field col-4"><label>Default payment method</label><select class="select"><option>Cash</option><option>JazzCash</option><option>Card</option></select></div>
+          <div class="col-12 flex gap-16">
+            <label class="check"><input type="checkbox"> Allow cashiers to pick batch (needs sales.select_batch too)</label>
+            <label class="check"><input type="checkbox" checked> Warn when FEFO batch is inside near-expiry window</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

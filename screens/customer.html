@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Customer</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .profile { display: flex; gap: 12px; align-items: center; }
+  .profile .avatar { width: 40px; height: 40px; font-size: 14px; }
+  .aging { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .aging div { background: var(--surface-2); border-radius: 6px; padding: 6px 8px; text-align: center; font-size: 11px; color: var(--muted); border-top: 2px solid var(--line); }
+  .aging b { display: block; font-size: 13px; color: var(--text); font-variant-numeric: tabular-nums; }
+  .aging .a1 { border-top-color: var(--ok); } .aging .a2 { border-top-color: #84cc16; } .aging .a3 { border-top-color: var(--warn); } .aging .a4 { border-top-color: #f97316; } .aging .a5 { border-top-color: var(--danger); }
+  .alloc-row td { height: 28px; }
+</style></head>
+<body data-page="customers" data-crumbs="Customers / Ahmed Raza">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div class="profile">
+      <div class="avatar">AR</div>
+      <div><h1>Ahmed Raza <span class="badge indigo">Retail</span> <span class="badge ok dot">Active</span></h1><div class="sub">CUS-00041 · 0300-1234567 · WhatsApp ✓ · Gulshan Block 4, Karachi · terms 15 days</div></div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="customers.html">All customers</a><button class="btn">Edit</button><button class="btn">WhatsApp statement</button><a class="btn" href="pos.html">New sale</a>
+      <button class="btn primary" data-open="pay">Receive payment</button>
+    </div>
+  </div>
+
+  <div class="grid cols-4 mb-12">
+    <div class="card kpi indigo"><div class="lbl">Balance due</div><div class="val"><small>PKR</small>19,200</div><span class="delta text-danger">96% of 20,000 limit</span><div class="progress danger mt-8"><i style="width:96%"></i></div></div>
+    <div class="card kpi"><div class="lbl">Overdue</div><div class="val text-danger"><small>PKR</small>6,780</div><span class="muted" style="font-size:11px">oldest 28 days</span></div>
+    <div class="card kpi"><div class="lbl">Purchases · 12 months</div><div class="val"><small>PKR</small>184,300</div><span class="muted" style="font-size:11px">42 receipts · avg 4,388</span></div>
+    <div class="card kpi"><div class="lbl">Avg days to pay</div><div class="val">18 <small>days</small></div><span class="delta text-warn">terms 15</span></div>
+  </div>
+
+  <div class="split">
+    <div class="card">
+      <div class="tabs" data-tabs="ct"><button class="on" data-tab="open">Open invoices <span class="count">4</span></button><button data-tab="stmt">Statement</button><button data-tab="pays">Payments <span class="count">11</span></button><button data-tab="items">Items bought</button><button data-tab="audit">Audit</button></div>
+
+      <div class="tab-panel on card-body tight" data-tab-group="ct" data-tab="open">
+        <table class="tbl dense">
+          <thead><tr><th>Receipt</th><th>Date</th><th>Due</th><th class="right">Total</th><th class="right">Paid</th><th class="right">Balance</th><th>Age</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono">INV26-000311</td><td>10 Sep</td><td>25 Sep</td><td class="num">6,780.00</td><td class="num">0.00</td><td class="num"><b>6,780.00</b></td><td><span class="badge danger">28d overdue</span></td><td class="right"><button class="btn xs" data-open="pay">Pay</button></td></tr>
+            <tr><td class="mono">INV26-000344</td><td>22 Sep</td><td>07 Oct</td><td class="num">4,000.00</td><td class="num">2,000.00</td><td class="num"><b>2,000.00</b></td><td><span class="badge warn">1d overdue</span></td><td class="right"><button class="btn xs" data-open="pay">Pay</button></td></tr>
+            <tr><td class="mono">INV26-000388</td><td>02 Oct</td><td>17 Oct</td><td class="num">6,420.00</td><td class="num">2,420.00</td><td class="num"><b>4,000.00</b></td><td><span class="badge ok">current</span></td><td class="right"><button class="btn xs" data-open="pay">Pay</button></td></tr>
+            <tr><td class="mono">INV26-000411</td><td>08 Oct</td><td>23 Oct</td><td class="num">6,420.00</td><td class="num">0.00</td><td class="num"><b>6,420.00</b></td><td><span class="badge ok">current</span></td><td class="right"><button class="btn xs" data-open="pay">Pay</button></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="3">Total</td><td class="num">23,620.00</td><td class="num">4,420.00</td><td class="num">19,200.00</td><td colspan="2"></td></tr></tfoot>
+        </table>
+      </div>
+
+      <div class="tab-panel card-body tight" data-tab-group="ct" data-tab="stmt">
+        <div class="filters" style="border-radius:0"><span class="muted">Period</span><input class="input" value="01 Sep 2026"><span class="muted">→</span><input class="input" value="08 Oct 2026"><span class="spacer"></span><button class="btn sm">PDF</button><button class="btn sm">WhatsApp</button></div>
+        <table class="tbl dense">
+          <thead><tr><th>Date</th><th>Document</th><th>Description</th><th class="right">Debit</th><th class="right">Credit</th><th class="right">Balance</th></tr></thead>
+          <tbody>
+            <tr><td>01 Sep</td><td></td><td class="muted">Opening balance</td><td class="num"></td><td class="num"></td><td class="num">8,400.00</td></tr>
+            <tr><td>04 Sep</td><td class="mono">PAY26-007102</td><td>Payment · Cash</td><td class="num"></td><td class="num">8,400.00</td><td class="num">0.00</td></tr>
+            <tr><td>10 Sep</td><td class="mono">INV26-000311</td><td>Credit sale · 9 items</td><td class="num">6,780.00</td><td class="num"></td><td class="num">6,780.00</td></tr>
+            <tr><td>22 Sep</td><td class="mono">INV26-000344</td><td>Credit sale · 4 items</td><td class="num">4,000.00</td><td class="num"></td><td class="num">10,780.00</td></tr>
+            <tr><td>28 Sep</td><td class="mono">PAY26-007891</td><td>Payment · JazzCash → INV26-000344</td><td class="num"></td><td class="num">2,000.00</td><td class="num">8,780.00</td></tr>
+            <tr><td>02 Oct</td><td class="mono">INV26-000388</td><td>Credit sale · 7 items (cash 2,000 + credit 4,420)</td><td class="num">4,420.00</td><td class="num"></td><td class="num">13,200.00</td></tr>
+            <tr><td>03 Oct</td><td class="mono">RET26-000017</td><td>Return · 1 strip Panadol → credit note</td><td class="num"></td><td class="num">32.00</td><td class="num">13,168.00</td></tr>
+            <tr><td>05 Oct</td><td class="mono">PAY26-008001</td><td>Payment · Cash → INV26-000388</td><td class="num"></td><td class="num">388.00</td><td class="num">12,780.00</td></tr>
+            <tr><td>08 Oct</td><td class="mono">INV26-000411</td><td>Credit sale · 7 items</td><td class="num">6,420.00</td><td class="num"></td><td class="num"><b>19,200.00</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-panel card-body tight" data-tab-group="ct" data-tab="pays">
+        <table class="tbl dense"><thead><tr><th>Payment</th><th>Date</th><th>Method</th><th class="right">Amount</th><th>Allocated to</th><th class="right">Unallocated</th><th>By</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">PAY26-008001</td><td>05 Oct</td><td><span class="tag">Cash</span></td><td class="num">388.00</td><td class="mono">INV26-000388</td><td class="num">0.00</td><td>Bilal</td></tr>
+          <tr><td class="mono">PAY26-007891</td><td>28 Sep</td><td><span class="tag">JazzCash</span> <span class="muted mono" style="font-size:10.5px">ref 88213</span></td><td class="num">2,000.00</td><td class="mono">INV26-000344</td><td class="num">0.00</td><td>Sana</td></tr>
+          <tr><td class="mono">PAY26-007102</td><td>04 Sep</td><td><span class="tag">Cash</span></td><td class="num">8,400.00</td><td class="mono">Opening</td><td class="num">0.00</td><td>Bilal</td></tr>
+        </tbody></table>
+      </div>
+      <div class="tab-panel card-body" data-tab-group="ct" data-tab="items"><div class="empty"><div class="ill">▦</div>Top items by quantity and value for this customer over the selected period.</div></div>
+      <div class="tab-panel card-body" data-tab-group="ct" data-tab="audit"><ul class="timeline"><li><div>Credit limit 15,000 → <b>20,000</b> <span class="muted">reason: regular payer</span><div class="t">Aquib · 20 Aug</div></div></li><li><div>Phone updated<div class="t">Sana · 02 Jun</div></div></li><li class="ok"><div>Customer created<div class="t">Sana · 12 Jan</div></div></li></ul></div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><h2>Aging</h2></div>
+        <div class="card-body">
+          <div class="aging"><div class="a1">Current<b>10,420</b></div><div class="a2">1–30<b>8,780</b></div><div class="a3">31–60<b>0</b></div><div class="a4">61–90<b>0</b></div><div class="a5">90+<b>0</b></div></div>
+          <div class="note warn mt-12" style="font-size:11.5px">Credit sales will be blocked at PKR 800 more. Manager override is audited.</div>
+        </div>
+      </div>
+      <div class="card mt-12">
+        <div class="card-head"><h2>Details</h2><div class="actions"><button class="btn xs ghost">Edit</button></div></div>
+        <div class="card-body"><dl class="kv">
+          <dt>Type</dt><dd>Retail · price type retail</dd>
+          <dt>Credit limit</dt><dd>PKR 20,000</dd>
+          <dt>Terms</dt><dd>15 days</dd>
+          <dt>Tax reg.</dt><dd class="muted">—</dd>
+          <dt>Opening bal.</dt><dd>PKR 8,400 as of 01 Sep 2026</dd>
+          <dt>Created</dt><dd>12 Jan 2026 · Sana</dd>
+        </dl></div>
+      </div>
+    </aside>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="pay"><div class="modal">
+  <div class="modal-head"><h2>Receive payment · Ahmed Raza</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid mb-12">
+      <div class="field col-4"><label>Amount <span class="req">*</span></label><input class="input num" value="10,000.00" style="font-size:15px;font-weight:600"></div>
+      <div class="field col-4"><label>Method</label><select class="select"><option>Cash</option><option>JazzCash</option><option>Easypaisa</option><option>Bank transfer</option><option>Card</option></select></div>
+      <div class="field col-4"><label>Date</label><input class="input" value="08 Oct 2026"></div>
+      <div class="field col-6"><label>Reference</label><input class="input" placeholder="Txn id / cheque #"></div>
+      <div class="field col-6"><label>Notes</label><input class="input"></div>
+    </div>
+    <div class="flex between mb-8"><div class="section-title" style="margin:0">Allocate to invoices</div><div class="flex gap-4"><button class="btn xs">Oldest first</button><button class="btn xs ghost">Clear</button></div></div>
+    <table class="tbl dense">
+      <thead><tr><th>Receipt</th><th>Due</th><th class="right">Balance</th><th class="right">Allocate</th></tr></thead>
+      <tbody>
+        <tr class="alloc-row"><td class="mono">INV26-000311</td><td><span class="badge danger">28d</span></td><td class="num">6,780.00</td><td><input class="input" value="6,780.00" style="width:100px;text-align:right"></td></tr>
+        <tr class="alloc-row"><td class="mono">INV26-000344</td><td><span class="badge warn">1d</span></td><td class="num">2,000.00</td><td><input class="input" value="2,000.00" style="width:100px;text-align:right"></td></tr>
+        <tr class="alloc-row"><td class="mono">INV26-000388</td><td>17 Oct</td><td class="num">4,000.00</td><td><input class="input" value="1,220.00" style="width:100px;text-align:right"></td></tr>
+        <tr class="alloc-row"><td class="mono">INV26-000411</td><td>23 Oct</td><td class="num">6,420.00</td><td><input class="input" value="0.00" style="width:100px;text-align:right"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2">Allocated 10,000.00 · Unallocated <b>0.00</b></td><td class="num">19,200.00</td><td class="num text-ok">10,000.00</td></tr></tfoot>
+    </table>
+    <div class="note info mt-12" style="font-size:11.5px">Posts <span class="mono">Dr Cash 10,000 / Cr Accounts Receivable 10,000</span>. Any unallocated amount becomes a customer advance.</div>
+  </div>
+  <div class="modal-foot"><label class="check"><input type="checkbox" checked> Print receipt</label><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('PAY26-008813 posted · balance now PKR 9,200','ok')">Record payment</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Sales</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .mini { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px; }
+  .mini .card { padding: 8px 10px; }
+  .mini .lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  .mini .val { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .alloc { font-size: 11px; color: var(--muted); }
+</style></head>
+<body data-page="sales" data-crumbs="Sales / All sales">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Sales</h1><div class="sub">Click a row to open the receipt detail. Posted sales are immutable; use Return or Void (same day).</div></div>
+    <div class="actions">
+      <div class="seg"><button class="on">Today</button><button>Yesterday</button><button>7d</button><button>Custom</button></div>
+      <button class="btn">Export CSV</button>
+      <a class="btn" href="sales-return.html">New return</a>
+      <a class="btn primary" href="pos.html">Open POS <kbd>F2</kbd></a>
+    </div>
+  </div>
+  <div class="mini">
+    <div class="card"><div class="lbl">Sales</div><div class="val">186,420 <small class="muted" style="font-size:11px">· 128 receipts</small></div></div>
+    <div class="card"><div class="lbl">Gross profit</div><div class="val text-ok">41,210 <small class="muted" style="font-size:11px">22.1%</small></div></div>
+    <div class="card"><div class="lbl">Discounts</div><div class="val">4,380</div></div>
+    <div class="card"><div class="lbl">Returns</div><div class="val">1,240 <small class="muted" style="font-size:11px">· 2</small></div></div>
+    <div class="card"><div class="lbl">Voids</div><div class="val text-danger">1</div></div>
+  </div>
+
+  <div class="card">
+    <div class="tabs" data-tabs="st"><button class="on" data-tab="a">Posted <span class="count">126</span></button><button data-tab="b">Held drafts <span class="count">2</span></button><button data-tab="c">Returns <span class="count">3</span></button><button data-tab="d">Voided <span class="count">1</span></button></div>
+    <div class="filters" style="border-radius:0">
+      <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Receipt #, customer, product…" style="width:240px"></div>
+      <select class="select"><option>Cashier: All</option><option>Bilal</option><option>Sana</option></select>
+      <select class="select"><option>Tender: All</option><option>Cash</option><option>Credit</option><option>JazzCash</option></select>
+      <span class="filter-chip">Credit sales only</span><span class="filter-chip">With discount</span>
+    </div>
+    <div class="tab-panel on" data-tab-group="st" data-tab="a">
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th class="sort desc">Receipt</th><th>Time</th><th>Customer</th><th>Cashier</th><th class="right">Items</th><th class="right">Subtotal</th><th class="right">Disc</th><th class="right">Total</th><th class="right">COGS</th><th class="right">GP%</th><th>Tenders</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr data-select="sd" class="selected"><td class="mono">INV26-000412</td><td>14:02</td><td>Walk-in</td><td>Bilal</td><td class="num">3</td><td class="num">1,860.00</td><td class="num">0.00</td><td class="num"><b>1,860.00</b></td><td class="num muted">1,398.20</td><td class="num text-ok">24.8</td><td><span class="tag">Cash</span></td><td><span class="badge ok dot">Posted</span></td></tr>
+            <tr data-select="sd"><td class="mono">INV26-000411</td><td>13:58</td><td>Ahmed Raza</td><td>Bilal</td><td class="num">7</td><td class="num">6,620.00</td><td class="num">200.00</td><td class="num"><b>6,420.00</b></td><td class="num muted">5,110.00</td><td class="num text-ok">20.4</td><td><span class="tag">Credit</span></td><td><span class="badge ok dot">Posted</span></td></tr>
+            <tr data-select="sd"><td class="mono">INV26-000410</td><td>13:51</td><td>Walk-in</td><td>Sana</td><td class="num">1</td><td class="num">240.00</td><td class="num">0.00</td><td class="num"><b>240.00</b></td><td class="num muted">190.00</td><td class="num text-ok">20.8</td><td><span class="tag">JazzCash</span></td><td><span class="badge ok dot">Posted</span></td></tr>
+            <tr data-select="sd"><td class="mono">INV26-000409</td><td>13:40</td><td>City Clinic</td><td>Sana</td><td class="num">12</td><td class="num">19,400.00</td><td class="num">500.00</td><td class="num"><b>18,900.00</b></td><td class="num muted">15,870.00</td><td class="num text-ok">16.0</td><td><span class="tag">Cash 10,000</span><span class="tag">Card 8,900</span></td><td><span class="badge ok dot">Posted</span></td></tr>
+            <tr data-select="sd"><td class="mono">INV26-000408</td><td>13:22</td><td>Walk-in</td><td>Bilal</td><td class="num">2</td><td class="num">650.00</td><td class="num">0.00</td><td class="num"><b>650.00</b></td><td class="num muted">480.00</td><td class="num text-ok">26.2</td><td><span class="tag">Cash</span></td><td><span class="badge warn dot">Partially returned</span></td></tr>
+            <tr data-select="sd"><td class="mono">INV26-000388</td><td>02 Oct</td><td>Ahmed Raza</td><td>Sana</td><td class="num">7</td><td class="num">6,452.00</td><td class="num">32.00</td><td class="num"><b>6,420.00</b></td><td class="num muted">4,980.00</td><td class="num text-ok">22.4</td><td><span class="tag">Cash 2,000</span><span class="tag">Credit 4,420</span></td><td><span class="badge warn dot">Partially returned</span></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="4">Today</td><td class="num">128</td><td class="num">190,800.00</td><td class="num">4,380.00</td><td class="num">186,420.00</td><td class="num">145,210.00</td><td class="num">22.1</td><td colspan="2"></td></tr></tfoot>
+        </table>
+      </div>
+      <div class="table-foot"><span>Page 1 of 3</span><span class="pages"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>›</button></span></div>
+    </div>
+    <div class="tab-panel" data-tab-group="st" data-tab="b">
+      <div class="table-wrap">
+        <table class="tbl dense"><thead><tr><th>Label</th><th>Customer</th><th>Cashier</th><th class="right">Lines</th><th class="right">Est. total</th><th>Held</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><b>Mrs Khan — waiting for Rx</b></td><td>Walk-in</td><td>Bilal</td><td class="num">4</td><td class="num">2,340.00</td><td class="muted">13:21</td><td class="right"><a class="btn xs primary" href="pos.html">Resume</a></td></tr>
+          <tr><td><b>Blue bag counter 2</b></td><td>City Clinic</td><td>Sana</td><td class="num">9</td><td class="num">11,860.00</td><td class="muted">12:48</td><td class="right"><a class="btn xs primary" href="pos.html">Resume</a></td></tr>
+        </tbody></table>
+      </div>
+      <div class="table-foot"><span>Held carts do not reserve stock. Auto-discarded after 2 days.</span></div>
+    </div>
+    <div class="tab-panel" data-tab-group="st" data-tab="c">
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Return</th><th>Date</th><th>Customer</th><th>Against</th><th class="right">Lines</th><th class="right">Refund</th><th>Disposition</th><th>Method</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono">DRAFT-2207</td><td>08 Oct</td><td>Ahmed Raza</td><td class="mono">INV26-000388</td><td class="num">3</td><td class="num">545.00</td><td><span class="tag">Restock 2</span> <span class="tag">Write-off 1</span></td><td><span class="tag">AR credit</span></td><td><span class="badge">Draft</span></td><td><span class="row-actions"><a class="btn xs primary" href="sales-return.html">Continue</a></span></td></tr>
+            <tr><td class="mono">RET26-000019</td><td>08 Oct 13:28</td><td>Walk-in</td><td class="mono">INV26-000408</td><td class="num">1</td><td class="num">95.00</td><td><span class="tag">Restock</span></td><td><span class="tag">Cash</span></td><td><span class="badge ok dot">Posted</span></td><td><span class="row-actions"><a class="btn xs" href="sales-return.html">Open</a><button class="btn xs ghost">Reprint</button></span></td></tr>
+            <tr><td class="mono">RET26-000017</td><td>03 Oct</td><td>Ahmed Raza</td><td class="mono">INV26-000388</td><td class="num">1</td><td class="num">32.00</td><td><span class="tag">Restock</span></td><td><span class="tag">AR credit</span></td><td><span class="badge ok dot">Posted</span></td><td><span class="row-actions"><a class="btn xs" href="sales-return.html">Open</a></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-foot"><span>Linked returns reverse cost at the original <span class="mono">sale_line_allocations</span> cost. Unlinked returns require <span class="mono">sales.return.unlinked</span>.</span></div>
+    </div>
+    <div class="tab-panel" data-tab-group="st" data-tab="d">
+      <div class="table-wrap">
+        <table class="tbl dense"><thead><tr><th>Receipt</th><th>Voided</th><th>Cashier</th><th>By</th><th>Reason</th><th class="right">Amount</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">INV26-000405</td><td>08 Oct 12:18</td><td>Bilal</td><td>Aquib</td><td>Wrong items rung up</td><td class="num">980.00</td></tr>
+        </tbody></table>
+      </div>
+      <div class="table-foot"><span>Void is same-business-day only. Number is not reused.</span></div>
+    </div>
+  </div>
+</main>
+</div>
+
+<div class="drawer" id="sd">
+  <div class="modal-head"><h2>INV26-000412</h2><span class="badge ok dot">Posted</span><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <dl class="kv mb-12">
+      <dt>Date / time</dt><dd>08 Oct 2026 14:02 · business date 08 Oct</dd>
+      <dt>Customer</dt><dd>Walk-in</dd>
+      <dt>Cashier</dt><dd>Bilal · Main · Shop floor</dd>
+      <dt>Journal</dt><dd><a href="reports.html" class="mono">JRN26-004120</a> · balanced</dd>
+    </dl>
+    <table class="tbl dense">
+      <thead><tr><th>Item</th><th class="right">Qty</th><th class="right">Price</th><th class="right">Total</th></tr></thead>
+      <tbody>
+        <tr><td>Panadol 500mg <span class="sub">2 strips · <span class="alloc">FEFO: P5A ×20 @ 2.47</span></span></td><td class="num">2 strip</td><td class="num">32.00</td><td class="num">64.00</td></tr>
+        <tr><td>Risek 20mg <span class="sub">1 strip · <span class="alloc">RK0091 ×14 @ 14.20</span></span></td><td class="num">1 strip</td><td class="num">259.00</td><td class="num">259.00</td></tr>
+        <tr><td>Ventolin Inhaler <span class="sub">1 pc · <span class="alloc">VN88 ×1 @ 312.00</span></span></td><td class="num">1 pc</td><td class="num">390.00</td><td class="num">390.00</td></tr>
+        <tr><td>Augmentin 625mg <span class="sub">split allocation · <span class="alloc">AX2240 ×12 @ 41.20 + AX2301 ×6 @ 41.33</span></span></td><td class="num">3 strip</td><td class="num">348.00</td><td class="num">1,044.00</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3">Subtotal</td><td class="num">1,757.00</td></tr><tr><td colspan="3">Tax (Dettol 17%)</td><td class="num">103.00</td></tr><tr><td colspan="3"><b>Total</b></td><td class="num"><b>1,860.00</b></td></tr><tr><td colspan="3" class="muted">COGS · GP</td><td class="num muted">1,398.20 · 24.8%</td></tr></tfoot>
+    </table>
+    <div class="section-title mt-12">Tenders</div>
+    <table class="tbl dense"><tbody><tr><td>Cash</td><td class="num">2,000.00</td><td class="muted">PAY26-008812</td></tr><tr><td>Change</td><td class="num">−140.00</td><td></td></tr></tbody></table>
+    <div class="section-title mt-12">Timeline</div>
+    <ul class="timeline">
+      <li class="ok"><div>Posted by Bilal <div class="t">14:02:14 · idempotency key 7f3a…</div></div></li>
+      <li><div>Receipt printed (80mm) <div class="t">14:02:15</div></div></li>
+      <li><div>Draft created <div class="t">14:01:40</div></div></li>
+    </ul>
+  </div>
+  <div class="modal-foot">
+    <button class="btn sm">Reprint</button><button class="btn sm">PDF</button><button class="btn sm">WhatsApp</button>
+    <div class="right"><a class="btn sm" href="sales-return.html">Return</a><button class="btn sm danger" data-open="void">Void</button></div>
+  </div>
+</div>
+<div class="overlay" id="void"><div class="modal narrow"><div class="modal-head"><h2>Void INV26-000412</h2><button class="iconbtn" data-close>✕</button></div><div class="modal-body"><div class="note danger mb-12" style="font-size:11.5px">Void reverses stock (at allocation cost), journal and tenders in full. Allowed only for today's sales. Number INV26-000412 stays used.</div><div class="field"><label>Reason <span class="req">*</span></label><select class="select"><option>Wrong items rung up</option><option>Customer cancelled before leaving</option><option>Duplicate sale</option><option>Other…</option></select></div><div class="field mt-12"><label>Manager PIN</label><input class="input" type="password" placeholder="••••"></div></div><div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn danger" data-close onclick="toast('INV26-000412 voided · reversal JRN26-004131','danger')">Void sale</button></div></div></div></div>
+<script src="assets/app.js"></script>
+</body></html>

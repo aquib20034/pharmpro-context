@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Accept invitation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  body { min-height: 100vh; display: grid; place-items: center; background: linear-gradient(160deg, #0b1220 0%, #16203a 55%, #1b2a4a 100%); padding: 24px; }
+  .card { width: 400px; max-width: 100%; }
+  .brand { margin-bottom: 14px; }
+  .brand .name { color: #fff; }
+</style></head>
+<body>
+  <div>
+    <div class="brand"><div class="mark"></div><div class="name">PharmaPro<small>Demo Pharmacy</small></div></div>
+    <div class="card card-body">
+      <h1 style="font-size:18px;margin:0 0 4px">Accept invitation</h1>
+      <p class="sub" style="margin:0 0 14px">Hina Raza · Accountant · invited by Aquib Khan. Link expires in 36 hours.</p>
+      <div class="form-grid">
+        <div class="field col-12"><label>Email</label><input class="input" value="hina@demopharmacy.pk" disabled></div>
+        <div class="field col-12"><label>New password <span class="req">*</span></label><input class="input" type="password" id="p1" placeholder="Min 10 characters"><div class="help">Checked against breached-password lists</div></div>
+        <div class="field col-12"><label>Confirm password <span class="req">*</span></label><input class="input" type="password" id="p2"></div>
+      </div>
+      <button class="btn primary lg block mt-12" id="go">Set password &amp; continue</button>
+      <div class="note info mt-12" style="font-size:11.5px">ONB-02 · Forced password change. After this you land on the dashboard with Accountant navigation only.</div>
+    </div>
+    <div class="foot" style="margin-top:12px;font-size:11.5px;color:#9aa6bd;text-align:center"><a href="login.html" style="color:#c7cfdd">Already have an account? Sign in</a></div>
+  </div>
+<script>
+document.getElementById('go').onclick = () => {
+  const a = document.getElementById('p1').value, b = document.getElementById('p2').value;
+  if (a.length < 10) { alert('Password must be at least 10 characters'); return; }
+  if (a !== b) { alert('Passwords do not match'); return; }
+  location.href = 'dashboard.html';
+};
+</script>
+</body></html>

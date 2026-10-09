@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Payment methods</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / Payment methods">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="paym"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Payment methods</h1><div class="sub">Each tender maps to a cash-like account. <b>Credit</b> has no account — it posts to 1100 AR. Deactivate a method to hide it on POS; history stays.</div></div>
+        <div class="actions"><button class="btn sm" data-open="addpm">+ Method</button><button class="btn sm primary" data-action="toast" data-msg="Payment methods saved">Save</button></div>
+      </div>
+      <div class="card">
+        <table class="tbl">
+          <thead><tr><th></th><th>Code</th><th>Name</th><th>Kind</th><th>Posts to</th><th>POS</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="muted">1</td><td class="mono">CASH</td><td>Cash</td><td>cash</td><td class="mono">1010 Cash in Hand</td><td><span class="badge ok">on</span></td><td></td></tr>
+            <tr><td class="muted">2</td><td class="mono">BANK</td><td>Bank transfer</td><td>bank</td><td class="mono">1020 Bank</td><td><span class="badge ok">on</span></td><td></td></tr>
+            <tr><td class="muted">3</td><td class="mono">CARD</td><td>Card</td><td>card</td><td class="mono">1040 Card Receivable</td><td><span class="badge ok">on</span></td><td></td></tr>
+            <tr><td class="muted">4</td><td class="mono">JAZZ</td><td>JazzCash</td><td>wallet</td><td class="mono">1030 Mobile Wallets</td><td><span class="badge ok">on</span></td><td></td></tr>
+            <tr><td class="muted">5</td><td class="mono">EASY</td><td>Easypaisa</td><td>wallet</td><td class="mono">1030 Mobile Wallets</td><td><span class="badge ok">on</span></td><td></td></tr>
+            <tr><td class="muted">6</td><td class="mono">CREDIT</td><td>Credit (AR)</td><td>credit</td><td class="muted">no account · 1100 AR</td><td><span class="badge ok">on</span></td><td><span class="muted" style="font-size:11px">system</span></td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span>Change given reduces cash, not sales. Split tenders are allowed; leftover unpaid amount becomes AR if Credit is used.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<div class="overlay" id="addpm"><div class="modal narrow">
+  <div class="modal-head"><h2>New payment method</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid">
+      <div class="field col-6"><label>Code</label><input class="input mono" value="HBL"></div>
+      <div class="field col-6"><label>Name</label><input class="input" value="HBL deposit"></div>
+      <div class="field col-6"><label>Kind</label><select class="select"><option>bank</option><option>wallet</option><option>card</option><option>other</option></select></div>
+      <div class="field col-6"><label>Account</label><select class="select"><option>1020 Bank</option><option>1010 Cash in Hand</option><option>1030 Mobile Wallets</option></select></div>
+    </div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close data-action="toast" data-msg="HBL deposit added">Add</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

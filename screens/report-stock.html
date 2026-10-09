@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Current stock</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Inventory / Current stock">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="stock"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Stock &amp; valuation</h1><div class="sub">Quantities in base units · value = qty × batch unit cost · must equal 1200 Inventory</div></div>
+        <div class="actions"><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="card">
+        <div class="filters"><select class="select"><option>Warehouse: All</option><option>Shop floor</option><option>Store room</option></select><select class="select"><option>Include expired: Yes</option><option>Saleable only</option></select><span class="spacer"></span><button class="btn sm primary">Run</button></div>
+        <div class="tabs" data-tabs="st"><button class="on" data-tab="stock">Current stock</button><button data-tab="val">Valuation</button><button data-tab="ledger">Stock ledger</button></div>
+        <div class="tab-panel on" data-tab-group="st" data-tab="stock">
+          <table class="tbl dense">
+            <thead><tr><th>Product</th><th>Warehouse</th><th>Nearest expiry</th><th class="right">On hand</th><th class="right">Saleable</th><th class="right">Expired / blocked</th><th class="right">Value @ cost</th></tr></thead>
+            <tbody>
+              <tr><td>Panadol 500mg</td><td>Shop floor</td><td><span class="exp d90">31 Dec 26</span></td><td class="num">1,240</td><td class="num">1,240</td><td class="num">0</td><td class="num">3,062.80</td></tr>
+              <tr><td>Augmentin 625mg</td><td>Shop floor</td><td><span class="exp expired">30 Sep 26</span></td><td class="num">198</td><td class="num">18</td><td class="num text-danger">180</td><td class="num">8,157.60</td></tr>
+              <tr><td>Risek 20mg</td><td>Shop floor</td><td><span class="exp d30">28 Oct 26</span></td><td class="num">420</td><td class="num">420</td><td class="num">0</td><td class="num">5,964.00</td></tr>
+              <tr><td>Brufen Syrup 100ml</td><td>Shop floor</td><td><span class="exp d30">14 Oct 26</span></td><td class="num">12</td><td class="num">12</td><td class="num">0</td><td class="num">1,536.00</td></tr>
+              <tr><td>Ventolin Inhaler</td><td>Shop floor</td><td><span class="exp ok">Jun 27</span></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0.00</td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="6">Page</td><td class="num">18,720.40</td></tr></tfoot>
+          </table>
+          <div class="table-foot"><span>Augmentin 180 expired is on hand but not saleable. Open <a href="inventory.html">Inventory</a> for batch rows.</span></div>
+        </div>
+        <div class="tab-panel" data-tab-group="st" data-tab="val">
+          <div class="note info" style="margin:8px 12px;font-size:11.5px">Σ(balance.qty × batch.unit_cost) = <b>PKR 2,418,300.00</b> · trial balance 1200 Inventory = <b>2,418,300.00</b> · difference 0.00</div>
+          <table class="tbl dense">
+            <thead><tr><th>Product</th><th>Batch</th><th>Warehouse</th><th class="right">Qty</th><th class="right">Unit cost</th><th class="right">Value</th></tr></thead>
+            <tbody>
+              <tr><td>Panadol 500mg</td><td class="mono">P5A</td><td>Shop floor</td><td class="num">1,240</td><td class="num">2.4700</td><td class="num">3,062.80</td></tr>
+              <tr><td>Augmentin 625mg</td><td class="mono">AX2231</td><td>Shop floor</td><td class="num">180</td><td class="num">41.2000</td><td class="num">7,416.00</td></tr>
+              <tr><td>Augmentin 625mg</td><td class="mono">AX2301</td><td>Shop floor</td><td class="num">18</td><td class="num">41.2000</td><td class="num">741.60</td></tr>
+              <tr><td>Risek 20mg</td><td class="mono">RK0091</td><td>Shop floor</td><td class="num">420</td><td class="num">14.2000</td><td class="num">5,964.00</td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="5">All batches (this tenant)</td><td class="num">2,418,300.00</td></tr></tfoot>
+          </table>
+        </div>
+        <div class="tab-panel" data-tab-group="st" data-tab="ledger">
+          <div class="filters" style="border-radius:0"><input class="input" placeholder="Product…" value="Panadol 500mg" style="width:200px"><select class="select"><option>Warehouse: Shop floor</option></select></div>
+          <table class="tbl dense">
+            <thead><tr><th>When</th><th>Type</th><th>Document</th><th>Batch</th><th class="right">Qty</th><th class="right">Balance</th></tr></thead>
+            <tbody>
+              <tr><td>08 Oct 14:02</td><td>SALE</td><td class="mono">INV26-000412</td><td class="mono">P5A</td><td class="num text-danger">−20</td><td class="num">1,240</td></tr>
+              <tr><td>08 Oct 11:20</td><td>PURCHASE</td><td class="mono">PUR26-000301</td><td class="mono">P5A</td><td class="num text-ok">+1,000</td><td class="num">1,260</td></tr>
+              <tr><td>02 Oct 16:41</td><td>SALE</td><td class="mono">INV26-000388</td><td class="mono">P5A</td><td class="num text-danger">−20</td><td class="num">260</td></tr>
+              <tr><td>03 Oct</td><td>SALE_RETURN</td><td class="mono">RET26-000017</td><td class="mono">P5A</td><td class="num text-ok">+10</td><td class="num">270</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

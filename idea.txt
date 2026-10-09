@@ -1,0 +1,2763 @@
+t seems like I can’t do more advanced data analysis right now. Please try again later.
+
+I was preparing the complete PharmaPro Cursor documentation as a multi-file Markdown specification, including:
+
+Architecture
+SRS/business requirements
+Database/domain design
+API architecture
+Next.js frontend/design system
+Module breakdown
+Development tickets
+Phases
+2-week sprint plan
+Milestones
+Accounting rules
+Security/testing/deployment
+Cursor agent rules
+Demo/UAT checklist
+Commercial scope/pricing notes
+
+I also intended to package all of them into a single ZIP for direct use in Cursor. The file-generation tool is currently unavailable, so I can't safely provide a download link without actually creating the files.
+
+When you send the next request, I can 
+retry the file creation. 
+
+Retry the file creation
+Analysis errored
+from pathlib import Path
+import zipfile
+
+base = Path("/mnt/data/PharmaPro_Cursor_Spec")
+base.mkdir(parents=True, exist_ok=True)
+
+docs = {
+"README.md": """# PharmaPro — Cursor Development Specification
+
+Production-ready Pharmaceutical ERP + POS + Inventory + Procurement + Accounting platform.
+
+## Read in this order
+1. `00-MASTER-IMPLEMENTATION-PLAN.md`
+2. `01-SRS-BUSINESS-REQUIREMENTS.md`
+3. `02-DATABASE-AND-DOMAIN-DESIGN.md`
+4. `03-API-ARCHITECTURE.md`
+5. `04-FRONTEND-DESIGN-SYSTEM.md`
+6. `05-MODULES-AND-TICKETS.md`
+7. `06-SPRINTS-AND-MILESTONES.md`
+8. `07-ACCOUNTING-RULES.md`
+9. `08-SECURITY-TESTING-DEPLOYMENT.md`
+10. `09-CURSOR-AGENT-RULES.md`
+11. `10-DEMO-UAT-CHECKLIST.md`
+12. `11-PRICING-AND-SCOPE-NOTES.md`
+
+## Product modes
+- Pharmacy
+- Distributor
+- Warehouse
+
+All use the same domain engine with configurable workflows and UI.
+
+## Golden rule
+Correctness > speed, especially for inventory, batches, money, accounting, permissions and tenant isolation.
+""",
+
+"00-MASTER-IMPLEMENTATION-PLAN.md": """# PharmaPro — Master Implementation Plan
+
+## 1. Product vision
+PharmaPro is a multi-tenant pharmaceutical ERP combining POS, inventory, batch/expiry management, procurement, supplier/customer management, accounting, warehouse operations, reporting and communications.
+
+It must support:
+- Small retail pharmacies
+- Medium pharmacies
+- Pharmaceutical distributors
+- Large warehouses
+- Multiple branches and warehouses
+- Web/cloud operation
+- Future Android/iOS application
+- Optional desktop client
+- Future offline POS without changing the core API
+
+## 2. Non-negotiable architecture
+- Laravel API-first backend
+- MySQL 8/InnoDB
+- Redis + Laravel Horizon
+- Next.js + TypeScript web frontend
+- React Native + Expo mobile application
+- Optional Tauri desktop client
+- S3-compatible object storage
+- WhatsApp Business Cloud API behind provider abstraction
+- SMS gateway behind provider abstraction
+- Docker/Nginx/GitHub Actions
+- Sentry and infrastructure monitoring
+
+### Deployment model
+Web:
+`Next.js → Vercel → Laravel API`
+
+Backend:
+`Laravel → Docker → Cloud/VPS → Nginx`
+
+Data:
+`Laravel → MySQL`
+`Laravel → Redis`
+`Laravel → S3-compatible storage`
+
+Mobile:
+`React Native/Expo → same Laravel API`
+
+Desktop:
+`Tauri → same Next.js/web UI + same Laravel API`
+
+## 3. Repository structure
+```text
+pharmapro/
+├── apps/
+│   ├── web/
+│   └── mobile/
+├── services/
+│   └── api/
+├── packages/
+│   ├── api-client/
+│   ├── types/
+│   └── ui/
+├── docs/
+├── infrastructure/
+└── .github/
+    └── workflows/
+4. Core domain separation
+
+Never collapse these concepts:
+
+Product = catalog definition
+Batch = specific purchased lot
+Inventory = quantity at warehouse/location
+Unit = piece/strip/box/etc.
+Unit conversion = relationship between units
+Price = selling/purchase price rules
+Inventory movement = stock history
+
+Never make products.stock authoritative.
+
+5. Core engines
+Product Engine
+Inventory Engine
+Procurement Engine
+Sales/POS Engine
+Accounting Engine
+Communication Engine
+Reporting Engine
+Authorization/Tenant Engine
+6. Development phases
+Phase 0 — Discovery and architecture
+
+Deliver:
+
+SRS
+business rules
+ERD
+API conventions
+permission matrix
+UI information architecture
+design system
+development environment
+CI/CD baseline
+Phase 1 — Platform foundation
+Multi-tenancy
+Authentication
+Users
+Roles
+Permissions
+Branches
+Warehouses
+Locations
+Settings
+Audit logs
+Phase 2 — Product and inventory
+Manufacturers
+Suppliers
+Customers
+Categories
+Product forms
+Units
+Conversions
+Products
+Barcodes
+Prices
+Taxes
+Batches
+Inventory balances
+Inventory movements
+FEFO
+Expiry
+Low stock
+Adjustments
+Stocktake
+Phase 3 — Procurement
+Purchase request
+Purchase order
+Goods receipt
+Purchase invoice
+Free quantity/schemes
+Supplier credit
+Supplier payments
+Purchase returns
+Phase 4 — Sales and POS
+POS
+Barcode
+Search
+Cart
+Batch allocation
+Unit selection
+Discounts
+Taxes
+Payment methods
+Customer credit
+Sales
+Sales returns
+Receipts
+Void/reversal
+Phase 5 — Accounting
+Chart of accounts
+Journal engine
+General ledger
+Accounts payable
+Accounts receivable
+Cash
+Bank
+Payments
+Trial balance
+P&L
+Balance sheet
+Cash flow
+Phase 6 — Communication
+Notification framework
+Templates
+SMS
+WhatsApp
+Low-stock alerts
+Expiry alerts
+Payment reminders
+Supplier communication
+Message logs
+Phase 7 — Advanced warehouse
+Multiple warehouses
+Rack/shelf/bin
+Transfers
+Approval
+Picking
+Packing
+Dispatch
+Receiving
+Recall
+Advanced stocktake
+Phase 8 — Advanced reports
+Inventory valuation
+COGS
+Gross profit
+AR/AP aging
+Fast/slow/dead stock
+Batch reports
+Expiry reports
+Financial analytics
+Phase 9 — Mobile
+
+React Native + Expo:
+
+Login
+Dashboard
+Product lookup
+Barcode scan
+Inventory
+Purchase orders
+Approvals
+Transfers
+Stocktake
+Notifications
+Phase 10 — Desktop/offline
+
+Only after online workflows are stable:
+
+Tauri shell
+Windows installer
+Local storage
+Offline queue
+Sync
+Conflict handling
+Printer integration where required
+7. MVP
+
+MVP should include:
+
+Authentication
+Tenant
+Roles/permissions
+Branch/warehouse
+Products
+Manufacturers
+Suppliers
+Customers
+Units/conversions
+Barcodes
+Batches
+Inventory
+Expiry
+Low stock
+Purchases
+Supplier credit/payments
+POS
+Sales
+Customer credit
+Returns
+Basic accounting
+Core reports
+Audit trail
+
+Advanced mobile, offline mode and advanced warehouse picking should follow the stable MVP.
+
+8. Definition of Done
+
+A ticket is complete only when:
+
+Database changes are complete
+Validation exists
+Authorization exists
+Domain logic exists
+API exists
+UI exists where applicable
+Tests exist
+Error states exist
+Audit requirements are handled
+Documentation is updated
+Lint/type checks pass
+Automated tests pass
+No known critical defect remains
+""",
+
+"01-SRS-BUSINESS-REQUIREMENTS.md": """# PharmaPro — Software Requirements Specification
+
+1. Users and operating modes
+Pharmacy
+
+Optimized for fast retail sales, barcode scanning, expiry control and customer payments.
+
+Distributor
+
+Optimized for bulk purchasing, wholesale pricing, credit, multiple warehouses and customer accounts.
+
+Warehouse
+
+Optimized for receiving, rack/bin storage, transfers, picking, dispatch and stocktake.
+
+2. Tenant
+
+Tenant fields:
+
+Business name
+Legal name
+Registration information
+Tax information
+Logo
+Address
+Phone
+Email
+Timezone
+Currency
+Fiscal year
+Invoice settings
+Tax settings
+
+Every tenant-owned record must be tenant scoped.
+
+3. Branches and warehouses
+
+A tenant may have:
+
+Multiple branches
+Multiple warehouses
+Multiple warehouse locations
+
+Locations may be:
+
+Rack
+Shelf
+Bin
+Zone
+4. Roles
+
+Suggested built-in roles:
+
+Owner
+Admin
+Pharmacist
+Cashier
+Purchase Manager
+Warehouse Manager
+Accountant
+Auditor
+Branch Manager
+
+Custom roles must also be supported.
+
+5. Manufacturers
+
+Fields:
+
+Name
+Code
+Address
+Phone
+Email
+Website
+Contact person
+Contact phone
+Contact email
+Notes
+Active status
+
+Manufacturer and supplier are different entities.
+
+6. Suppliers
+
+Fields:
+
+Supplier code
+Company name
+Contact person
+Phone
+WhatsApp
+Email
+Address
+Tax information
+Payment terms
+Credit limit
+Opening balance
+Notes
+Status
+7. Customers
+
+Support:
+
+Walk-in customer
+Retail customer
+Wholesale customer
+Institutional customer
+
+Fields:
+
+Code
+Name
+Phone
+WhatsApp
+Email
+Address
+Tax information
+Credit limit
+Payment terms
+Opening balance
+Price list
+Status
+8. Products
+
+Fields:
+
+SKU
+Product name
+Generic/salt name
+Brand
+Manufacturer
+Category
+Subcategory
+Dosage form
+Strength
+Description
+Prescription flag where required
+Tax category
+Default unit
+Reorder level
+Maximum stock
+Preferred supplier
+Active status
+
+Configurable forms:
+
+Tablet
+Capsule
+Syrup
+Injection
+Cream
+Ointment
+Tube
+Drops
+Inhaler
+Sachet
+Device
+General inventory
+9. Units
+
+Examples:
+
+Piece
+Tablet
+Capsule
+Strip
+Box
+Carton
+Bottle
+Tube
+Pack
+Case
+
+Example:
+1 box = 10 strips
+1 strip = 10 tablets
+1 box = 100 tablets
+
+Conversions are product-specific.
+
+10. Pricing
+
+Support:
+
+Purchase cost
+Landed cost if required
+Cost price
+MRP
+Retail price
+Wholesale price
+Customer-specific price
+Promotional price
+
+Do not overwrite historical prices required for financial history.
+
+11. Taxes
+
+Tax configuration must include:
+
+Name
+Type
+Rate
+Inclusive/exclusive
+Product/category applicability
+Effective date
+Jurisdiction where required
+
+Never hard-code a tax rate.
+
+12. Barcodes
+
+Support:
+
+Manufacturer barcode
+Box barcode
+Strip barcode
+Internal barcode
+Optional batch barcode
+
+Multiple barcodes can map to one product.
+
+13. Batches
+
+Fields:
+
+Product
+Batch number
+Manufacturing date
+Expiry date
+Supplier
+Purchase reference
+Purchase cost
+MRP
+Status
+
+Statuses:
+
+SALEABLE
+DAMAGED
+EXPIRED
+QUARANTINED
+RECALLED
+RETURNED
+14. Inventory
+
+Track:
+
+Tenant
+Branch
+Warehouse
+Location
+Product
+Batch
+Unit
+Quantity
+Reserved quantity
+Available quantity
+
+Inventory is movement-driven.
+
+15. Inventory movement types
+OPENING
+PURCHASE
+PURCHASE_RETURN
+SALE
+SALE_RETURN
+TRANSFER_OUT
+TRANSFER_IN
+ADJUSTMENT_IN
+ADJUSTMENT_OUT
+DAMAGE
+EXPIRY
+RECALL
+OTHER
+16. FEFO
+
+Default allocation:
+First Expiry, First Out
+
+Only:
+
+saleable
+non-expired
+non-recalled
+
+stock may be sold.
+
+Tie-breaking must be deterministic.
+
+17. Low stock
+
+Configure:
+
+Minimum stock
+Reorder level
+Reorder quantity
+Maximum stock
+Preferred supplier
+18. Expiry
+
+Support configurable alerts such as:
+
+Expired
+Expiring today
+7 days
+30 days
+60 days
+90 days
+19. Procurement
+
+Advanced:
+Purchase Request → PO → Goods Received → Purchase Invoice → Stock Posted → Supplier Payable → Payment
+
+Simple:
+Purchase Invoice → Receive Stock → Pay/Credit
+
+20. Purchase lines
+
+Each line supports:
+
+Product
+Batch
+Manufacturing date
+Expiry
+Unit
+Quantity
+Free quantity
+Purchase price
+Discount
+Tax
+Net amount
+21. Free schemes
+
+Example:
+Buy 10, receive 1 free.
+
+Preserve:
+
+Paid quantity
+Free quantity
+Total received quantity
+
+Effective cost may be calculated as:
+total paid / total received saleable quantity
+
+22. Purchase returns
+
+Must be batch-aware and linked to original purchase when possible.
+
+Returned stock must receive a disposition.
+
+23. POS
+
+Features:
+
+Barcode scanning
+Product search
+Generic/salt search
+Batch selection
+Unit selection
+Quantity
+Price
+Discount
+Tax
+Customer
+Payment
+Receipt
+Hold/resume if enabled
+Returns
+Authorized void
+
+Payment methods:
+
+Cash
+Bank
+Card
+JazzCash
+Easypaisa
+Credit
+Configurable methods
+24. Sales
+
+Each sale records:
+
+Customer
+Branch
+Warehouse
+Cashier
+Product
+Batch
+Quantity
+Unit
+Selling price
+Discount
+Tax
+Cost basis
+COGS
+Payment status
+25. Sales returns
+
+Link to original sale where possible.
+
+Returned stock disposition:
+
+Saleable
+Quarantine
+Damaged
+26. Credit accounting
+
+Credit purchase:
+Dr Inventory / Cr Accounts Payable
+
+Supplier payment:
+Dr Accounts Payable / Cr Cash or Bank
+
+Credit sale:
+Dr Accounts Receivable / Cr Sales Revenue
+
+Customer payment:
+Dr Cash or Bank / Cr Accounts Receivable
+
+Tax and exact accounting treatment must follow approved accounting rules.
+
+27. Accounting
+
+Must support:
+
+Chart of accounts
+Account groups
+Journal entries
+Journal lines
+General ledger
+Accounts payable
+Accounts receivable
+Cash
+Bank
+Payment allocations
+Fiscal periods
+Trial balance
+P&L
+Balance sheet
+Cash flow
+
+Every posted journal must balance.
+
+28. Stock transfer
+
+Workflow:
+Draft → Requested → Approved → Picked → Dispatched → Received → Completed
+
+Never duplicate stock.
+
+29. Stocktake
+
+Workflow:
+Open → Count → Variance → Approval → Adjustment → Completed
+
+Store expected quantity, physical quantity and variance.
+
+30. Recall
+
+For a recalled batch:
+
+Block normal sale
+Find current stock
+Find warehouses
+Find affected purchases
+Find affected sales/customers where possible
+Record disposition
+31. Borrowed/consignment stock
+
+“Borrowed stock” must not be guessed.
+
+If needed, implement explicit ownership:
+
+OWNED
+CONSIGNED
+BORROWED
+
+Accounting must differ by ownership type.
+
+32. CSV
+
+Workflow:
+Upload → Validate → Preview → Error report → Confirm → Create → Import log
+
+Opening stock import:
+
+Product
+SKU
+Batch
+Expiry
+Quantity
+Unit
+Cost
+MRP
+Warehouse
+Location
+33. Reports
+
+Inventory:
+
+Current stock
+Stock ledger
+Batch report
+Expiry
+Low stock
+Valuation
+Adjustments
+Transfers
+Fast/slow/dead stock
+
+Purchasing:
+
+Purchase summary
+Purchase detail
+Supplier purchases
+Returns
+Payables
+
+Sales:
+
+Sales summary
+Sales detail
+Cashier
+Product
+Batch
+Returns
+Discounts
+Tax
+COGS
+Gross profit
+
+Accounting:
+
+General ledger
+Trial balance
+P&L
+Balance sheet
+Cash flow
+AR aging
+AP aging
+Customer statement
+Supplier statement
+34. Dashboard
+
+Show relevant metrics by role:
+
+Sales
+Purchases
+Receivables
+Payables
+Stock value
+Low stock
+Expiry
+Expired
+Top products
+Cash
+Pending approvals
+35. Communication
+
+Provider-independent events:
+
+Low stock
+Expiry
+Payment due
+Supplier payment
+Purchase order
+Recall
+Transfer
+Report ready
+
+Store:
+
+Provider
+Recipient
+Template
+Payload
+Status
+Provider message ID
+Error
+Timestamps
+36. Audit
+
+Audit:
+
+Login/logout
+Create
+Update
+Approve
+Post
+Cancel
+Void
+Reverse
+Payment
+Stock adjustment
+Price change
+Permission change
+Settings change
+
+Store actor, timestamp, entity, action, before/after and relevant request/device metadata.
+""",
+
+"02-DATABASE-AND-DOMAIN-DESIGN.md": """# PharmaPro — Database and Domain Design
+
+1. Table groups
+Tenant
+tenants
+tenant_settings
+branches
+warehouses
+warehouse_locations
+Identity
+users
+roles
+permissions
+model_has_roles
+model_has_permissions
+activity_log
+Master data
+manufacturers
+suppliers
+customers
+product_categories
+product_subcategories
+product_forms
+units
+unit_conversions
+products
+product_barcodes
+price_lists
+product_prices
+taxes
+Inventory
+product_batches
+inventory_balances
+inventory_movements
+stock_adjustments
+stock_adjustment_lines
+stock_transfers
+stock_transfer_lines
+stocktakes
+stocktake_lines
+Procurement
+purchase_requests
+purchase_request_lines
+purchase_orders
+purchase_order_lines
+goods_receipts
+goods_receipt_lines
+purchases
+purchase_lines
+purchase_returns
+purchase_return_lines
+Sales
+sales
+sale_lines
+sale_payments
+sales_returns
+sales_return_lines
+Finance
+account_groups
+accounts
+journal_entries
+journal_lines
+payments
+payment_allocations
+fiscal_periods
+Communications
+notification_templates
+notification_rules
+notification_logs
+System
+audit_logs
+imports
+import_rows
+document_sequences
+system_settings
+2. Product
+products
+- id
+- tenant_id
+- sku
+- name
+- generic_name
+- manufacturer_id
+- category_id
+- form_id
+- strength
+- default_unit_id
+- reorder_level
+- max_stock_level
+- active
+- timestamps
+3. Batch
+product_batches
+- id
+- tenant_id
+- product_id
+- batch_number
+- manufacturing_date
+- expiry_date
+- supplier_id
+- purchase_cost
+- mrp
+- status
+- timestamps
+
+Unique batch constraints must be defined according to tenant/product business rules.
+
+4. Inventory balance
+
+Fast-read projection:
+
+inventory_balances
+- id
+- tenant_id
+- warehouse_id
+- location_id
+- product_id
+- batch_id
+- unit_id
+- quantity
+- reserved_quantity
+- version
+- timestamps
+
+Movement history remains authoritative.
+
+5. Inventory movement
+inventory_movements
+- id
+- tenant_id
+- warehouse_id
+- location_id
+- product_id
+- batch_id
+- unit_id
+- quantity
+- direction
+- movement_type
+- source_type
+- source_id
+- unit_cost
+- reference
+- created_by
+- created_at
+
+Movements should be append-only after posting.
+
+6. Concurrency
+
+For stock allocation:
+
+Begin DB transaction.
+Find eligible batches.
+Lock candidate inventory rows with FOR UPDATE.
+Recalculate available quantity.
+Allocate quantity.
+Create sale lines.
+Create movement rows.
+Update inventory projection.
+Create accounting entries.
+Commit.
+
+If insufficient stock remains after locking, reject the operation.
+
+7. Money
+
+Use decimal, never floating-point money.
+
+Recommended initial precision:
+DECIMAL(19,4)
+
+Final financial precision must be confirmed with business/accounting requirements.
+
+8. Indexing
+
+Important indexes:
+
+tenant_id
+SKU
+barcode
+product_id
+batch_id
+expiry_date
+warehouse_id
+supplier_id
+customer_id
+status
+transaction date
+
+Use composite indexes based on real query patterns and EXPLAIN plans.
+
+9. Accounting
+journal_entries
+- id
+- tenant_id
+- reference_type
+- reference_id
+- date
+- description
+- status
+- posted_by
+- posted_at
+
+journal_lines
+- id
+- journal_entry_id
+- account_id
+- debit
+- credit
+- description
+
+Posting requires:
+SUM(debit) = SUM(credit)
+
+10. Database rules
+Foreign keys for relational integrity.
+Tenant ID on tenant-owned records.
+Soft deletion only where business-safe.
+Posted financial records are not destructively deleted.
+Use reversal/correction workflows.
+Avoid JSON for core searchable relational data.
+Use status fields consistently.
+""",
+
+"03-API-ARCHITECTURE.md": """# PharmaPro — API Architecture
+
+1. API principle
+
+All clients consume the same Laravel API:
+
+Next.js web
+POS UI
+React Native mobile
+Optional Tauri desktop
+Future third-party integrations
+
+Business rules never live only in a client.
+
+2. Base URL
+
+/api/v1
+
+3. Authentication
+
+Laravel Sanctum.
+
+Endpoints:
+
+POST /auth/login
+POST /auth/logout
+GET  /auth/me
+POST /auth/forgot-password
+POST /auth/reset-password
+4. Response format
+
+Success:
+
+{
+  "data": {},
+  "meta": {}
+}
+
+Error:
+
+{
+  "message": "Validation failed.",
+  "errors": {
+    "field": ["The field is required."]
+  }
+}
+5. Main resources
+/products
+/products/{id}
+/products/{id}/batches
+/batches
+/manufacturers
+/suppliers
+/customers
+/categories
+/units
+/unit-conversions
+/prices
+/taxes
+
+/inventory
+/inventory/ledger
+/inventory/low-stock
+/inventory/expiry
+/inventory/adjustments
+/inventory/stocktakes
+/inventory/transfers
+
+/purchase-requests
+/purchase-orders
+/goods-receipts
+/purchases
+/purchases/{id}/post
+/purchases/{id}/return
+
+/sales
+/sales/{id}
+/sales/{id}/post
+/sales/{id}/return
+/sales/{id}/void
+
+/payments
+/accounts
+/journal-entries
+/ledger
+/trial-balance
+/profit-loss
+/balance-sheet
+/cash-flow
+
+/reports/*
+/notifications/*
+6. Service layer
+
+Recommended domain services/actions:
+
+ProductService
+BatchService
+InventoryService
+StockAllocationService
+PurchaseService
+PurchasePostingService
+PurchaseReturnService
+SaleService
+SalePostingService
+SalesReturnService
+PaymentService
+AccountingService
+JournalService
+NotificationService
+ImportService
+ReportService
+
+Controllers should remain thin.
+
+7. Transactions
+
+Database transactions are mandatory for:
+
+Sale posting
+Purchase posting
+Returns
+Stock adjustments
+Transfers
+Payments
+Accounting posting
+8. Events
+
+Examples:
+
+SalePosted
+PurchasePosted
+PaymentRecorded
+LowStockDetected
+ExpiryThresholdReached
+StockTransferCompleted
+RecallCreated
+9. Idempotency
+
+Support idempotency for:
+
+Payment creation
+Sale posting
+Purchase posting
+Mobile sync
+External webhooks
+10. Pagination
+
+All list APIs:
+
+Validate filters
+Validate sorting fields
+Apply maximum page size
+Never expose arbitrary SQL fields
+11. Authorization
+
+Every request checks:
+
+Authentication
+Tenant membership
+Permission
+Branch/warehouse scope
+Record ownership
+12. API documentation
+
+Maintain OpenAPI/Swagger documentation for production endpoints.
+""",
+
+"04-FRONTEND-DESIGN-SYSTEM.md": """# PharmaPro — Next.js Frontend and Design System
+
+1. Stack
+Next.js
+React
+TypeScript
+Tailwind CSS
+Accessible component system
+API client package
+React Query/TanStack Query or equivalent server-state layer
+2. Deployment
+
+Next.js can be deployed directly to Vercel.
+
+Architecture:
+Browser → Vercel Next.js → Laravel API
+
+The Laravel API remains the source of truth.
+
+3. Navigation
+
+Permission-driven navigation:
+
+Dashboard
+POS
+Sales
+Purchases
+Inventory
+Products
+Manufacturers
+Suppliers
+Customers
+Accounting
+Reports
+Communications
+Settings
+4. POS UX
+
+Optimize for speed:
+
+Barcode field always accessible
+Product search
+Generic/salt search
+Keyboard navigation
+Unit selection
+Quantity
+Batch allocation
+Price
+Discount
+Tax
+Customer
+Payment
+Receipt
+Hold/resume
+Authorized price override
+
+Do not make cashiers navigate through unnecessary screens.
+
+5. Inventory UI
+
+Columns:
+
+Product
+SKU
+Batch
+Expiry
+Warehouse
+Location
+Available
+Reserved
+Cost
+MRP
+Status
+
+Filters:
+
+Warehouse
+Category
+Manufacturer
+Expiry
+Low stock
+Batch
+Status
+6. Forms
+
+Every form needs:
+
+Labels
+Required state
+Client validation for UX
+Server validation as authority
+Loading state
+Disabled submit
+Success feedback
+API error display
+7. Table behavior
+Pagination
+Search
+Filters
+Sort
+Column visibility
+Export only when authorized
+Empty state
+Loading state
+Error state
+8. Destructive actions
+
+Confirmation required for:
+
+Void
+Reverse
+Cancel
+Delete where permitted
+Stock adjustment
+Recall
+Return
+
+High-risk actions should require reason and/or elevated permission.
+
+9. Responsive design
+
+Web:
+
+Desktop
+Laptop
+Tablet
+
+Mobile-first workflows belong primarily in the React Native application.
+
+10. Accessibility
+Keyboard navigation
+Focus management
+Semantic controls
+Labels
+Error association
+Readable contrast
+Screen-reader-friendly status messages
+11. Visual style
+
+Serious ERP:
+
+Dense data tables
+Clear hierarchy
+Fast actions
+Consistent spacing
+Clear totals
+Minimal decoration
+Consistent confirmation and error patterns
+12. Never
+
+Frontend must never decide:
+
+Final stock
+Final COGS
+Accounting entries
+Tax authority
+User permission
+Tenant scope
+"""
+,
+"05-MODULES-AND-TICKETS.md": """# PharmaPro — Modules, Tickets and Acceptance Criteria
+Ticket convention
+
+PP-[MODULE]-[NUMBER]
+
+Every ticket must contain:
+
+Objective
+Scope
+Dependencies
+Database changes
+API changes
+UI changes
+Permission requirements
+Audit requirements
+Acceptance criteria
+Automated tests
+Phase 0 — Foundation
+PP-FOUND-001 Repository bootstrap
+Requirements
+
+Create Laravel API, Next.js web, mobile placeholder, packages, documentation and environment templates.
+
+Acceptance
+All apps install
+README works
+Environment variables documented
+Lint/type/test commands documented
+PP-FOUND-002 Docker environment
+
+Create local:
+
+Laravel
+MySQL
+Redis
+Next.js
+Mail testing service if required
+PP-FOUND-003 CI/CD
+
+CI must run:
+
+PHP tests
+PHP lint/static analysis
+Frontend lint
+TypeScript checks
+Production build
+PP-FOUND-004 API standards
+
+Implement:
+
+/api/v1
+validation format
+error format
+pagination
+authentication middleware
+PP-FOUND-005 Frontend shell
+
+Create:
+
+Sidebar
+Header
+Breadcrumb
+Page container
+Table
+Form
+Modal
+Toast
+Loading
+Empty
+Error
+Permission-denied components
+Phase 1 — Platform
+PP-PLAT-001 Tenant
+
+Create tenant model, settings and tenant scope.
+
+Acceptance
+
+A user from Tenant A cannot retrieve/update Tenant B data.
+
+PP-PLAT-002 Branches
+
+CRUD and permission scope.
+
+PP-PLAT-003 Warehouses
+
+CRUD, branch relation and permissions.
+
+PP-PLAT-004 Warehouse locations
+
+Rack/shelf/bin support.
+
+PP-PLAT-005 Authentication
+
+Login/logout/password reset.
+
+PP-PLAT-006 Roles and permissions
+
+Use granular permissions and backend policies.
+
+PP-PLAT-007 Audit log
+
+Record critical changes and show authorized audit viewer.
+
+Phase 2 — Product
+PP-PROD-001 Manufacturers
+
+CRUD, contact details and active status.
+
+PP-PROD-002 Suppliers
+
+CRUD, credit limit, payment terms and contact channels.
+
+PP-PROD-003 Customers
+
+CRUD, credit limit, price list and payment terms.
+
+PP-PROD-004 Categories
+
+CRUD.
+
+PP-PROD-005 Product forms
+
+Configurable dosage/inventory forms.
+
+PP-PROD-006 Units
+
+CRUD and unit metadata.
+
+PP-PROD-007 Unit conversions
+
+Product-specific conversion rules.
+
+Acceptance
+
+Given 1 box = 10 strips and 1 strip = 10 tablets:
+
+1 box = 100 tablets
+Sales in tablets reduce equivalent base quantity
+Purchases in boxes increase equivalent quantity
+PP-PROD-008 Product master
+
+CRUD with manufacturer/category/form/unit relationships.
+
+PP-PROD-009 Barcodes
+
+Multiple barcodes per product.
+
+PP-PROD-010 Pricing
+
+Purchase, cost, MRP, retail, wholesale and customer pricing.
+
+PP-PROD-011 Tax rules
+
+Configurable tax with effective dates.
+
+Phase 3 — Inventory
+PP-INV-001 Batches
+
+Create and manage batch records.
+
+PP-INV-002 Inventory balances
+
+Fast-read inventory projection.
+
+PP-INV-003 Movement ledger
+
+Append-only inventory movements.
+
+PP-INV-004 FEFO allocation
+
+Select earliest valid expiry.
+
+Acceptance
+
+If Batch A expires before Batch B, sale allocates A first.
+
+PP-INV-005 Concurrency
+
+Two users cannot sell the same final quantity.
+
+PP-INV-006 Low stock
+
+Calculate thresholds and trigger events.
+
+PP-INV-007 Expiry
+
+Expiry dashboards and alerts.
+
+PP-INV-008 Stock adjustments
+
+Authorized adjustments with reason and audit.
+
+PP-INV-009 Stocktake
+
+Expected vs physical, approval and adjustment.
+
+Phase 4 — Procurement
+PP-PUR-001 Purchase request
+
+Create/request/approve.
+
+PP-PUR-002 Purchase order
+
+Supplier PO with lines.
+
+PP-PUR-003 Goods receipt
+
+Receive batch-aware stock.
+
+PP-PUR-004 Purchase invoice
+
+Post inventory and payable atomically.
+
+PP-PUR-005 Free schemes
+
+Paid/free quantity support.
+
+PP-PUR-006 Supplier payable
+
+Create AP transaction from credit purchase.
+
+PP-PUR-007 Supplier payment
+
+Full/partial payment and allocation.
+
+PP-PUR-008 Purchase return
+
+Batch-aware return and accounting reversal.
+
+PP-PUR-009 Procurement reports
+
+Purchase summary/detail, supplier statement and returns.
+
+Phase 5 — Sales/POS
+PP-SALE-001 POS shell
+
+Fast search/cart/payment layout.
+
+PP-SALE-002 Product/barcode search
+
+Search by:
+
+Barcode
+SKU
+Name
+Generic/salt
+PP-SALE-003 Batch allocation
+
+FEFO batch selection.
+
+PP-SALE-004 Cart
+
+Unit, quantity, price, discount, tax.
+
+PP-SALE-005 Payment
+
+Cash, bank, card, wallet, credit and configurable methods.
+
+PP-SALE-006 Atomic sale posting
+
+Sale, inventory and accounting must commit atomically.
+
+PP-SALE-007 Receipt
+
+Printable/shareable receipt.
+
+PP-SALE-008 Customer credit
+
+AR transaction and payment allocation.
+
+PP-SALE-009 Sales return
+
+Link original sale where possible.
+
+PP-SALE-010 Void/reversal
+
+Authorized only, with audit reason.
+
+Phase 6 — Accounting
+PP-ACC-001 Chart of accounts
+
+Default pharmacy/distributor chart plus customization.
+
+PP-ACC-002 Journal engine
+
+Balanced journal validation.
+
+PP-ACC-003 General ledger
+
+Account transaction history and balances.
+
+PP-ACC-004 AP
+
+Supplier liabilities and aging.
+
+PP-ACC-005 AR
+
+Customer receivables and aging.
+
+PP-ACC-006 Cash
+
+Cash account and transactions.
+
+PP-ACC-007 Bank
+
+Bank accounts and transactions.
+
+PP-ACC-008 Trial balance
+
+Debit/credit totals.
+
+PP-ACC-009 P&L
+
+Revenue, COGS, expenses and gross/net profit according to configured accounting.
+
+PP-ACC-010 Balance sheet
+
+Assets, liabilities and equity.
+
+PP-ACC-011 Cash flow
+
+Operating/investing/financing classification as configured.
+
+PP-ACC-012 Supplier statements
+
+Opening, purchases, payments, returns and closing balance.
+
+PP-ACC-013 Customer statements
+
+Opening, sales, payments, returns and closing balance.
+
+Phase 7 — Communication
+PP-COM-001 Notification engine
+
+Central event-driven notification system.
+
+PP-COM-002 Templates
+
+Variables such as:
+{{supplier_name}}, {{product_name}}, {{quantity}}, {{warehouse}}.
+
+PP-COM-003 SMS provider interface
+
+Provider-independent adapter.
+
+PP-COM-004 WhatsApp Business API
+
+Official API integration through provider interface.
+
+PP-COM-005 Low-stock alerts
+
+Notify configured recipients.
+
+PP-COM-006 Expiry alerts
+
+Notify responsible users.
+
+PP-COM-007 Message logs
+
+Track delivery status and provider IDs.
+
+Phase 8 — Warehouse
+PP-WH-001 Multi-warehouse operations
+
+Warehouse-level stock and permissions.
+
+PP-WH-002 Transfer request
+
+Source/destination workflow.
+
+PP-WH-003 Transfer approval
+
+Permission-based approval.
+
+PP-WH-004 Picking
+
+Generate pick list.
+
+PP-WH-005 Dispatch
+
+Remove/commit source stock only at approved dispatch stage.
+
+PP-WH-006 Receiving
+
+Confirm destination quantity.
+
+PP-WH-007 Rack/bin
+
+Location-level stock.
+
+PP-WH-008 Warehouse stocktake
+
+Location-aware counting.
+
+PP-WH-009 Recall
+
+Batch recall workflow.
+
+Phase 9 — Reporting
+PP-REP-001 Dashboard
+
+Role-specific KPIs.
+
+PP-REP-002 Sales reports
+
+Date, branch, cashier, product, batch, customer.
+
+PP-REP-003 Purchase reports
+
+Date, supplier, product, batch.
+
+PP-REP-004 Inventory reports
+
+Stock, movement, valuation, expiry.
+
+PP-REP-005 COGS/profit
+
+Use historical batch/cost information.
+
+PP-REP-006 AR/AP aging
+
+Configurable aging buckets.
+
+PP-REP-007 Financial statements
+
+Trial balance, P&L, balance sheet, cash flow.
+
+PP-REP-008 Fast/slow/dead stock
+
+Configurable analysis windows.
+
+PP-REP-009 Expiry reports
+
+Expired and upcoming expiry.
+
+Phase 10 — Mobile
+PP-MOB-001 Expo setup
+
+React Native + Expo.
+
+PP-MOB-002 Authentication
+
+Same Laravel auth model.
+
+PP-MOB-003 Dashboard
+
+Role-based.
+
+PP-MOB-004 Product lookup
+
+Search inventory.
+
+PP-MOB-005 Barcode scanner
+
+Use device camera.
+
+PP-MOB-006 Inventory
+
+View stock/batch/expiry.
+
+PP-MOB-007 Purchase orders
+
+Create/review/approve according to role.
+
+PP-MOB-008 Approvals
+
+Purchase/transfer/adjustment approvals.
+
+PP-MOB-009 Transfers
+
+Warehouse transfer workflow.
+
+PP-MOB-010 Stocktake
+
+Mobile counting.
+
+PP-MOB-011 Notifications
+
+In-app/push notification integration.
+
+Phase 11 — Desktop/Offline
+PP-DESK-001 Tauri shell
+
+Wrap web application for desktop.
+
+PP-DESK-002 Installer
+
+Windows-first if required.
+
+PP-DESK-003 Local storage
+
+Only required operational cache/data.
+
+PP-DESK-004 Offline transaction queue
+
+Store unsynced actions.
+
+PP-DESK-005 Sync engine
+
+Idempotent server synchronization.
+
+PP-DESK-006 Conflict handling
+
+Never silently overwrite authoritative server data.
+""",
+
+"06-SPRINTS-AND-MILESTONES.md": """# PharmaPro — Sprint and Milestone Plan
+
+Recommended sprint length: 2 weeks.
+
+Every sprint ends with:
+
+Working demo
+Automated tests
+QA
+Documentation
+Code review
+Backlog update
+Milestone 1 — Foundation
+Sprint 1
+Repository
+Docker
+Laravel
+Next.js
+MySQL
+Redis
+CI
+API conventions
+Sprint 2
+Authentication
+Tenant
+Users
+Roles
+Permissions
+Branches
+Warehouses
+Milestone 2 — Product and Inventory
+Sprint 3
+Manufacturers
+Suppliers
+Customers
+Categories
+Product forms
+Units
+Sprint 4
+Unit conversions
+Products
+Barcodes
+Pricing
+Tax
+Sprint 5
+Batches
+Inventory balances
+Movement ledger
+FEFO
+Concurrency
+Sprint 6
+Low stock
+Expiry
+Adjustments
+Stocktake
+Inventory reports
+Milestone 3 — Procurement
+Sprint 7
+Purchase request
+Purchase order
+Goods receipt
+Sprint 8
+Purchase invoice
+Free schemes
+Supplier payable
+Payments
+Sprint 9
+Purchase returns
+Supplier statements
+Procurement reports
+Milestone 4 — POS
+Sprint 10
+POS shell
+Search
+Barcode
+Cart
+Sprint 11
+Batch allocation
+Pricing
+Discount
+Tax
+Payments
+Sprint 12
+Sale posting
+Receipts
+Customer credit
+Returns
+Void/reversal
+Milestone 5 — Accounting
+Sprint 13
+Chart of accounts
+Journal engine
+General ledger
+Sprint 14
+AR
+AP
+Cash
+Bank
+Payments
+Sprint 15
+Trial balance
+P&L
+Balance sheet
+Cash flow
+Statements
+Milestone 6 — Communication
+Sprint 16
+Notification framework
+Templates
+SMS
+WhatsApp
+Sprint 17
+Low stock
+Expiry
+Supplier messages
+Message logs
+Milestone 7 — Warehouse
+Sprint 18
+Transfers
+Locations
+Approvals
+Sprint 19
+Picking
+Dispatch
+Receiving
+Sprint 20
+Recall
+Warehouse stocktake
+Warehouse reports
+Milestone 8 — Reporting
+Sprint 21
+Dashboards
+Sales
+Purchase
+Inventory
+Sprint 22
+COGS
+Profit
+Valuation
+AR/AP aging
+Financial reports
+Milestone 9 — Mobile
+Sprint 23
+Expo
+Auth
+Dashboard
+Inventory
+Sprint 24
+Barcode
+Purchasing
+Approvals
+Transfers
+Sprint 25
+Stocktake
+Notifications
+QA
+Milestone 10 — Production hardening
+Sprint 26
+Security
+Performance
+Indexes
+Queue monitoring
+Backups/restore
+Sprint 27
+UAT
+Fixes
+Deployment
+Training
+Production launch
+MVP boundary
+
+MVP is complete after the stable core pharmacy/distributor workflows work end-to-end. Do not delay launch for advanced offline mode, every report, every integration or advanced warehouse automation.
+""",
+
+"07-ACCOUNTING-RULES.md": """# PharmaPro — Accounting Rules
+
+Principle
+
+PharmaPro uses true double-entry accounting.
+
+Every posted journal must satisfy:
+Total Debit = Total Credit
+
+Core accounts
+Assets
+Cash
+Bank
+Accounts Receivable
+Inventory
+Other Current Assets
+Liabilities
+Accounts Payable
+Tax Payable
+Other Current Liabilities
+Equity
+Owner Capital
+Retained Earnings
+Revenue
+Sales Revenue
+Other Revenue
+Costs
+COGS
+Other purchase-related costs where approved
+Expenses
+Rent
+Salaries
+Utilities
+Other operating expenses
+Cash purchase
+
+Dr Inventory
+Cr Cash/Bank
+
+Credit purchase
+
+Dr Inventory
+Cr Accounts Payable
+
+Supplier payment
+
+Dr Accounts Payable
+Cr Cash/Bank
+
+Cash sale
+
+Revenue:
+Dr Cash
+Cr Sales Revenue
+
+Cost:
+Dr COGS
+Cr Inventory
+
+Credit sale
+
+Revenue:
+Dr Accounts Receivable
+Cr Sales Revenue
+
+Cost:
+Dr COGS
+Cr Inventory
+
+Customer payment
+
+Dr Cash/Bank
+Cr Accounts Receivable
+
+Returns
+
+Reverse applicable original effects while respecting actual physical stock disposition.
+
+Discounts and taxes
+
+Exact treatment must be defined in approved accounting/tax rules. Never improvise in controllers.
+
+Posting states
+
+Draft documents do not affect final ledger.
+
+Only posted documents create final financial entries.
+
+Corrections
+
+Posted entries are corrected by:
+Original → Reversal → Corrected transaction
+
+Do not silently mutate historical posted journals.
+
+Inventory valuation
+
+The chosen valuation method must be documented and consistently applied. Batch cost must be preserved so historical COGS does not depend on today's product cost.
+
+Production warning
+
+Tax treatment, valuation, fiscal periods and financial statements must be reviewed with the client's accountant/tax advisor before production financial sign-off.
+""",
+
+"08-SECURITY-TESTING-DEPLOYMENT.md": """# PharmaPro — Security, Testing and Deployment
+
+1. Security
+Tenant isolation
+
+Every tenant-owned query must be scoped.
+
+Test:
+
+Tenant A cannot read Tenant B
+Tenant A cannot update Tenant B
+Tenant A cannot infer protected IDs through unauthorized endpoints
+Authorization
+
+Frontend visibility is not security.
+
+Laravel policies/permissions must enforce:
+
+View
+Create
+Update
+Approve
+Post
+Return
+Void
+Reverse
+Export
+Manage settings
+Rate limiting
+
+Protect:
+
+Login
+Password reset
+Public callbacks
+Messaging
+Imports
+Expensive reports
+Files
+
+Validate:
+
+MIME type
+Extension
+Size
+Storage path
+
+Do not expose private files directly.
+
+Secrets
+
+Never commit:
+
+API keys
+DB passwords
+WhatsApp tokens
+SMS credentials
+S3 credentials
+2. Testing
+Unit
+
+Test:
+
+Unit conversions
+Pricing
+Discount
+Tax
+FEFO
+Accounting
+Permissions
+Feature
+
+Test:
+
+Login
+Product CRUD
+Purchase
+Sale
+Return
+Payment
+Adjustment
+Integration
+
+Test:
+Purchase → Inventory → AP → Payment
+
+and:
+Sale → Inventory → COGS → AR/Cash
+
+Concurrency
+
+Test:
+
+Two cashiers sell final stock
+Duplicate payment
+Duplicate sale posting
+Duplicate purchase posting
+
+Expected result:
+Exactly one authoritative transaction succeeds.
+
+3. Performance
+
+Monitor:
+
+POS search
+Sale posting
+Purchase posting
+Dashboard
+Reports
+CSV import
+
+Avoid N+1 queries.
+
+Use query plans for indexing.
+
+4. Queues
+
+Use Redis/Horizon for:
+
+CSV imports
+Large reports
+WhatsApp
+SMS
+Email
+Notifications
+
+POS transaction must not depend on unrelated messaging success.
+
+5. Backups
+Automated DB backups
+Off-server backup retention
+Object-storage strategy
+Regular restore tests
+
+A backup that has never been restored/tested is not considered verified.
+
+6. Environments
+local
+staging
+production
+7. Deployment
+Web
+
+Next.js → Vercel.
+
+API
+
+Laravel → Docker → cloud/VPS → Nginx.
+
+Database
+
+Managed MySQL or secured private MySQL.
+
+Redis
+
+Managed Redis or secured private Redis.
+
+Storage
+
+S3-compatible object storage.
+
+Do not expose MySQL publicly unless explicitly required and secured.
+
+8. Monitoring
+
+Use:
+
+Sentry
+Queue monitoring
+CPU/memory
+Disk
+DB health
+Redis health
+API latency
+Backup status
+9. Production release checklist
+Migration review
+Backup
+Rollback plan
+Environment variables
+Queue workers
+Scheduler
+SSL
+CORS
+Rate limits
+Monitoring
+Smoke tests
+Restore verification
+""",
+
+"09-CURSOR-AGENT-RULES.md": """# Cursor Agent Rules — PharmaPro
+
+Mission
+
+Build PharmaPro as a production-grade ERP. Do not optimize for generating the most code. Optimize for correctness, maintainability, auditability and business safety.
+
+Before every ticket
+Read the master plan.
+Read the relevant SRS section.
+Read database/domain rules.
+Inspect existing code.
+Identify dependencies.
+Identify migration/API/UI/permission/audit changes.
+Implement the smallest complete vertical slice.
+Backend rules
+
+Use:
+
+Form Requests
+Policies
+Services/Actions
+API Resources
+Events/listeners where appropriate
+Jobs for async work
+
+Controllers should remain thin.
+
+Inventory rules
+
+Never implement:
+
+$product->stock -= $quantity;
+
+Authoritative inventory must be represented by movements and controlled balances.
+
+Critical stock operations:
+
+Transaction
+Lock
+Validate
+Move
+Record
+Commit
+Accounting rules
+
+Never create accounting logic in React/Next.js.
+
+Accounting entries are generated server-side from posted business transactions.
+
+Frontend rules
+
+Frontend can provide UX validation, but backend remains authoritative for:
+
+Tax
+Stock
+Pricing authorization
+COGS
+Accounting
+Permissions
+Tenant scope
+Database rules
+Foreign keys
+Indexes
+Decimal money
+Explicit statuses
+Tenant scoping
+No arbitrary JSON for core data
+No destructive deletion of posted transactions
+API rules
+
+All production APIs:
+/api/v1
+
+Use consistent:
+
+Authentication
+Authorization
+Validation
+Pagination
+Error responses
+Testing rules
+
+Every critical business rule gets automated coverage.
+
+At minimum test:
+
+Tenant isolation
+Unit conversion
+FEFO
+Stock concurrency
+Duplicate posting
+Balanced journals
+Returns
+Partial payments
+Permissions
+UI rules
+
+Every page handles:
+
+Loading
+Empty
+Error
+Success
+Permission denied
+Documentation
+
+If architecture changes:
+
+Update docs
+Update ERD
+Update API docs
+Explain migration impact
+Commit style
+
+Examples:
+
+feat(inventory): add FEFO stock allocation
+fix(pos): prevent duplicate sale posting
+feat(accounting): add supplier payment allocation
+Never
+Invent business rules
+Hard-code tax rates
+Hard-code provider behavior
+Bypass permissions
+Assume one unit
+Assume one warehouse
+Assume one batch
+Calculate historical profit from current price
+Create huge controllers
+Skip critical tests
+silently change accounting behavior
+""",
+
+"10-DEMO-UAT-CHECKLIST.md": """# PharmaPro — Demo and UAT Checklist
+
+Pharmacy scenario
+Create manufacturer.
+Create supplier.
+Create product.
+Configure box/strip/tablet conversion.
+Create batch.
+Receive stock.
+Set MRP and retail price.
+Scan product.
+Sell stock.
+Verify inventory.
+Verify COGS.
+Verify accounting.
+Record customer payment.
+Process return.
+Verify stock/accounting.
+Show expiry report.
+Show low-stock alert.
+Multi-cost scenario
+
+Purchase:
+
+Batch A at PKR 10
+Batch B at PKR 15
+
+Sell from both batches and verify:
+
+Batch-specific cost
+Correct stock
+Historical COGS
+Profit reporting
+Distributor scenario
+
+Demonstrate:
+
+Bulk purchase
+Multiple batches
+Free quantity
+Supplier credit
+Partial supplier payment
+Warehouse transfer
+Wholesale sale
+Customer credit
+Customer payment
+Purchase return
+Sales return
+Warehouse scenario
+
+Demonstrate:
+
+Warehouse
+Rack/bin
+Receiving
+Put-away
+Transfer
+Approval
+Pick
+Dispatch
+Receive destination
+Stocktake
+Recall
+Critical UAT
+
+Verify:
+
+Tenant isolation
+Role permissions
+Batch tracking
+Expiry
+FEFO
+Unit conversion
+Different purchase costs
+Partial payments
+Returns
+Balanced accounting
+Audit trail
+Sign-off
+
+Each UAT case records:
+
+Case ID
+Expected result
+Actual result
+Status
+Severity
+Comment
+Evidence
+
+No unresolved Critical/High defect at launch unless explicitly accepted by the client.
+""",
+
+"11-PRICING-AND-SCOPE-NOTES.md": """# PharmaPro — Commercial Scope Reference
+
+Offer	Subscription	Own the software
+Starter Pharmacy	PKR 12,000/month	PKR 450,000
+Professional ERP	PKR 24,000/month	PKR 850,000
+Distributor	PKR 48,000/month	PKR 1,400,000
+Enterprise	PKR 80,000/month	PKR 2,200,000+
+Subscription definition
+
+The contract should explicitly state whether subscription includes:
+
+Hosting
+Standard updates
+Maintenance
+Standard support
+Backups
+Number of users
+Number of branches
+Storage
+Third-party messaging charges
+One-time ownership definition
+
+“Own the software” must not remain ambiguous.
+
+Contract should define:
+
+Agreed SRS scope
+Source-code ownership or license rights
+Deployment rights
+Hosting
+Third-party services
+Warranty/support period
+Maintenance
+Future enhancements
+Mobile application scope
+SLA
+
+Do not promise unlimited future development or unlimited support unless contractually included.
+"""
+}
+
+for filename, content in docs.items():
+(base / filename).write_text(content, encoding="utf-8")
+
+zip_path = Path("/mnt/data/PharmaPro_Cursor_Specifications.zip")
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+for p in sorted(base.glob("*.md")):
+z.write(p, arcname=f"PharmaPro_Cursor_Spec/{p.name}")
+
+print(f"Created {len(docs)} Markdown files")
+print(f"ZIP: {zip_path}")
+
+It seems like I can’t do more advanced data analysis right now. Please try again later.
+
+I retried the file-generation step, but the file tool is still being rate-limited. I therefore can't honestly provide a download link because the ZIP was not created.
+
+The specification I prepared contains 12 Markdown files covering:
+
+Master architecture & implementation plan
+Complete SRS/business requirements
+Database/domain design
+API architecture
+Next.js frontend architecture
+Modules + detailed development tickets
+Sprint/milestone roadmap
+Accounting rules
+Security/testing/deployment
+Cursor Agent rules
+Demo/UAT checklist
+Pricing/scope definitions

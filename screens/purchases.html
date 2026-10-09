@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Purchases</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .mini { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px; }
+  .mini .card { padding: 8px 10px; }
+  .mini .lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  .mini .val { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+</style></head>
+<body data-page="purchases" data-crumbs="Purchases / All purchases">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Purchases</h1><div class="sub">Posted invoices are immutable. Corrections are a purchase return (stock still on hand) or a reversal (nothing sold from those batches).</div></div>
+    <div class="actions">
+      <div class="seg"><button class="on">MTD</button><button>7d</button><button>Custom</button></div>
+      <a class="btn" href="purchase-return.html">New return</a>
+      <a class="btn primary" href="purchase-entry.html">New invoice <kbd>Alt N</kbd></a>
+    </div>
+  </div>
+  <div class="mini">
+    <div class="card"><div class="lbl">Invoices posted</div><div class="val">43,638 <small class="muted" style="font-size:11px">· today</small></div></div>
+    <div class="card"><div class="lbl">MTD purchases</div><div class="val">1,038,600</div></div>
+    <div class="card"><div class="lbl">Open AP</div><div class="val">688,300</div></div>
+    <div class="card"><div class="lbl">Returns MTD</div><div class="val text-danger">12,942 <small class="muted" style="font-size:11px">draft</small></div></div>
+    <div class="card"><div class="lbl">Overdue</div><div class="val text-danger">128,400</div></div>
+  </div>
+
+  <div class="card">
+    <div class="tabs" data-tabs="pt">
+      <button class="on" data-tab="inv">Invoices <span class="count">18</span></button>
+      <button data-tab="ret">Returns <span class="count">3</span></button>
+      <button data-tab="draft">Drafts <span class="count">1</span></button>
+    </div>
+    <div class="filters" style="border-radius:0">
+      <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Invoice #, supplier, batch…" style="width:240px"></div>
+      <select class="select"><option>Supplier: All</option><option>Muller &amp; Phipps</option><option>Getz Distribution</option></select>
+      <select class="select"><option>Status: All</option><option>Unpaid</option><option>Partial</option><option>Paid</option></select>
+      <span class="filter-chip">Credit only</span><span class="filter-chip">With free goods</span>
+    </div>
+
+    <div class="tab-panel on" data-tab-group="pt" data-tab="inv">
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th class="sort desc">Document</th><th>Date</th><th>Supplier</th><th>Supplier inv</th><th class="right">Goods</th><th class="right">Tax</th><th class="right">Total</th><th class="right">Paid</th><th class="right">Balance</th><th>Due</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono">PUR26-000301</td><td>08 Oct</td><td>Muller &amp; Phipps</td><td class="mono">MP-77812</td><td class="num">42,781.20</td><td class="num">856.80</td><td class="num"><b>43,638.00</b></td><td class="num">0.00</td><td class="num">43,638.00</td><td>07 Nov</td><td><span class="badge warn dot">Unpaid</span></td><td><span class="row-actions"><a class="btn xs" href="purchase-entry.html">Open</a><a class="btn xs ghost" href="purchase-return.html">Return</a></span></td></tr>
+            <tr><td class="mono">PUR26-000288</td><td>01 Oct</td><td>Muller &amp; Phipps</td><td class="mono">MP-77104</td><td class="num">86,400.00</td><td class="num">0.00</td><td class="num"><b>86,400.00</b></td><td class="num">0.00</td><td class="num">86,400.00</td><td>31 Oct</td><td><span class="badge warn dot">Unpaid</span></td><td><span class="row-actions"><a class="btn xs" href="purchase-entry.html">Open</a><a class="btn xs ghost" href="purchase-return.html">Return</a></span></td></tr>
+            <tr><td class="mono">PUR26-000261</td><td>18 Sep</td><td>Getz Distribution</td><td class="mono">GZ-4419</td><td class="num">42,000.00</td><td class="num">0.00</td><td class="num"><b>42,000.00</b></td><td class="num">42,000.00</td><td class="num">0.00</td><td>18 Oct</td><td><span class="badge ok dot">Paid</span></td><td><span class="row-actions"><a class="btn xs" href="purchase-entry.html">Open</a><a class="btn xs ghost" href="purchase-return.html">Return</a></span></td></tr>
+            <tr><td class="mono">PUR26-000240</td><td>02 Sep</td><td>Muller &amp; Phipps</td><td class="mono">MP-76002</td><td class="num">128,400.00</td><td class="num">0.00</td><td class="num"><b>128,400.00</b></td><td class="num">0.00</td><td class="num">128,400.00</td><td>02 Oct</td><td><span class="badge danger dot">Overdue 6d</span></td><td><span class="row-actions"><a class="btn xs" href="purchase-entry.html">Open</a><button class="btn xs ghost">Pay</button></span></td></tr>
+            <tr><td class="mono">PUR26-000228</td><td>20 Aug</td><td>Abbott / M&amp;P</td><td class="mono">AB-882</td><td class="num">31,200.00</td><td class="num">0.00</td><td class="num"><b>31,200.00</b></td><td class="num">31,200.00</td><td class="num">0.00</td><td>19 Sep</td><td><span class="badge ok dot">Paid</span> <span class="badge warn">Part returned</span></td><td><span class="row-actions"><a class="btn xs" href="purchase-entry.html">Open</a></span></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="4">Visible</td><td class="num">330,781.20</td><td class="num">856.80</td><td class="num">331,638.00</td><td class="num">73,200.00</td><td class="num">258,438.00</td><td colspan="3"></td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-tab-group="pt" data-tab="ret">
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Return</th><th>Date</th><th>Supplier</th><th>Against</th><th class="right">Lines</th><th class="right">Credit</th><th>Settlement</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono">DRAFT-1192</td><td>08 Oct</td><td>Muller &amp; Phipps</td><td class="mono">PUR26-000288</td><td class="num">3</td><td class="num">12,942.00</td><td><span class="tag">AP credit</span></td><td><span class="badge">Draft</span></td><td><span class="row-actions"><a class="btn xs primary" href="purchase-return.html">Continue</a></span></td></tr>
+            <tr><td class="mono">PRT26-000040</td><td>22 Sep</td><td>Abbott / M&amp;P</td><td class="mono">PUR26-000228</td><td class="num">2</td><td class="num">4,800.00</td><td><span class="tag">AP credit</span></td><td><span class="badge ok dot">Posted</span></td><td><span class="row-actions"><a class="btn xs" href="purchase-return.html">Open</a><button class="btn xs ghost">Print</button></span></td></tr>
+            <tr><td class="mono">PRT26-000038</td><td>04 Sep</td><td>Getz Distribution</td><td class="mono">PUR26-000201</td><td class="num">1</td><td class="num">1,260.00</td><td><span class="tag">Cash refund</span></td><td><span class="badge ok dot">Posted</span></td><td><span class="row-actions"><a class="btn xs" href="purchase-return.html">Open</a></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-tab-group="pt" data-tab="draft">
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Draft</th><th>Supplier</th><th>Updated</th><th class="right">Lines</th><th class="right">Est. total</th><th>By</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono">DRAFT-8831</td><td>Muller &amp; Phipps</td><td>08 Oct 13:40</td><td class="num">4</td><td class="num">43,638.00</td><td>Sana</td><td><span class="row-actions"><a class="btn xs primary" href="purchase-entry.html">Continue</a><button class="btn xs ghost danger">Discard</button></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="table-foot"><span>Posted documents cannot be edited.</span></div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

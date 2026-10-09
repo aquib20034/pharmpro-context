@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — New customer</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="customers" data-crumbs="Customers / New">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>New customer</h1><div class="sub">Code is allocated on save. Walk-in already exists and is not offered here. Credit limit needs <span class="mono">customers.credit.manage</span>.</div></div>
+    <div class="actions"><a class="btn" href="customers.html">Cancel</a><button class="btn primary" id="saveCus">Save <kbd>Ctrl ↵</kbd></button></div>
+  </div>
+  <div class="split">
+    <div class="card card-body">
+      <div class="section-title">Identity</div>
+      <div class="form-grid">
+        <div class="field col-3"><label>Code</label><input class="input mono" value="CUS-00058" disabled><div class="help">Next number · tenant sequence</div></div>
+        <div class="field col-5"><label>Name <span class="req">*</span></label><input class="input" id="cname" value="Farhan Medical Store" autofocus></div>
+        <div class="field col-4"><label>Type <span class="req">*</span></label><select class="select" id="ctype"><option>Retail</option><option selected>Wholesale</option><option>Institutional</option></select></div>
+        <div class="field col-4"><label>Phone</label><input class="input" id="cphone" value="0322-4411900"></div>
+        <div class="field col-4"><label>WhatsApp</label><input class="input" value="0322-4411900"></div>
+        <div class="field col-4"><label>Email</label><input class="input" placeholder="optional"></div>
+        <div class="field col-8"><label>Address</label><input class="input" value="Shop 14, Liaquat Market, Karachi"></div>
+        <div class="field col-4"><label>Tax registration</label><input class="input mono" placeholder="STRN / NTN"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Credit &amp; price</div>
+      <div class="form-grid">
+        <div class="field col-4"><label>Default price type</label><select class="select" id="cprice"><option>Retail</option><option selected>Wholesale</option></select><div class="help">Customer-specific lists are P2</div></div>
+        <div class="field col-4"><label>Payment terms (days)</label><input class="input" id="cterms" value="7"></div>
+        <div class="col-4 field"><label>&nbsp;</label><label class="check"><input type="checkbox" id="ccredit" checked> Allow credit sales</label></div>
+        <div class="field col-4" id="climWrap"><label>Credit limit (PKR)</label><input class="input num" id="clim" value="50,000.00"><div class="help">Empty / unchecked = no credit. Walk-in is always blocked.</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Opening balance</div>
+      <div class="form-grid">
+        <div class="field col-4"><label>Opening AR</label><input class="input num" id="copen" value="0.00"></div>
+        <div class="field col-4"><label>As of</label><input class="input" id="copend" value="01 Oct 2026"><div class="help">Must be on/after tenant opening date, in an open period</div></div>
+        <div class="field col-12"><div class="note info" id="cjr" style="font-size:11.5px">Leave at 0.00 unless they already owe you. A non-zero amount posts once: <span class="mono">Dr 1100 AR (counterparty) / Cr 3900 Opening Balance Equity</span> and creates an opening sale so receipts can allocate.</div></div>
+      </div>
+    </div>
+    <aside>
+      <div class="card">
+        <div class="card-head"><h2>Before save</h2></div>
+        <div class="card-body">
+          <dl class="kv">
+            <dt>Permission</dt><dd class="mono">customers.manage</dd>
+            <dt>Available credit</dt><dd id="cavail">PKR 50,000.00</dd>
+            <dt>POS</dt><dd>Selectable from F4 immediately</dd>
+          </dl>
+          <div class="note warn mt-12" style="font-size:11.5px">Cashiers with only <span class="mono">customers.create</span> use the POS quick-add (name + phone). They cannot set a limit.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  const credit = document.getElementById('ccredit');
+  const wrap = document.getElementById('climWrap');
+  const lim = document.getElementById('clim');
+  const open = document.getElementById('copen');
+  const jr = document.getElementById('cjr');
+  const avail = document.getElementById('cavail');
+  const type = document.getElementById('ctype');
+  const price = document.getElementById('cprice');
+  function n(el){ return parseFloat(String(el.value).replace(/,/g,'')) || 0; }
+  function money(x){ return x.toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function sync(){
+    wrap.style.opacity = credit.checked ? '1' : '.45';
+    lim.disabled = !credit.checked;
+    const limit = credit.checked ? n(lim) : 0;
+    const ob = n(open);
+    avail.textContent = credit.checked ? ('PKR ' + money(Math.max(0, limit - ob))) : 'No credit allowed';
+    jr.innerHTML = ob > 0
+      ? 'Will post <span class="mono">Dr 1100 AR ' + money(ob) + ' / Cr 3900 OBE ' + money(ob) + '</span> · opening sale dated ' + document.getElementById('copend').value + '.'
+      : 'Leave at 0.00 unless they already owe you. A non-zero amount posts once: <span class="mono">Dr 1100 AR (counterparty) / Cr 3900 Opening Balance Equity</span> and creates an opening sale so receipts can allocate.';
+  }
+  credit.addEventListener('change', sync);
+  lim.addEventListener('input', sync);
+  open.addEventListener('input', sync);
+  type.addEventListener('change', () => { if (type.value === 'Wholesale') price.value = 'Wholesale'; if (type.value === 'Retail') price.value = 'Retail'; });
+  document.getElementById('saveCus').addEventListener('click', () => {
+    if (!document.getElementById('cname').value.trim()) { toast('Name is required','danger'); return; }
+    toast('CUS-00058 ' + document.getElementById('cname').value + ' saved','ok');
+    setTimeout(() => location.href = 'customers.html', 700);
+  });
+  sync();
+})();
+</script>
+</body></html>

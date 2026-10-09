@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — General ledger</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Financial / General ledger">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="gl"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>General ledger</h1><div class="sub">Posted journal lines only · running balance · source documents are immutable</div></div>
+        <div class="actions"><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="card">
+        <div class="filters">
+          <select class="select"><option>1200 Inventory</option><option>1100 Accounts Receivable</option><option>2100 Accounts Payable</option><option>4100 Sales Revenue</option><option>5100 Cost of Goods Sold</option><option>1010 Cash in Hand</option></select>
+          <span class="muted">From</span><input class="input" value="01 Oct 2026"><span class="muted">to</span><input class="input" value="08 Oct 2026">
+          <span class="spacer"></span><button class="btn sm primary">Run</button>
+        </div>
+        <table class="tbl dense">
+          <thead><tr><th>Date</th><th>Journal</th><th>Source</th><th>Narration</th><th class="right">Debit</th><th class="right">Credit</th><th class="right">Balance</th></tr></thead>
+          <tbody>
+            <tr><td colspan="6" class="muted">Opening 01 Oct</td><td class="num">2,380,100.00</td></tr>
+            <tr><td>01 Oct</td><td class="mono">JRN26-004088</td><td><a href="purchase-entry.html">PUR26-000288</a></td><td>Purchase Muller · AX2231 / RK0091</td><td class="num">86,400.00</td><td class="num">0.00</td><td class="num">2,466,500.00</td></tr>
+            <tr><td>02 Oct</td><td class="mono">JRN26-004102</td><td><a href="sales.html">INV26-000388</a></td><td>COGS · FEFO allocations</td><td class="num">0.00</td><td class="num">4,980.00</td><td class="num">2,461,520.00</td></tr>
+            <tr><td>08 Oct</td><td class="mono">JRN26-004119</td><td><a href="purchase-entry.html">PUR26-000301</a></td><td>Purchase Muller</td><td class="num">43,638.00</td><td class="num">0.00</td><td class="num">2,505,158.00</td></tr>
+            <tr><td>08 Oct</td><td class="mono">JRN26-004128</td><td><a href="pos.html">INV26-000412</a></td><td>COGS walk-in cash</td><td class="num">0.00</td><td class="num">1,398.20</td><td class="num">2,503,759.80</td></tr>
+            <tr><td>08 Oct</td><td class="mono">JRN26-004131</td><td>ADJ26-000031</td><td>Damage write-off (pending in list)</td><td class="num">0.00</td><td class="num">0.00</td><td class="num muted">draft</td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="4">Period movement</td><td class="num">1,038,600.00</td><td class="num">1,000,400.00</td><td class="num">2,418,300.00</td></tr></tfoot>
+        </table>
+        <div class="table-foot"><span>Closing matches trial balance 1200. Switch account in the filter for cash, AR, AP, sales, COGS.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

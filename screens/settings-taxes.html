@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Taxes</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / Taxes">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="tax"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Taxes</h1><div class="sub">No rate is hard-coded in the product. Exempt is a <b>0% category</b>, not “no tax”, so reports can still list it. Rate is snapshotted on each document line.</div></div>
+        <div class="actions"><button class="btn sm" data-open="addtax">+ Tax</button></div>
+      </div>
+      <div class="note warn mb-12" style="font-size:12px">Do not copy a GST/VAT percentage from this screen into production. The tenant’s accountant sets the live rate. Demo Pharmacy sells medicines as <b>Exempt 0%</b> (UAT CAT-04).</div>
+      <div class="card">
+        <div class="card-head"><h2>Tax categories</h2></div>
+        <table class="tbl dense">
+          <thead><tr><th>Category</th><th>Applied tax</th><th>Products</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><b>Exempt</b></td><td>Exempt 0%</td><td class="num">2,381</td><td><span class="badge">default</span></td></tr>
+            <tr><td>Standard-rated</td><td class="muted">none assigned</td><td class="num">37</td><td><button class="btn xs">Assign…</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card mt-12">
+        <div class="card-head"><h2>Tax definitions</h2></div>
+        <table class="tbl dense">
+          <thead><tr><th>Code</th><th>Name</th><th class="right">Rate</th><th>Inclusive</th><th>Recoverable on purchase</th><th>Effective</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono">EXEMPT</td><td>Exempt</td><td class="num">0.0000%</td><td>no</td><td>no</td><td>01 Jul 2026 →</td><td><span class="badge ok dot">Active</span></td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span>Inclusive/exclusive math is 4 dp per line, never on the invoice total.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<div class="overlay" id="addtax"><div class="modal">
+  <div class="modal-head"><h2>New tax</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid">
+      <div class="field col-4"><label>Code</label><input class="input mono" placeholder="GST"></div>
+      <div class="field col-8"><label>Name</label><input class="input" placeholder="As on the statutory notice"></div>
+      <div class="field col-4"><label>Rate %</label><input class="input num" placeholder="set by accountant"><div class="help">Not shipped by PharmaPro</div></div>
+      <div class="field col-4"><label>Effective from</label><input class="input" value="01 Oct 2026"></div>
+      <div class="field col-4"><label>Jurisdiction</label><input class="input" placeholder="e.g. FBR"></div>
+      <div class="col-12 flex gap-16">
+        <label class="check"><input type="checkbox"> Inclusive of price</label>
+        <label class="check"><input type="checkbox"> Recoverable on purchase (input tax)</label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close data-action="toast" data-msg="Tax saved · assign it to a category before it hits POS">Save tax</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

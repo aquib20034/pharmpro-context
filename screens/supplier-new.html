@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — New supplier</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="suppliers" data-crumbs="Suppliers / New">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>New supplier</h1><div class="sub">Company we buy from. Do not enter a manufacturer here — that is a catalog field on the product.</div></div>
+    <div class="actions"><a class="btn" href="suppliers.html">Cancel</a><button class="btn primary" id="saveSup">Save <kbd>Ctrl ↵</kbd></button></div>
+  </div>
+  <div class="split">
+    <div class="card card-body">
+      <div class="section-title">Company</div>
+      <div class="form-grid">
+        <div class="field col-3"><label>Code</label><input class="input mono" value="SUP-00025" disabled></div>
+        <div class="field col-9"><label>Company name <span class="req">*</span></label><input class="input" id="sname" value="Searle Pakistan Ltd" autofocus></div>
+        <div class="field col-4"><label>Contact person</label><input class="input" value="Hassan Malik"></div>
+        <div class="field col-4"><label>Phone</label><input class="input" value="021-32561011"></div>
+        <div class="field col-4"><label>WhatsApp</label><input class="input"></div>
+        <div class="field col-6"><label>Email</label><input class="input" value="orders@searle.example"></div>
+        <div class="field col-6"><label>Tax registration</label><input class="input mono" placeholder="NTN"></div>
+        <div class="field col-12"><label>Address</label><input class="input" value="F-33, Block 7, Kehkashan, Karachi"></div>
+        <div class="field col-12"><label>Notes</label><input class="input" placeholder="Delivery window, scheme contacts…"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Terms</div>
+      <div class="form-grid">
+        <div class="field col-4"><label>Payment terms (days)</label><input class="input" value="30"></div>
+        <div class="field col-4"><label>Our credit limit with them</label><input class="input num" id="slim" placeholder="blank = unlimited" value="500,000.00"><div class="help">Nullable = unlimited. Purchase over limit warns; Manager override is audited.</div></div>
+        <div class="field col-4"><label>Status</label><select class="select"><option>Active</option><option>Inactive</option></select></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Opening balance</div>
+      <div class="form-grid">
+        <div class="field col-4"><label>Opening AP (what we owe)</label><input class="input num" id="sopen" value="0.00"></div>
+        <div class="field col-4"><label>As of</label><input class="input" id="sopend" value="01 Oct 2026"></div>
+        <div class="field col-12"><div class="note info" id="sjr" style="font-size:11.5px">Zero = start clean. Non-zero posts once: <span class="mono">Dr 3900 OBE / Cr 2100 AP (counterparty)</span> plus an opening purchase so payments allocate.</div></div>
+      </div>
+    </div>
+    <aside>
+      <div class="card">
+        <div class="card-head"><h2>After save</h2></div>
+        <div class="card-body" style="font-size:12.5px">
+          <p>Preferred supplier dropdowns on products and the purchase invoice supplier picker include this row immediately.</p>
+          <div class="note warn mt-12" style="font-size:11.5px">UAT CAT-01: Muller is already seeded at 30-day terms, limit 500,000. Use this form for anyone else.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  const open = document.getElementById('sopen');
+  const jr = document.getElementById('sjr');
+  function n(el){ return parseFloat(String(el.value).replace(/,/g,'')) || 0; }
+  function money(x){ return x.toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function sync(){
+    const ob = n(open);
+    jr.innerHTML = ob > 0
+      ? 'Will post <span class="mono">Dr 3900 OBE ' + money(ob) + ' / Cr 2100 AP ' + money(ob) + '</span> · opening purchase dated ' + document.getElementById('sopend').value + '.'
+      : 'Zero = start clean. Non-zero posts once: <span class="mono">Dr 3900 OBE / Cr 2100 AP (counterparty)</span> plus an opening purchase so payments allocate.';
+  }
+  open.addEventListener('input', sync);
+  document.getElementById('saveSup').addEventListener('click', () => {
+    if (!document.getElementById('sname').value.trim()) { toast('Company name is required','danger'); return; }
+    toast('SUP-00025 ' + document.getElementById('sname').value + ' saved','ok');
+    setTimeout(() => location.href = 'suppliers.html', 700);
+  });
+  sync();
+})();
+</script>
+</body></html>

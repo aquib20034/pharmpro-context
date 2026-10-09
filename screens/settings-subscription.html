@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Subscription</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .use-row { display: grid; grid-template-columns: 90px 1fr 48px; gap: 8px; align-items: center; font-size: 12.5px; margin-bottom: 10px; }
+  .meter { font-family: var(--mono); font-size: 11.5px; color: var(--muted); text-align: right; }
+</style></head>
+<body data-page="settings" data-crumbs="Settings / Subscription">
+<div class="app">
+<main class="main">
+  <div class="note warn mb-12" style="font-size:12.5px"><b>Professional plan ends 20 Oct 2026</b> (12 days). POS still works. After 27 Oct posting freezes until we renew. <a href="#">Contact support</a></div>
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="sub"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Subscription</h1><div class="sub">Only Owner and Admin see this. Cashiers are not billed in-app. Payment is arranged with PharmaPro — there is no card checkout in MVP.</div></div>
+      </div>
+      <div class="grid cols-2">
+        <div class="card card-body">
+          <div class="section-title">Current plan</div>
+          <dl class="kv">
+            <dt>Plan</dt><dd>Professional</dd>
+            <dt>Status</dt><dd><span class="badge warn dot">Due in 12 days</span></dd>
+            <dt>Period ends</dt><dd>20 Oct 2026</dd>
+            <dt>If unpaid</dt><dd>Grace 21–27 Oct · then read-only (view &amp; reprint only)</dd>
+            <dt>Price</dt><dd>PKR 24,000 / month <span class="muted">(indicative)</span></dd>
+          </dl>
+          <div class="note info mt-12" style="font-size:11.5px">To renew: WhatsApp / email support. Super admin marks the tenant paid. You will not enter a card here until P2.</div>
+        </div>
+        <div class="card card-body">
+          <div class="section-title">Usage vs cap</div>
+          <div class="use-row"><span>Users</span><div class="progress"><i style="width:60%"></i></div><span class="meter">6 / 10</span></div>
+          <div class="use-row"><span>Branches</span><div class="progress"><i style="width:66%"></i></div><span class="meter">2 / 3</span></div>
+          <p class="muted" style="font-size:11.5px">A third branch is still allowed. A fourth is blocked until the plan is upgraded.</p>
+          <div class="flex mt-12"><a class="btn sm" href="settings-branches.html">Manage branches</a><a class="btn sm" href="#">Invite user</a></div>
+        </div>
+      </div>
+      <div class="card mt-12">
+        <div class="card-head"><h2>What happens at expiry</h2></div>
+        <div class="card-body">
+          <ul class="timeline">
+            <li class="ok"><div>Now — banner + email to Owner / Admin. Selling continues.</div></li>
+            <li class="warn"><div>21 Oct — grace. Stronger banner. Selling continues for 7 days.</div></li>
+            <li class="danger"><div>28 Oct — read-only. <span class="mono">SUBSCRIPTION_EXPIRED</span> on post. Reports still open.</div></li>
+            <li><div>Later — platform may Suspend (no login). Data is not deleted.</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

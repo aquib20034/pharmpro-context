@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Approvals</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="approvals" data-crumbs="Approvals">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Approvals <span class="badge danger">2</span></h1><div class="sub">Adjustments and stocktakes over the tenant threshold. Needs <span class="mono">inventory.adjust.approve</span> / <span class="mono">inventory.stocktake.approve</span>. Reason is audited.</div></div>
+  </div>
+  <div class="card">
+    <div class="tabs" data-tabs="ap">
+      <button class="on" data-tab="pend">Pending <span class="count">2</span></button>
+      <button data-tab="done">Done this week <span class="count">3</span></button>
+    </div>
+    <div class="tab-panel on" data-tab-group="ap" data-tab="pend">
+      <div class="filters" style="border-radius:0">
+        <select class="select"><option>Type: All</option><option>Adjustment</option><option>Stocktake</option></select>
+        <select class="select"><option>Branch: All</option><option>Main</option></select>
+        <span class="spacer"></span>
+        <span class="muted" style="font-size:11.5px">Threshold PKR 5,000 · COUNT_CORRECTION skips approval</span>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Document</th><th>Type</th><th>Submitted</th><th>By</th><th class="right">Value</th><th>Reason</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="mono">ADJ26-000031</td><td><span class="badge warn">Adjustment</span></td>
+            <td>08 Oct 11:42</td><td>Sana</td>
+            <td class="num text-danger">12,600.00</td>
+            <td>Damage · Broken fridge overnight</td>
+            <td class="right"><button class="btn xs" data-open="adj">Review</button></td>
+          </tr>
+          <tr>
+            <td class="mono">STK26-000004</td><td><span class="badge warn">Stocktake</span></td>
+            <td>07 Oct 18:20</td><td>Sana</td>
+            <td class="num text-danger">−3,180.00</td>
+            <td>Store room · 12 variance lines</td>
+            <td class="right"><a class="btn xs" href="stocktake.html">Review</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-panel" data-tab-group="ap" data-tab="done">
+      <table class="tbl dense">
+        <thead><tr><th>Document</th><th>Decision</th><th>By</th><th>When</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">ADJ26-000028</td><td><span class="badge ok">Approved</span></td><td>Aquib</td><td>06 Oct</td><td>Expiry write-off posted</td></tr>
+          <tr><td class="mono">ADJ26-000027</td><td><span class="badge danger">Rejected</span></td><td>Aquib</td><td>05 Oct</td><td>Need photo of damage</td></tr>
+          <tr><td class="mono">STK26-000003</td><td><span class="badge ok">Approved</span></td><td>Aquib</td><td>02 Oct</td><td>Variance → ADJ26-000029</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="adj"><div class="modal wide">
+  <div class="modal-head"><h2>Review ADJ26-000031</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="note warn mb-12" style="font-size:12px">OUT · Damage · PKR 12,600 at batch cost · over threshold 5,000 → pending. Approve posts movements + <span class="mono">Dr 5300 / Cr 1200</span>.</div>
+    <table class="tbl dense">
+      <thead><tr><th>Product</th><th>Batch</th><th>Warehouse</th><th class="right">Qty (base)</th><th class="right">Unit cost</th><th class="right">Value</th></tr></thead>
+      <tbody>
+        <tr><td>Risek 20mg</td><td class="mono">RK0091</td><td>Shop floor</td><td class="num text-danger">−40</td><td class="num">14.20</td><td class="num">568.00</td></tr>
+        <tr><td>Augmentin 625mg</td><td class="mono">AX2301</td><td>Shop floor</td><td class="num text-danger">−292</td><td class="num">41.20</td><td class="num">12,030.40</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="5">Total</td><td class="num">12,598.40</td></tr></tfoot>
+    </table>
+    <div class="field mt-12"><label>Decision note <span class="req">*</span> (audited)</label><input class="input" id="adjNote" placeholder="Why approve or reject…"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn danger" data-close onclick="toast('ADJ26-000031 rejected · Sana notified','warn')">Reject</button>
+    <div class="right">
+      <button class="btn" data-close>Cancel</button>
+      <button class="btn primary" data-close onclick="toast('ADJ26-000031 approved & posted · stock and 5300 updated','ok')">Approve &amp; post</button>
+    </div>
+  </div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

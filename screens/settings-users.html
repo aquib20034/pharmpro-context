@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Users</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / Users">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="users"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Users <span class="badge">4 / 10</span></h1><div class="sub">One tenant only. A user with no branch assignment cannot see that shop’s stock or documents. Plan cap 10 · Owner cannot be removed.</div></div>
+        <div class="actions"><button class="btn sm primary" data-open="inv">Invite user</button></div>
+      </div>
+      <div class="card">
+        <div class="filters"><div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Name or email…" style="width:220px"></div><select class="select"><option>Role: All</option><option>Owner</option><option>Pharmacist</option><option>Cashier</option></select></div>
+        <table class="tbl">
+          <thead><tr><th>User</th><th>Role</th><th>Branches</th><th>Last login</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><b>Aquib Khan</b><span class="sub">owner@demopharmacy.pk</span></td><td>Owner</td><td>Main · Gulberg 2</td><td>08 Oct 14:02</td><td><span class="badge ok dot">Active</span></td><td><span class="muted" style="font-size:11px">locked</span></td></tr>
+            <tr><td><b>Sana Malik</b><span class="sub">sana@demopharmacy.pk</span></td><td>Pharmacist</td><td>Main</td><td>08 Oct 13:40</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button></span></td></tr>
+            <tr><td><b>Bilal Ahmed</b><span class="sub">bilal@demopharmacy.pk</span></td><td>Cashier</td><td>Main</td><td>08 Oct 14:08</td><td><span class="badge ok dot">Active</span></td><td><span class="row-actions"><button class="btn xs">Edit</button><button class="btn xs ghost" data-action="toast" data-msg="Bilal deactivated · POS token revoked">Deactivate</button></span></td></tr>
+            <tr><td><b>Hina Raza</b><span class="sub">hina@demopharmacy.pk · invited</span></td><td>Accountant</td><td>All</td><td class="muted">—</td><td><span class="badge warn">Pending invite</span></td><td><span class="row-actions"><button class="btn xs" data-action="toast" data-msg="Invite resent to hina@demopharmacy.pk">Resend</button></span></td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span>Roles are edited under <a href="settings.html">Roles &amp; permissions</a>. Forced password change on first login.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<div class="overlay" id="inv"><div class="modal">
+  <div class="modal-head"><h2>Invite user</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid">
+      <div class="field col-6"><label>Name <span class="req">*</span></label><input class="input" value="Usman Tariq"></div>
+      <div class="field col-6"><label>Email <span class="req">*</span></label><input class="input" value="usman@demopharmacy.pk"></div>
+      <div class="field col-6"><label>Role <span class="req">*</span></label><select class="select"><option>Cashier</option><option>Pharmacist</option><option>Branch Mgr</option><option>Accountant</option><option>Purchase Mgr</option><option>Auditor</option></select></div>
+      <div class="field col-6"><label>Branches</label><select class="select"><option>Main</option><option>Gulberg 2</option><option>All (Owner/Admin only)</option></select></div>
+    </div>
+    <div class="note info mt-12" style="font-size:11.5px">Email contains a 48-hour accept link. They cannot open POS until they set a password. <a href="invite-accept.html">Preview accept page →</a></div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close data-action="toast" data-msg="Invite sent · demo accept page: invite-accept.html">Send invite</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

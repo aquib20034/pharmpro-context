@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Supplier</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .profile { display: flex; gap: 12px; align-items: center; }
+  .profile .avatar { width: 40px; height: 40px; font-size: 14px; }
+  .aging { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .aging div { background: var(--surface-2); border-radius: 6px; padding: 6px 8px; text-align: center; font-size: 11px; color: var(--muted); border-top: 2px solid var(--line); }
+  .aging b { display: block; font-size: 13px; color: var(--text); font-variant-numeric: tabular-nums; }
+  .aging .a1 { border-top-color: var(--ok); } .aging .a2 { border-top-color: #84cc16; } .aging .a3 { border-top-color: var(--warn); } .aging .a4 { border-top-color: #f97316; } .aging .a5 { border-top-color: var(--danger); }
+  .alloc-row td { height: 28px; }
+</style></head>
+<body data-page="suppliers" data-crumbs="Suppliers / Muller &amp; Phipps">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div class="profile">
+      <div class="avatar">MP</div>
+      <div><h1>Muller &amp; Phipps <span class="badge ok dot">Active</span></h1><div class="sub">SUP-00003 · Imran Qureshi · 021-111-786000 · terms 30 days · our limit 500,000</div></div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="suppliers.html">All suppliers</a>
+      <button class="btn">Edit</button>
+      <a class="btn" href="purchase-entry.html">New purchase</a>
+      <button class="btn primary" data-open="pay">Pay supplier</button>
+    </div>
+  </div>
+
+  <div class="grid cols-4 mb-12">
+    <div class="card kpi indigo"><div class="lbl">Balance we owe</div><div class="val"><small>PKR</small>258,438</div><span class="delta text-warn">52% of 500,000 limit</span><div class="progress warn mt-8"><i style="width:52%"></i></div></div>
+    <div class="card kpi"><div class="lbl">Overdue</div><div class="val text-danger"><small>PKR</small>128,400</div><span class="muted" style="font-size:11px">PUR26-000240 · 6 days late</span></div>
+    <div class="card kpi"><div class="lbl">Purchases · 12 months</div><div class="val"><small>PKR</small>1,842,000</div><span class="muted" style="font-size:11px">38 invoices</span></div>
+    <div class="card kpi"><div class="lbl">Open invoices</div><div class="val">3</div><span class="muted" style="font-size:11px">1 overdue</span></div>
+  </div>
+
+  <div class="split">
+    <div class="card">
+      <div class="tabs" data-tabs="sp">
+        <button class="on" data-tab="open">Open invoices <span class="count">3</span></button>
+        <button data-tab="stmt">Statement</button>
+        <button data-tab="pays">Payments <span class="count">8</span></button>
+        <button data-tab="rets">Returns</button>
+        <button data-tab="audit">Audit</button>
+      </div>
+
+      <div class="tab-panel on card-body tight" data-tab-group="sp" data-tab="open">
+        <table class="tbl dense">
+          <thead><tr><th>Invoice</th><th>Date</th><th>Due</th><th class="right">Total</th><th class="right">Paid</th><th class="right">Returned</th><th class="right">Balance</th><th>Age</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono"><a href="purchase-entry.html">PUR26-000301</a></td><td>08 Oct</td><td>07 Nov</td><td class="num">43,638.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num"><b>43,638.00</b></td><td><span class="badge ok">not due</span></td><td class="right"><button class="btn xs" data-open="pay">Pay</button></td></tr>
+            <tr><td class="mono"><a href="purchase-entry.html">PUR26-000288</a></td><td>01 Oct</td><td>31 Oct</td><td class="num">86,400.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num"><b>86,400.00</b></td><td><span class="badge ok">not due</span></td><td class="right"><button class="btn xs" data-open="pay">Pay</button></td></tr>
+            <tr><td class="mono"><a href="purchase-entry.html">PUR26-000240</a></td><td>02 Sep</td><td>02 Oct</td><td class="num">128,400.00</td><td class="num">0.00</td><td class="num">0.00</td><td class="num text-danger"><b>128,400.00</b></td><td><span class="badge danger">6d overdue</span></td><td class="right"><button class="btn xs" data-open="pay">Pay</button></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="6">Total AP</td><td class="num">258,438.00</td><td colspan="2"></td></tr></tfoot>
+        </table>
+      </div>
+
+      <div class="tab-panel card-body tight" data-tab-group="sp" data-tab="stmt">
+        <div class="filters" style="border-radius:0"><span class="muted">Period</span><input class="input" value="01 Sep 2026"><span class="muted">→</span><input class="input" value="08 Oct 2026"><span class="spacer"></span><button class="btn sm">PDF</button></div>
+        <table class="tbl dense">
+          <thead><tr><th>Date</th><th>Document</th><th>Description</th><th class="right">Debit</th><th class="right">Credit</th><th class="right">Balance</th></tr></thead>
+          <tbody>
+            <tr><td>01 Sep</td><td></td><td class="muted">Opening balance</td><td class="num"></td><td class="num"></td><td class="num">180,000.00</td></tr>
+            <tr><td>02 Sep</td><td class="mono">PUR26-000240</td><td>Credit purchase · 14 lines</td><td class="num"></td><td class="num">128,400.00</td><td class="num">308,400.00</td></tr>
+            <tr><td>10 Sep</td><td class="mono">PYO26-000201</td><td>Payment · Bank → PUR opening</td><td class="num">180,000.00</td><td class="num"></td><td class="num">128,400.00</td></tr>
+            <tr><td>01 Oct</td><td class="mono">PUR26-000288</td><td>Credit purchase · Panadol / Risek</td><td class="num"></td><td class="num">86,400.00</td><td class="num">214,800.00</td></tr>
+            <tr><td>05 Oct</td><td class="mono">PRT26-000008</td><td>Purchase return · AP credit</td><td class="num">0.00</td><td class="num"></td><td class="num">214,800.00</td></tr>
+            <tr><td>08 Oct</td><td class="mono">PUR26-000301</td><td>Credit purchase · Muller</td><td class="num"></td><td class="num">43,638.00</td><td class="num"><b>258,438.00</b></td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span>Credit = we owe more (AP up). Debit = payment or return credit. Closing matches AP aging for this supplier.</span></div>
+      </div>
+
+      <div class="tab-panel card-body tight" data-tab-group="sp" data-tab="pays">
+        <table class="tbl dense">
+          <thead><tr><th>Payment</th><th>Date</th><th>Method</th><th class="right">Amount</th><th>Allocated to</th><th class="right">Unallocated</th><th>By</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">PYO26-000201</td><td>10 Sep</td><td><span class="tag">Bank</span></td><td class="num">180,000.00</td><td class="mono">Opening</td><td class="num">0.00</td><td>Aquib</td></tr>
+            <tr><td class="mono">PYO26-000188</td><td>15 Aug</td><td><span class="tag">Bank</span></td><td class="num">95,000.00</td><td class="mono">PUR26-000199</td><td class="num">0.00</td><td>Sana</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-panel card-body tight" data-tab-group="sp" data-tab="rets">
+        <table class="tbl dense">
+          <thead><tr><th>Return</th><th>Date</th><th>Against</th><th class="right">Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono"><a href="purchase-return.html">PRT26-000008</a></td><td>05 Oct</td><td class="mono">PUR26-000228</td><td class="num">4,800.00</td><td><span class="badge ok">Posted · AP credit</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-panel card-body" data-tab-group="sp" data-tab="audit">
+        <ul class="timeline">
+          <li><div>Credit limit 400,000 → <b>500,000</b><div class="t">Aquib · 01 Aug</div></div></li>
+          <li class="ok"><div>Supplier created<div class="t">Sana · 12 Jan</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><h2>Aging</h2></div>
+        <div class="card-body">
+          <div class="aging"><div class="a1">Not due<b>130,038</b></div><div class="a2">1–30<b>128,400</b></div><div class="a3">31–60<b>0</b></div><div class="a4">61–90<b>0</b></div><div class="a5">90+<b>0</b></div></div>
+          <div class="note warn mt-12" style="font-size:11.5px">Exceeding their 500,000 limit on a purchase is a warning + audited override — not a hard block like customer AR.</div>
+        </div>
+      </div>
+      <div class="card mt-12">
+        <div class="card-head"><h2>Details</h2></div>
+        <div class="card-body"><dl class="kv">
+          <dt>Contact</dt><dd>Imran Qureshi</dd>
+          <dt>Terms</dt><dd>30 days</dd>
+          <dt>Our limit</dt><dd>PKR 500,000</dd>
+          <dt>Tax reg.</dt><dd class="mono">0712345-1</dd>
+          <dt>Opening AP</dt><dd>PKR 180,000 as of 01 Sep 2026</dd>
+          <dt>Created</dt><dd>12 Jan 2026 · Sana</dd>
+        </dl></div>
+      </div>
+    </aside>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="pay"><div class="modal">
+  <div class="modal-head"><h2>Pay supplier · Muller &amp; Phipps</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <div class="form-grid mb-12">
+      <div class="field col-4"><label>Amount <span class="req">*</span></label><input class="input num" value="50,000.00" style="font-size:15px;font-weight:600"></div>
+      <div class="field col-4"><label>Method</label><select class="select"><option>Bank transfer</option><option>Cash</option><option>JazzCash</option></select></div>
+      <div class="field col-4"><label>Date</label><input class="input" value="08 Oct 2026"></div>
+      <div class="field col-6"><label>Reference</label><input class="input" value="HBL-99102"></div>
+      <div class="field col-6"><label>Notes</label><input class="input" placeholder="optional"></div>
+    </div>
+    <div class="flex between mb-8"><div class="section-title" style="margin:0">Allocate to invoices</div><div class="flex gap-4"><button class="btn xs">Oldest first</button><button class="btn xs ghost">Clear</button></div></div>
+    <table class="tbl dense">
+      <thead><tr><th>Invoice</th><th>Due</th><th class="right">Balance</th><th class="right">Allocate</th></tr></thead>
+      <tbody>
+        <tr class="alloc-row"><td class="mono">PUR26-000240</td><td><span class="badge danger">6d</span></td><td class="num">128,400.00</td><td><input class="input" value="50,000.00" style="width:100px;text-align:right"></td></tr>
+        <tr class="alloc-row"><td class="mono">PUR26-000288</td><td>31 Oct</td><td class="num">86,400.00</td><td><input class="input" value="0.00" style="width:100px;text-align:right"></td></tr>
+        <tr class="alloc-row"><td class="mono">PUR26-000301</td><td>07 Nov</td><td class="num">43,638.00</td><td><input class="input" value="0.00" style="width:100px;text-align:right"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2">Allocated 50,000.00 · Unallocated <b>0.00</b></td><td class="num">258,438.00</td><td class="num text-ok">50,000.00</td></tr></tfoot>
+    </table>
+    <div class="note info mt-12" style="font-size:11.5px">Posts <span class="mono">Dr 2100 AP 50,000 / Cr 1020 Bank 50,000</span> (PUR-04). Unallocated remainder becomes a supplier advance (1400).</div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('PYO26-000220 posted · Muller AP now PKR 208,438','ok')">Record payment</button></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+</body></html>

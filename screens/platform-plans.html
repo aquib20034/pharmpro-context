@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Platform · Plans</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-shell="platform" data-page="plans" data-crumbs="Plans">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Plans &amp; caps</h1><div class="sub">Indicative commercial packages from <span class="mono">docs/14-commercial-scope-notes.md</span>. Caps are enforced when the Owner adds a user or branch. Money is collected outside the app in MVP.</div></div>
+    <div class="actions"><button class="btn sm" data-action="toast" data-msg="Plan saved">Save</button></div>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Plan</th><th>Subscription</th><th class="right">Users</th><th class="right">Branches</th><th>Mode</th><th>Tenants on plan</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Starter</b><div class="sub">Single shop</div></td>
+            <td>PKR 12,000 / mo</td>
+            <td class="num">3</td>
+            <td class="num">1</td>
+            <td>Pharmacy</td>
+            <td>8</td>
+            <td><button class="btn xs">Edit caps</button></td>
+          </tr>
+          <tr>
+            <td><b>Professional</b><div class="sub">Small chain</div></td>
+            <td>PKR 24,000 / mo</td>
+            <td class="num">10</td>
+            <td class="num">3</td>
+            <td>Pharmacy + P2-A comms</td>
+            <td>5</td>
+            <td><button class="btn xs">Edit caps</button></td>
+          </tr>
+          <tr>
+            <td><b>Distributor</b> <span class="badge">P2</span></td>
+            <td>PKR 48,000 / mo</td>
+            <td class="num">25</td>
+            <td class="num">10</td>
+            <td>Distributor</td>
+            <td>0</td>
+            <td><span class="muted">—</span></td>
+          </tr>
+          <tr>
+            <td><b>Enterprise</b> <span class="badge">P3</span></td>
+            <td>PKR 80,000+ / mo</td>
+            <td class="num">Custom</td>
+            <td class="num">Custom</td>
+            <td>+ warehouse / mobile</td>
+            <td>0</td>
+            <td><span class="muted">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-foot"><span>Over-cap create is <span class="mono">PLAN_LIMIT_EXCEEDED</span>. Super admin may grant a temporary override on the tenant detail.</span></div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

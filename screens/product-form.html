@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Edit product</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .chain { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12.5px; }
+  .chain .u { border: 1px solid var(--line-strong); border-radius: 6px; padding: 4px 8px; background: #fff; display: inline-flex; gap: 6px; align-items: center; }
+  .chain .u input { width: 44px; height: 22px; text-align: right; }
+  .chain .u select { height: 22px; font-size: 12px; }
+  .chain .eq { color: var(--muted); }
+  .chain .base { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .flat { display: flex; gap: 6px; margin-top: 8px; }
+  .flat span { font-size: 11.5px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 2px 7px; font-family: var(--mono); }
+  .sticky-foot { position: sticky; bottom: -24px; background: #fff; border-top: 1px solid var(--line); padding: 10px 14px; margin: 12px -16px -24px; display: flex; gap: 6px; align-items: center; z-index: 5; }
+  .side-card dl { margin: 0; }
+</style></head>
+<body data-page="products" data-crumbs="Products / Panadol 500mg / Edit">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Panadol 500mg Tablet <span class="badge ok dot">Active</span></h1><div class="sub">SKU PAN500 · created 12 Jan 2026 · last changed by Sana 02 Oct (retail price)</div></div>
+    <div class="actions"><button class="btn">View stock</button><button class="btn">Price history</button><button class="btn">Audit trail</button><button class="btn danger">Deactivate</button></div>
+  </div>
+
+  <div class="split">
+    <div>
+      <div class="card">
+        <div class="tabs" data-tabs="pf">
+          <button class="on" data-tab="gen">General</button>
+          <button data-tab="units">Units &amp; barcodes <span class="count">3 · 3</span></button>
+          <button data-tab="price">Pricing &amp; tax</button>
+          <button data-tab="stock">Stock settings</button>
+          <button data-tab="batches">Batches <span class="count">3</span></button>
+        </div>
+
+        <div class="tab-panel on card-body" data-tab-group="pf" data-tab="gen">
+          <div class="form-grid">
+            <div class="field col-6"><label>Product name <span class="req">*</span></label><input class="input" value="Panadol 500mg Tablet"></div>
+            <div class="field col-3"><label>SKU <span class="req">*</span></label><input class="input mono" value="PAN500"></div>
+            <div class="field col-3"><label>Brand</label><input class="input" value="Panadol"></div>
+            <div class="field col-6"><label>Generic / salt name <span class="req">*</span></label><input class="input" value="Paracetamol"><div class="help">Searchable in POS. Use INN names.</div></div>
+            <div class="field col-3"><label>Strength</label><input class="input" value="500mg"></div>
+            <div class="field col-3"><label>Form <span class="req">*</span></label><select class="select"><option>Tablet</option><option>Capsule</option><option>Syrup</option><option>Injection</option></select></div>
+            <div class="field col-4"><label>Manufacturer <span class="req">*</span></label><select class="select"><option>GSK Pakistan</option><option>Getz Pharma</option></select><div class="help"><a href="manufacturers.html">Manage manufacturers</a> · ≠ supplier</div></div>
+            <div class="field col-4"><label>Category</label><select class="select"><option>Analgesics</option></select></div>
+            <div class="field col-4"><label>Subcategory</label><select class="select"><option>Non-opioid</option></select></div>
+            <div class="field col-6"><label>Pack description</label><input class="input" value="Box of 10 strips × 10 tablets"></div>
+            <div class="field col-6"><label>Preferred supplier</label><select class="select"><option>Muller &amp; Phipps</option><option>Getz Distribution</option></select></div>
+            <div class="field col-12"><label>Description</label><textarea class="input" rows="2">Analgesic and antipyretic.</textarea></div>
+            <div class="col-12 flex gap-16">
+              <label class="check"><input type="checkbox"> Prescription required (Rx badge in POS)</label>
+              <label class="check"><input type="checkbox" checked> Track batches &amp; expiry</label>
+              <label class="check"><input type="checkbox"> Allow fractional base quantity</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel card-body" data-tab-group="pf" data-tab="units">
+          <div class="section-title">Unit chain</div>
+          <div class="chain">
+            <span class="u">1 <select class="select"><option>box</option><option>carton</option></select></span><span class="eq">=</span>
+            <span class="u"><input class="input" value="10"> <select class="select"><option>strip</option></select></span><span class="eq">=</span>
+            <span class="u"><input class="input" value="10"> <select class="select"><option>tablet</option></select></span>
+            <span class="u base">base: tablet</span>
+            <button class="btn xs ghost">+ Add level</button>
+          </div>
+          <div class="flat"><span>box → 100 tablets</span><span>strip → 10 tablets</span><span>tablet → 1</span></div>
+          <div class="note warn mt-12" style="font-size:11.5px">Factors are locked because 1,284 posted documents reference these units. To change packaging, add a new unit and deactivate the old one.</div>
+          <div class="divider"></div>
+          <div class="flex between mb-8"><div class="section-title" style="margin:0">Barcodes</div><button class="btn xs">+ Add barcode</button><button class="btn xs ghost">Generate internal (EAN-13)</button></div>
+          <table class="tbl dense">
+            <thead><tr><th>Barcode</th><th>Maps to unit</th><th>Type</th><th>Primary</th><th></th></tr></thead>
+            <tbody>
+              <tr><td class="mono">8964000123456</td><td><span class="tag">box</span></td><td>Manufacturer</td><td><span class="badge ok">Primary</span></td><td class="right"><span class="row-actions"><button class="btn xs ghost">Edit</button><button class="btn xs ghost">Remove</button></span></td></tr>
+              <tr><td class="mono">8964000123463</td><td><span class="tag">strip</span></td><td>Manufacturer</td><td></td><td class="right"><span class="row-actions"><button class="btn xs ghost">Edit</button><button class="btn xs ghost">Remove</button></span></td></tr>
+              <tr><td class="mono">2000000012345</td><td><span class="tag">tablet</span></td><td>Internal</td><td></td><td class="right"><span class="row-actions"><button class="btn xs ghost">Print</button><button class="btn xs ghost">Remove</button></span></td></tr>
+            </tbody>
+          </table>
+          <div class="form-grid mt-12">
+            <div class="field col-4"><label>Default sale unit</label><select class="select"><option>strip</option><option>tablet</option><option>box</option></select></div>
+            <div class="field col-4"><label>Default purchase unit</label><select class="select"><option>box</option></select></div>
+          </div>
+        </div>
+
+        <div class="tab-panel card-body" data-tab-group="pf" data-tab="price">
+          <div class="flex between mb-8"><div class="section-title" style="margin:0">Selling prices (per unit, effective-dated)</div><button class="btn xs">+ New price</button></div>
+          <table class="tbl dense">
+            <thead><tr><th>Unit</th><th class="right">Retail</th><th class="right">Wholesale</th><th class="right">Batch MRP (nearest)</th><th class="right">Cost (avg)</th><th class="right">Margin</th><th>Effective</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag">tablet</span></td><td class="num">3.20</td><td class="num">2.95</td><td class="num">3.20</td><td class="num">2.47</td><td class="num text-ok">22.8%</td><td class="muted">02 Oct 2026</td></tr>
+              <tr><td><span class="tag">strip</span></td><td class="num">32.00</td><td class="num">29.50</td><td class="num">32.00</td><td class="num">24.70</td><td class="num text-ok">22.8%</td><td class="muted">02 Oct 2026</td></tr>
+              <tr><td><span class="tag">box</span></td><td class="num">300.00</td><td class="num">285.00</td><td class="num">320.00</td><td class="num">247.00</td><td class="num text-ok">17.7%</td><td class="muted">02 Oct 2026</td></tr>
+            </tbody>
+          </table>
+          <div class="note info mt-12" style="font-size:11.5px">POS price precedence: override → customer price (P2) → product price by customer type → batch MRP × factor → retail. Documents snapshot the price used.</div>
+          <div class="form-grid mt-12">
+            <div class="field col-4"><label>Tax category</label><select class="select"><option>Pharma — exempt (0%)</option><option>General — 17% exclusive</option></select></div>
+          </div>
+        </div>
+
+        <div class="tab-panel card-body" data-tab-group="pf" data-tab="stock">
+          <div class="form-grid">
+            <div class="field col-3"><label>Reorder level (base)</label><input class="input" value="400"></div>
+            <div class="field col-3"><label>Reorder quantity</label><input class="input" value="2000"></div>
+            <div class="field col-3"><label>Max stock</label><input class="input" value="3000"></div>
+            <div class="field col-3"><label>Near-expiry warning</label><input class="input" value="90" readonly><div class="help">Tenant default</div></div>
+          </div>
+          <div class="section-title mt-12">Stock by warehouse</div>
+          <table class="tbl dense"><thead><tr><th>Warehouse</th><th class="right">On hand</th><th class="right">Reserved</th><th class="right">Available</th><th class="right">Value @ cost</th></tr></thead>
+          <tbody><tr><td>Shop floor</td><td class="num">1,240</td><td class="num">0</td><td class="num">1,240</td><td class="num">3,062.80</td></tr><tr><td>Store room</td><td class="num">1,700</td><td class="num">0</td><td class="num">1,700</td><td class="num">4,199.00</td></tr></tbody>
+          <tfoot><tr><td>Total</td><td class="num">2,940</td><td class="num">0</td><td class="num">2,940</td><td class="num">7,261.80</td></tr></tfoot></table>
+        </div>
+
+        <div class="tab-panel card-body tight" data-tab-group="pf" data-tab="batches">
+          <table class="tbl dense"><thead><tr><th>Batch</th><th>Expiry</th><th>Supplier</th><th class="right">On hand</th><th class="right">Cost / tab</th><th class="right">MRP / tab</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono">P5A</td><td><span class="exp d90">31 Dec 2026</span></td><td>Muller &amp; Phipps</td><td class="num">1,100</td><td class="num">2.4700</td><td class="num">3.20</td><td><span class="badge ok dot">Saleable</span></td><td class="right"><button class="btn xs ghost">Ledger</button></td></tr>
+            <tr><td class="mono">P6B</td><td><span class="exp ok">31 Jul 2027</span></td><td>Muller &amp; Phipps</td><td class="num">1,840</td><td class="num">2.4700</td><td class="num">3.20</td><td><span class="badge ok dot">Saleable</span></td><td class="right"><button class="btn xs ghost">Ledger</button></td></tr>
+            <tr><td class="mono">P4Z</td><td><span class="exp expired">30 Sep 2026</span></td><td>Getz Distribution</td><td class="num">0</td><td class="num">2.3000</td><td class="num">3.00</td><td><span class="badge dot">Depleted</span></td><td class="right"><button class="btn xs ghost">Ledger</button></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <div class="sticky-foot">
+        <span class="muted" style="font-size:12px">Unsaved changes in <b>General</b></span>
+        <div class="grow"></div>
+        <a class="btn" href="products.html">Cancel</a>
+        <button class="btn primary" data-action="toast" data-msg="Product saved · audit entry recorded">Save changes <kbd>Ctrl S</kbd></button>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card side-card">
+        <div class="card-head"><h2>At a glance</h2></div>
+        <div class="card-body">
+          <dl class="kv">
+            <dt>On hand</dt><dd>2,940 tablets <span class="muted">(29.4 boxes)</span></dd>
+            <dt>Nearest expiry</dt><dd><span class="exp d90">Dec 26</span> · 1,100 tabs</dd>
+            <dt>Sold 30d</dt><dd>3,860 tabs · PKR 12,352</dd>
+            <dt>Avg daily</dt><dd>129 tabs → <b class="text-ok">23 days cover</b></dd>
+            <dt>Last purchase</dt><dd>01 Oct · PUR26-000288</dd>
+            <dt>Preferred supplier</dt><dd>Muller &amp; Phipps</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="card mt-12">
+        <div class="card-head"><h2>Recent changes</h2></div>
+        <div class="card-body">
+          <ul class="timeline">
+            <li class="ok"><div>Retail price strip 30.00 → <b>32.00</b><div class="t">Sana · 02 Oct 10:14</div></div></li>
+            <li><div>Reorder level 300 → <b>400</b><div class="t">Aquib · 20 Sep</div></div></li>
+            <li><div>Barcode added <span class="mono">2000000012345</span> (tablet)<div class="t">Sana · 14 Aug</div></div></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Audit log</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / Audit log">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="audit"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Audit log</h1><div class="sub">One table. Append-only. Needs <span class="mono">audit.view</span>. Elevated actions store a reason. Nothing here is editable.</div></div>
+        <div class="actions"><button class="btn sm" data-action="toast" data-msg="CSV queued">Export</button></div>
+      </div>
+      <div class="card">
+        <div class="filters">
+          <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" placeholder="Entity id, reason…" style="width:200px"></div>
+          <select class="select"><option>User: All</option><option>Aquib</option><option>Sana</option><option>Bilal</option></select>
+          <select class="select"><option>Action: All</option><option>post</option><option>void</option><option>update</option><option>login</option><option>settings</option></select>
+          <input class="input" value="01 Oct 2026"><span class="muted">→</span><input class="input" value="08 Oct 2026">
+          <span class="spacer"></span>
+          <button class="btn sm primary">Filter</button>
+        </div>
+        <table class="tbl dense">
+          <thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Entity</th><th>Summary</th><th>Reason</th><th>IP</th></tr></thead>
+          <tbody>
+            <tr><td>08 Oct 14:08</td><td>Bilal</td><td class="mono">post</td><td class="mono">sale INV26-000412</td><td>Walk-in cash · 1,398.20</td><td class="muted">—</td><td class="mono muted">10.0.0.14</td></tr>
+            <tr><td>08 Oct 11:42</td><td>Sana</td><td class="mono">create</td><td class="mono">adjustment ADJ26-000031</td><td>Damage 12,600 → pending approval</td><td>Broken fridge overnight</td><td class="mono muted">10.0.0.22</td></tr>
+            <tr><td>08 Oct 09:14</td><td>Aquib</td><td class="mono">import</td><td class="mono">opening_stock</td><td>Preview · 1 invalid row</td><td class="muted">—</td><td class="mono muted">10.0.0.2</td></tr>
+            <tr><td>07 Oct 19:04</td><td>Aquib</td><td class="mono">void</td><td class="mono">sale INV26-000400</td><td>Same-day full reversal</td><td>Wrong customer charged</td><td class="mono muted">10.0.0.2</td></tr>
+            <tr><td>20 Aug 16:11</td><td>Aquib</td><td class="mono">update</td><td class="mono">customer CUS-00041</td><td>Credit limit 15,000 → 20,000</td><td>Regular payer</td><td class="mono muted">10.0.0.2</td></tr>
+            <tr><td>12 Jan 10:02</td><td>system</td><td class="mono">login</td><td class="mono">user</td><td>Owner first login · password changed</td><td class="muted">—</td><td class="mono muted">—</td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span>Before/after JSON is on the row drill-in (not shown in the list). Failed logins are in this same log.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Document numbering</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / Document numbering">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="num"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Document numbering</h1><div class="sub">Allocated at <b>post</b> with a row lock — drafts stay <span class="mono">DRAFT-&lt;id&gt;</span>. Format <span class="mono">{prefix}{YY}-{padded}</span>. Voids do not free a number.</div></div>
+        <div class="actions"><button class="btn sm primary" data-action="toast" data-msg="Prefixes saved · next numbers untouched">Save prefixes</button></div>
+      </div>
+      <div class="card">
+        <div class="filters"><select class="select"><option>Fiscal year: 2026–27</option></select><select class="select"><option>Branch: All (tenant sequences)</option><option>Main</option></select></div>
+        <table class="tbl dense">
+          <thead><tr><th>Type</th><th>Prefix</th><th>Pad</th><th>Next</th><th>Example</th><th>Last posted</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">SALE</td><td><input class="input mono" value="INV" style="width:72px"></td><td class="num">6</td><td class="num">413</td><td class="mono">INV26-000413</td><td class="mono">INV26-000412</td></tr>
+            <tr><td class="mono">SALE_RETURN</td><td><input class="input mono" value="RET" style="width:72px"></td><td class="num">6</td><td class="num">18</td><td class="mono">RET26-000018</td><td class="mono">RET26-000017</td></tr>
+            <tr><td class="mono">PURCHASE</td><td><input class="input mono" value="PUR" style="width:72px"></td><td class="num">6</td><td class="num">302</td><td class="mono">PUR26-000302</td><td class="mono">PUR26-000301</td></tr>
+            <tr><td class="mono">PURCHASE_RETURN</td><td><input class="input mono" value="PRT" style="width:72px"></td><td class="num">6</td><td class="num">9</td><td class="mono">PRT26-000009</td><td class="mono">PRT26-000008</td></tr>
+            <tr><td class="mono">PAYMENT_IN</td><td><input class="input mono" value="PAY" style="width:72px"></td><td class="num">6</td><td class="num">8814</td><td class="mono">PAY26-008814</td><td class="mono">PAY26-008813</td></tr>
+            <tr><td class="mono">PAYMENT_OUT</td><td><input class="input mono" value="PYO" style="width:72px"></td><td class="num">6</td><td class="num">220</td><td class="mono">PYO26-000220</td><td class="mono">PYO26-000219</td></tr>
+            <tr><td class="mono">ADJUSTMENT</td><td><input class="input mono" value="ADJ" style="width:72px"></td><td class="num">6</td><td class="num">32</td><td class="mono">ADJ26-000032</td><td class="mono">ADJ26-000031</td></tr>
+            <tr><td class="mono">STOCKTAKE</td><td><input class="input mono" value="STK" style="width:72px"></td><td class="num">6</td><td class="num">4</td><td class="mono">STK26-000004</td><td class="mono">STK26-000003</td></tr>
+            <tr><td class="mono">JOURNAL</td><td><input class="input mono" value="JRN" style="width:72px"></td><td class="num">6</td><td class="num">4140</td><td class="mono">JRN26-004140</td><td class="mono">JRN26-004131</td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span>Next number is not editable here — the allocator owns it so concurrent cashiers cannot collide.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

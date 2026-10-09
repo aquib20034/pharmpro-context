@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Platform · Tenants</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .mini { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 12px; }
+  .mini .card { padding: 8px 10px; }
+  .mini .lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  .mini .val { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .use { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11.5px; }
+  .use .progress { width: 44px; }
+</style></head>
+<body data-shell="platform" data-page="tenants" data-crumbs="Tenants">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>Tenants</h1><div class="sub">You create companies here. The Owner then sets up extra branches, warehouses and staff inside their own app. Billing in MVP is this list plus Mark paid / Suspend — no self-serve checkout.</div></div>
+    <div class="actions">
+      <a class="btn" href="platform-plans.html">Plans</a>
+      <a class="btn primary" href="platform-tenant-new.html">New tenant <kbd>Alt N</kbd></a>
+    </div>
+  </div>
+  <div class="mini">
+    <div class="card"><div class="lbl">Active</div><div class="val">11</div></div>
+    <div class="card"><div class="lbl">Due ≤14 days</div><div class="val text-warn">2</div></div>
+    <div class="card"><div class="lbl">Grace</div><div class="val text-danger">1</div></div>
+    <div class="card"><div class="lbl">Read-only</div><div class="val">1</div></div>
+    <div class="card"><div class="lbl">Suspended</div><div class="val">1</div></div>
+    <div class="card"><div class="lbl">MRR (indicative)</div><div class="val">264k <small class="muted" style="font-size:11px">PKR</small></div></div>
+  </div>
+
+  <div class="card">
+    <div class="filters">
+      <div class="input-wrap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input class="input" id="q" placeholder="Name, owner, NTN…" style="width:220px"></div>
+      <span class="filter-chip on" data-filter="all">All <b>16</b></span>
+      <span class="filter-chip" data-filter="active">Active</span>
+      <span class="filter-chip" data-filter="due">Due soon</span>
+      <span class="filter-chip" data-filter="grace">Grace</span>
+      <span class="filter-chip" data-filter="readonly">Read-only</span>
+      <span class="filter-chip" data-filter="suspended">Suspended</span>
+      <select class="select"><option>Plan: All</option><option>Starter</option><option>Professional</option><option>Distributor</option></select>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl" id="tTbl">
+        <thead><tr><th class="sort desc">Company</th><th>Owner</th><th>Plan</th><th>Status</th><th>Period ends</th><th>Users</th><th>Branches</th><th>Last login</th><th></th></tr></thead>
+        <tbody>
+          <tr data-st="due" data-select>
+            <td><a href="platform-tenant.html"><b>Demo Pharmacy</b></a><div class="sub">NTN 1234567-8 · pharmacy · PKR</div></td>
+            <td>Aquib Khan<div class="sub">owner@demopharmacy.pk</div></td>
+            <td><span class="tag">Professional</span></td>
+            <td><span class="badge warn dot">Due in 12d</span></td>
+            <td>20 Oct 2026</td>
+            <td><span class="use">6/10 <div class="progress"><i style="width:60%"></i></div></span></td>
+            <td><span class="use">2/3 <div class="progress"><i style="width:66%"></i></div></span></td>
+            <td>today 14:02</td>
+            <td><span class="row-actions"><a class="btn xs" href="platform-tenant.html">Open</a><button class="btn xs ghost" data-open="extend">Extend</button></span></td>
+          </tr>
+          <tr data-st="active">
+            <td><b>City Med</b><div class="sub">NTN 3344556-1 · pharmacy · PKR</div></td>
+            <td>Sara Malik<div class="sub">sara@citymed.pk</div></td>
+            <td><span class="tag">Starter</span></td>
+            <td><span class="badge ok dot">Active</span></td>
+            <td>08 Nov 2026</td>
+            <td><span class="use">3/3 <div class="progress warn"><i style="width:100%"></i></div></span></td>
+            <td><span class="use">1/1 <div class="progress"><i style="width:100%"></i></div></span></td>
+            <td>yesterday</td>
+            <td><span class="row-actions"><a class="btn xs" href="platform-tenant.html">Open</a></span></td>
+          </tr>
+          <tr data-st="grace">
+            <td><b>Al-Shifa Medical</b><div class="sub">NTN 7788123-0 · pharmacy · PKR</div></td>
+            <td>Imran Qureshi<div class="sub">imran@alshifa.pk</div></td>
+            <td><span class="tag">Starter</span></td>
+            <td><span class="badge danger dot">Grace 4/7</span></td>
+            <td>04 Oct 2026</td>
+            <td><span class="use">2/3 <div class="progress"><i style="width:66%"></i></div></span></td>
+            <td><span class="use">1/1 <div class="progress"><i style="width:100%"></i></div></span></td>
+            <td>3d ago</td>
+            <td><span class="row-actions"><a class="btn xs" href="platform-tenant.html">Open</a><button class="btn xs primary" data-open="paid">Mark paid</button></span></td>
+          </tr>
+          <tr data-st="readonly">
+            <td><b>Old Mart Pharmacy</b><div class="sub">NTN 9900112-4 · pharmacy · PKR</div></td>
+            <td>Hassan<div class="sub">hassan@oldmart.pk</div></td>
+            <td><span class="tag">Starter</span></td>
+            <td><span class="badge indigo dot">Read-only</span></td>
+            <td>01 Sep 2026</td>
+            <td><span class="use">2/3</span></td>
+            <td><span class="use">1/1</span></td>
+            <td>12 Sep</td>
+            <td><span class="row-actions"><a class="btn xs" href="platform-tenant.html">Open</a><button class="btn xs ghost" data-open="resume">Resume</button></span></td>
+          </tr>
+          <tr data-st="suspended">
+            <td><b>Closed Co</b><div class="sub">NTN 1112223-9 · pharmacy · PKR</div></td>
+            <td>—<div class="sub">contract ended</div></td>
+            <td><span class="tag">Starter</span></td>
+            <td><span class="badge">Suspended</span></td>
+            <td>—</td>
+            <td class="muted">—</td>
+            <td class="muted">—</td>
+            <td>Jun 2026</td>
+            <td><span class="row-actions"><a class="btn xs" href="platform-tenant.html">Open</a></span></td>
+          </tr>
+          <tr data-st="active">
+            <td><b>Gulberg Drugs</b><div class="sub">NTN 5566778-2 · pharmacy · PKR</div></td>
+            <td>Nadia<div class="sub">nadia@gulbergdrugs.pk</div></td>
+            <td><span class="tag">Professional</span></td>
+            <td><span class="badge ok dot">Active</span></td>
+            <td>01 Jan 2027</td>
+            <td><span class="use">8/10 <div class="progress"><i style="width:80%"></i></div></span></td>
+            <td><span class="use">3/3 <div class="progress warn"><i style="width:100%"></i></div></span></td>
+            <td>today 09:11</td>
+            <td><span class="row-actions"><a class="btn xs" href="platform-tenant.html">Open</a></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-foot"><span id="foot">Showing 6 of 16</span><span class="muted" style="font-size:11.5px">Pill on Tenants = companies in due / grace. Click a row to open.</span></div>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="extend"><div class="modal narrow">
+  <div class="modal-head"><h2>Extend Demo Pharmacy?</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <p style="font-size:12.5px">Adds 30 days to the current period. Owner banner clears. No invoice is generated in MVP — record the payment outside the app.</p>
+    <div class="field mt-12"><label>New period end</label><input class="input" value="19 Nov 2026" readonly></div>
+    <div class="field mt-8"><label>Internal note</label><input class="input" placeholder="e.g. JazzCash 19 Oct · PKR 24,000"></div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Demo Pharmacy extended to 19 Nov 2026','ok')">Extend 30 days</button></div></div>
+</div></div>
+<div class="overlay" id="paid"><div class="modal narrow">
+  <div class="modal-head"><h2>Mark Al-Shifa paid?</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body"><p style="font-size:12.5px">Status → Active. Period end → 04 Nov 2026. Owner can post again immediately.</p></div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Al-Shifa Medical marked paid · Active until 04 Nov','ok')">Mark paid</button></div></div>
+</div></div>
+<div class="overlay" id="resume"><div class="modal narrow">
+  <div class="modal-head"><h2>Resume Old Mart?</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body"><p style="font-size:12.5px">Leaves read-only. Restores posting. Set a new period end first.</p>
+    <div class="field mt-12"><label>Period ends</label><input class="input" value="08 Nov 2026"></div></div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Cancel</button><button class="btn primary" data-close onclick="toast('Old Mart resumed · Active','ok')">Resume</button></div></div>
+</div></div>
+
+<script src="assets/app.js"></script>
+<script>
+const rows = [...document.querySelectorAll('#tTbl tbody tr')];
+function apply() {
+  const f = document.querySelector('.filter-chip.on')?.dataset.filter || 'all';
+  const q = (document.getElementById('q').value || '').toLowerCase();
+  let n = 0;
+  rows.forEach(tr => {
+    const okF = f === 'all' || tr.dataset.st === f;
+    const okQ = !q || tr.textContent.toLowerCase().includes(q);
+    const show = okF && okQ;
+    tr.style.display = show ? '' : 'none';
+    if (show) n++;
+  });
+  document.getElementById('foot').textContent = 'Showing ' + n + ' of 16';
+}
+document.querySelectorAll('.filter-chip[data-filter]').forEach(c => c.addEventListener('click', e => {
+  e.stopPropagation();
+  document.querySelectorAll('.filter-chip[data-filter]').forEach(x => x.classList.toggle('on', x === c));
+  apply();
+}));
+document.getElementById('q').addEventListener('input', apply);
+</script>
+</body></html>

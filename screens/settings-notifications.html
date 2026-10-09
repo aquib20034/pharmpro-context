@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Notifications</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / Notifications">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="notif"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Notifications</h1><div class="sub">MVP channels: <b>in-app</b> and <b>email</b>. SMS / WhatsApp are P2 behind the same event list.</div></div>
+        <div class="actions"><button class="btn sm primary" data-action="toast" data-msg="Notification rules saved">Save</button></div>
+      </div>
+      <div class="card">
+        <table class="tbl dense">
+          <thead><tr><th>Event</th><th>In-app</th><th>Email</th><th>Who</th><th>When</th></tr></thead>
+          <tbody>
+            <tr><td>Low stock (crosses reorder)</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td>Pharmacist · Purchase Mgr</td><td>On crossing, once</td></tr>
+            <tr><td>Expiry digest</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td>Owner · Pharmacist</td><td>Daily 06:00</td></tr>
+            <tr><td>Adjustment awaiting approval</td><td><input type="checkbox" checked></td><td><input type="checkbox"></td><td>Owner · Branch Mgr</td><td>On submit</td></tr>
+            <tr><td>Stocktake awaiting approval</td><td><input type="checkbox" checked></td><td><input type="checkbox"></td><td>Owner</td><td>On submit</td></tr>
+            <tr><td>Payment received</td><td><input type="checkbox" checked></td><td><input type="checkbox"></td><td>Actor + Owner</td><td>On post</td></tr>
+            <tr><td>Import finished</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td>Actor</td><td>On complete / fail</td></tr>
+            <tr><td>Subscription due / grace</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td>Owner · Admin</td><td>Daily while due</td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span>The bell drawer on the top bar is the in-app inbox. Recipients with no <span class="mono">notifications.manage</span> still receive events they are assigned to.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Low stock</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Inventory / Low stock">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="low"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Low stock</h1><div class="sub">Saleable qty (excludes expired / quarantined) vs product reorder level · dashboard tile uses this count</div></div>
+        <div class="actions"><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="card">
+        <div class="filters"><select class="select"><option>Warehouse: All (summed)</option><option>Shop floor</option></select><select class="select"><option>Only below reorder</option><option>Below max stock</option></select><span class="spacer"></span><span class="badge warn">14 products</span><button class="btn sm primary">Run</button></div>
+        <table class="tbl dense">
+          <thead><tr><th>Product</th><th>Preferred supplier</th><th class="right">Saleable</th><th class="right">Reorder lvl</th><th class="right">Reorder qty</th><th class="right">Gap</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Augmentin 625mg <span class="sub">saleable 18 · 180 expired blocked</span></td><td>GSK / M&amp;P</td><td class="num text-danger">18</td><td class="num">60</td><td class="num">120</td><td class="num text-danger">42</td><td><a class="btn xs primary" href="purchase-entry.html">New PO line</a></td></tr>
+            <tr><td>Ventolin Inhaler</td><td>GSK</td><td class="num text-danger">0</td><td class="num">12</td><td class="num">24</td><td class="num text-danger">12</td><td><a class="btn xs" href="purchase-entry.html">Buy</a></td></tr>
+            <tr><td>Flagyl 400mg <span class="sub">quarantined 30 — not saleable</span></td><td>Sanofi</td><td class="num text-danger">0</td><td class="num">80</td><td class="num">200</td><td class="num text-danger">80</td><td><span class="badge warn">release first</span></td></tr>
+            <tr><td>Risek 20mg</td><td>Getz</td><td class="num">420</td><td class="num">400</td><td class="num">560</td><td class="num">—</td><td><span class="muted">near</span></td></tr>
+          </tbody>
+        </table>
+        <div class="table-foot"><span>Expired units do not count as saleable. Reorder is a suggestion — purchase invoice is still posted by a pharmacist.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>

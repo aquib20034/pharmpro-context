@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Imports</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="settings" data-crumbs="Settings / Imports">
+<div class="app">
+<main class="main">
+  <div class="set-layout">
+    <div class="card set-nav" data-settings-nav="imp"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>Imports</h1><div class="sub">Go-live path for existing shelf stock: Products first (if needed), then Opening stock. Upload → validate → preview → confirm. Opening stock posts <span class="mono">OPENING</span> movements and Dr 1200 / Cr 3900. Default is all-or-nothing per file.</div></div>
+      </div>
+      <div class="card">
+        <div class="tabs" data-tabs="im"><button class="on" data-tab="new">New import</button><button data-tab="log">History <span class="count">3</span></button></div>
+        <div class="tab-panel on card-body" data-tab-group="im" data-tab="new">
+          <div class="steps mb-12"><span class="step on"><i>1</i>Type</span><span class="line"></span><span class="step on"><i>2</i>Upload</span><span class="line"></span><span class="step on"><i>3</i>Preview</span><span class="line"></span><span class="step"><i>4</i>Confirm</span></div>
+          <div class="form-grid mb-12">
+            <div class="field col-4"><label>Importer</label><select class="select" id="impType"><option>Opening stock</option><option>Products (+ units, barcodes)</option><option>Suppliers</option><option>Customers</option></select></div>
+            <div class="field col-5"><label>File</label><input class="input" value="opening-stock-08oct.csv" disabled></div>
+            <div class="field col-3"><label>&nbsp;</label><button class="btn">Download template</button></div>
+          </div>
+          <div class="note danger mb-12" style="font-size:12px">1 of 6 rows failed validation. Confirm stays disabled until the error file is clean (ONB-05).</div>
+          <table class="tbl dense">
+            <thead><tr><th>Row</th><th>SKU</th><th>Batch</th><th>Expiry</th><th>Qty</th><th>Unit</th><th class="right">Cost / base</th><th>Warehouse</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td class="num">2</td><td class="mono">PAN500</td><td class="mono">P5A</td><td>31 Dec 26</td><td class="num">1,000</td><td>tablet</td><td class="num">2.47</td><td>Shop floor</td><td><span class="badge ok">ok</span></td></tr>
+              <tr><td class="num">3</td><td class="mono">AUG625</td><td class="mono">AX2231</td><td>30 Sep 26</td><td class="num">180</td><td>tablet</td><td class="num">41.20</td><td>Shop floor</td><td><span class="badge ok">ok</span></td></tr>
+              <tr><td class="num">4</td><td class="mono">RIS20</td><td class="mono">RK0091</td><td>28 Oct 26</td><td class="num">420</td><td>capsule</td><td class="num">14.20</td><td>Shop floor</td><td><span class="badge ok">ok</span></td></tr>
+              <tr><td class="num">5</td><td class="mono">XYZ999</td><td class="mono">XX1</td><td>01 Jan 27</td><td class="num">10</td><td>tablet</td><td class="num">1.00</td><td>Shop floor</td><td><span class="badge danger">unknown SKU</span></td></tr>
+              <tr><td class="num">6</td><td class="mono">BRUSYP</td><td class="mono">77Q1</td><td>14 Oct 26</td><td class="num">12</td><td>bottle</td><td class="num">128.00</td><td>Shop floor</td><td><span class="badge ok">ok</span></td></tr>
+            </tbody>
+          </table>
+          <div class="flex between mt-12">
+            <button class="btn" data-action="toast" data-msg="error-rows.csv downloaded">Download error CSV</button>
+            <div class="flex gap-6">
+              <button class="btn" id="dropBad">Drop invalid row</button>
+              <button class="btn primary" id="impGo" disabled>Confirm import</button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-tab-group="im" data-tab="log">
+          <table class="tbl dense">
+            <thead><tr><th>When</th><th>Type</th><th>File</th><th>By</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td>08 Oct 09:14</td><td>Opening stock</td><td class="mono">opening-stock-08oct.csv</td><td>Aquib</td><td><span class="badge warn">preview · 1 error</span></td></tr>
+              <tr><td>01 Oct 18:02</td><td>Products</td><td class="mono">catalog.csv</td><td>Sana</td><td><span class="badge ok">2,418 ok</span></td></tr>
+              <tr><td>01 Oct 18:40</td><td>Customers</td><td class="mono">customers.csv</td><td>Sana</td><td><span class="badge ok">186 ok</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+<script>
+document.getElementById('dropBad').addEventListener('click', () => {
+  const row = document.querySelector('.badge.danger');
+  if (row) row.closest('tr').remove();
+  document.querySelector('.note.danger').className = 'note ok mb-12';
+  document.querySelector('.note.ok').style.fontSize = '12px';
+  document.querySelector('.note.ok').textContent = '5 rows valid. Confirm will post OPENING movements + Dr 1200 / Cr 3900.';
+  const go = document.getElementById('impGo');
+  go.disabled = false;
+  go.onclick = () => toast('Import queued · valuation must equal 1200 Inventory when it finishes','ok');
+});
+</script>
+</body></html>

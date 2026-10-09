@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — Platform · New tenant</title>
+<link rel="stylesheet" href="assets/app.css">
+<style>
+  .seed li { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; padding: 5px 0; border-bottom: 1px dashed var(--line); }
+  .seed i { width: 14px; height: 14px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink); font-size: 9px; font-style: normal; display: grid; place-items: center; flex: none; margin-top: 2px; font-weight: 700; }
+</style></head>
+<body data-shell="platform" data-page="tenants" data-crumbs="Tenants / New tenant">
+<div class="app">
+<main class="main">
+  <div class="page-head">
+    <div><h1>New tenant</h1><div class="sub">Creates the company, seeds a ready pharmacy, and emails the Owner invitation. Extra branches are added later by the Owner.</div></div>
+    <div class="actions">
+      <div class="steps"><span class="step on"><i>1</i>Company</span><span class="line"></span><span class="step"><i>2</i>Plan</span><span class="line"></span><span class="step"><i>3</i>Invite Owner</span></div>
+      <a class="btn" href="platform-tenants.html">Cancel</a>
+    </div>
+  </div>
+
+  <div class="split">
+    <div class="card card-body">
+      <div class="section-title">Company</div>
+      <div class="form-grid">
+        <div class="field col-6"><label>Business name <span class="req">*</span></label><input class="input" value="Lahore Care Pharmacy"></div>
+        <div class="field col-6"><label>Legal name</label><input class="input" value="Lahore Care Pharmacy (Pvt) Ltd"></div>
+        <div class="field col-4"><label>NTN / STRN</label><input class="input mono" placeholder="1234567-8"></div>
+        <div class="field col-4"><label>Phone</label><input class="input" value="042-111-000111"></div>
+        <div class="field col-4"><label>Email</label><input class="input" value="info@lahorecare.pk"></div>
+        <div class="field col-12"><label>Address</label><input class="input" value="12-A Jail Road, Lahore"></div>
+        <div class="field col-4"><label>Timezone</label><select class="select"><option>Asia/Karachi</option><option>Asia/Dubai</option></select></div>
+        <div class="field col-4"><label>Currency</label><select class="select"><option>PKR</option><option disabled>USD (not in MVP)</option></select></div>
+        <div class="field col-4"><label>Fiscal year start</label><select class="select"><option>July (Pakistan default)</option><option>January</option></select></div>
+        <div class="field col-4"><label>Mode</label><select class="select"><option>Pharmacy</option><option disabled>Distributor (P2)</option><option disabled>Warehouse (P3)</option></select></div>
+        <div class="field col-8"><label>Default branch name</label><input class="input" value="Main"><div class="help">A warehouse “Shop floor” is created under this branch automatically.</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Subscription</div>
+      <div class="form-grid">
+        <div class="field col-4"><label>Plan <span class="req">*</span></label><select class="select" id="plan">
+          <option value="starter">Starter · 1 branch · 3 users · PKR 12,000/mo</option>
+          <option value="pro" selected>Professional · 3 branches · 10 users · PKR 24,000/mo</option>
+          <option value="dist">Distributor · P2</option>
+        </select></div>
+        <div class="field col-4"><label>Period ends</label><input class="input" value="08 Nov 2026"><div class="help">MVP: you collect payment outside the app.</div></div>
+        <div class="field col-4"><label>Status</label><select class="select"><option>Active</option><option>Suspended</option></select></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Owner invitation</div>
+      <div class="form-grid">
+        <div class="field col-6"><label>Owner name <span class="req">*</span></label><input class="input" value="Farah Ali"></div>
+        <div class="field col-6"><label>Owner email <span class="req">*</span></label><input class="input" type="email" value="farah@lahorecare.pk"><div class="help">Forced password change on first login.</div></div>
+      </div>
+      <div class="flex mt-12">
+        <button class="btn" type="button" onclick="toast('Draft kept on this device only','ok')">Save draft</button>
+        <span class="grow"></span>
+        <button class="btn primary lg" type="button" data-open="confirm">Create tenant &amp; send invite</button>
+      </div>
+    </div>
+    <div>
+      <div class="card card-body">
+        <div class="section-title">Seeded on create</div>
+        <ul class="seed">
+          <li><i>✓</i><div>Branch <b>Main</b> + warehouse <b>Shop floor</b></div></li>
+          <li><i>✓</i><div>Chart of accounts (default, editable by accountant)</div></li>
+          <li><i>✓</i><div>Units, forms, tax categories, payment methods</div></li>
+          <li><i>✓</i><div>Roles from the permissions matrix · Owner role assigned</div></li>
+          <li><i>✓</i><div>Walk-in customer · document sequences · fiscal year/periods</div></li>
+          <li><i>✓</i><div>Invitation email to Farah Ali</div></li>
+          <li><i>—</i><div><b>No stock.</b> Balances start at zero. Opening stock is the Owner’s job after login.</div></li>
+        </ul>
+        <div class="note info mt-12" style="font-size:11.5px">You do not add Gulberg / store-room / bins here. After Farah logs in she uses <b>Settings → Branches</b>.</div>
+      </div>
+      <div class="card card-body mt-12">
+        <div class="section-title">Owner: bring shelf stock in</div>
+        <ol style="margin:0;padding-left:18px;font-size:12.5px;display:grid;gap:6px">
+          <li>Import <b>Products</b> (SKUs, units, barcodes) if the catalog is empty.</li>
+          <li>Import <b>Opening stock</b> CSV — batch, expiry, qty, cost, warehouse.</li>
+          <li>Confirm posts <span class="mono">OPENING</span> movements + Dr <span class="mono">1200</span> / Cr <span class="mono">3900</span>.</li>
+        </ol>
+        <div class="note warn mt-12" style="font-size:11.5px">Do not enter day-one shelf stock here. After invite, Farah uses <b>Settings → Imports</b> (ONB-05). Valuation must equal Inventory.</div>
+      </div>
+      <div class="card card-body mt-12">
+        <div class="section-title">Plan caps (enforced)</div>
+        <dl class="kv" id="caps"><dt>Users</dt><dd>10</dd><dt>Branches</dt><dd>3</dd><dt>Warehouses</dt><dd>Unlimited in MVP</dd></dl>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<div class="overlay" id="confirm"><div class="modal narrow">
+  <div class="modal-head"><h2>Create Lahore Care Pharmacy?</h2><button class="iconbtn" data-close>✕</button></div>
+  <div class="modal-body">
+    <p style="font-size:12.5px">Professional · Active until 08 Nov 2026. Invite goes to <b>farah@lahorecare.pk</b>. Tenant is isolated from Demo Pharmacy immediately.</p>
+    <div class="note warn mt-12" style="font-size:11.5px">There is no undo except Suspend. Data is never cross-tenant.</div>
+  </div>
+  <div class="modal-foot"><div class="right"><button class="btn" data-close>Back</button><a class="btn primary" href="platform-tenant.html" onclick="toast('TEN-018 created · invite sent to farah@lahorecare.pk','ok')">Create TEN-018</a></div></div>
+</div></div>
+<script src="assets/app.js"></script>
+<script>
+document.getElementById('plan').addEventListener('change', e => {
+  const map = { starter: [3,1], pro: [10,3], dist: [25,10] };
+  const [u,b] = map[e.target.value];
+  document.getElementById('caps').innerHTML = '<dt>Users</dt><dd>'+u+'</dd><dt>Branches</dt><dd>'+b+'</dd><dt>Warehouses</dt><dd>Unlimited in MVP</dd>';
+});
+</script>
+</body></html>

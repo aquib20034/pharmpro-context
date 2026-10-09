@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>PharmaPro — COGS &amp; gross profit</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-page="reports" data-crumbs="Reports / Sales / COGS &amp; GP">
+<div class="app">
+<main class="main">
+  <div class="rep-layout">
+    <div class="card rep-nav" data-report-nav="cogs"></div>
+    <div>
+      <div class="page-head" style="margin-bottom:10px">
+        <div><h1>COGS &amp; gross profit</h1><div class="sub">Cost is the <b>allocation snapshot</b> from when it sold — never current batch cost or current selling price. Split-batch sales show two cost rows.</div></div>
+        <div class="actions"><button class="btn sm">PDF</button><button class="btn sm" data-action="toast" data-msg="CSV queued">CSV</button></div>
+      </div>
+      <div class="note warn mb-12" style="font-size:12px">If you re-price Panadol tomorrow, this report does not change. Historical profit is frozen on <span class="mono">sale_line_allocations</span>.</div>
+      <div class="card">
+        <div class="filters"><span class="muted">From</span><input class="input" value="01 Oct 2026"><span class="muted">to</span><input class="input" value="08 Oct 2026"><select class="select"><option>Group: Product</option><option>Batch</option><option>Category</option></select><span class="spacer"></span><button class="btn sm primary">Run</button></div>
+        <table class="tbl dense">
+          <thead><tr><th>Product · batch</th><th class="right">Qty sold (base)</th><th class="right">Net revenue</th><th class="right">Unit cost @ sale</th><th class="right">COGS</th><th class="right">GP</th><th class="right">GP%</th></tr></thead>
+          <tbody>
+            <tr><td>Panadol 500mg <span class="sub">P5A · sold @ 2.47</span></td><td class="num">8,200</td><td class="num">26,240.00</td><td class="num">2.4700</td><td class="num">20,254.00</td><td class="num">5,986.00</td><td class="num text-ok">22.8</td></tr>
+            <tr><td>Panadol 500mg <span class="sub">P5B · sold @ 2.51</span></td><td class="num">4,200</td><td class="num">13,440.00</td><td class="num">2.5100</td><td class="num">10,542.00</td><td class="num">2,898.00</td><td class="num text-ok">21.6</td></tr>
+            <tr><td>Augmentin 625mg <span class="sub">AX2240 @ 41.20 + AX2301 @ 41.33</span></td><td class="num">1,860</td><td class="num">107,880.00</td><td class="num">mixed</td><td class="num">76,800.00</td><td class="num">31,080.00</td><td class="num text-ok">28.8</td></tr>
+            <tr><td>Risek 20mg <span class="sub">RK0091 @ 14.20</span></td><td class="num">3,220</td><td class="num">59,570.00</td><td class="num">14.2000</td><td class="num">45,724.00</td><td class="num">13,846.00</td><td class="num text-ok">23.2</td></tr>
+            <tr><td>Brufen Syrup 100ml <span class="sub">77Q1 @ 128.00</span></td><td class="num">48</td><td class="num">7,920.00</td><td class="num">128.0000</td><td class="num">6,144.00</td><td class="num">1,776.00</td><td class="num text-ok">22.4</td></tr>
+          </tbody>
+          <tfoot><tr><td>Visible</td><td class="num">17,528</td><td class="num">215,050.00</td><td></td><td class="num">159,464.00</td><td class="num">55,586.00</td><td class="num">25.8</td></tr></tfoot>
+        </table>
+        <div class="table-foot"><span>Period COGS 988,120.00 on P&amp;L is the full product set. This page is the top movers. Returns reverse at the same allocation cost.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<script src="assets/app.js"></script>
+</body></html>
